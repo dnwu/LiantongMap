@@ -1,37 +1,65 @@
 <template>
 <div class="od">
-  od
 </div>
 </template>
 <script>
-require("../map/js/world.js");
-import flightData from "../json/flight.json";
+// require("../map/js/world.js");
+import flightData from "../json/test2.json";
 export default {
   name: "OD",
   data() {
     return {};
   },
   mounted() {
-    this.drawmap();
+    // this.axios({
+    //   method:'get',
+    //   url:'@/map/sz_jiedao_6.geojson'
+    // }).then(geojson => {
+    //   // console.log(data);
+    //   this.drawmap(geojson);
+    // })
+  },
+  created() {
+    this.$nextTick(()=>{
+      this.initDom()
+      this.getGeoJson();
+    })
   },
   methods: {
-    drawmap() {
-      var myChart = this.echarts.init(document.querySelector(".od"));
+    initDom(){
+      this.myChart = this.echarts.init(document.querySelector(".od"));
+      this.myChart.showLoading();
+      window.onresize = ()=>{
+        console.log('11');
+        this.myChart.resize()
+      }
+    },
+    getGeoJson() {
+      this.axios
+        .get("/mapStatic/geojson/sz_jiedao_6.json")
+        .then(geojson => {
+          this.drawmap(geojson.data);
+        });
+    },
+    drawmap(geojson) {
+
       var data = flightData;
 
-      function getAirportCoord(idx) {
-        return [data.airports[idx][3], data.airports[idx][4]];
-      }
-      var routes = data.routes.map(function(airline) {
-        return [getAirportCoord(airline[1]), getAirportCoord(airline[2])];
-      });
+      // console.log(flightData);
+      // data.forEach(element => {
+      //   element.forEach(e => {
+      //     e.push(400000)
+      //   })
+      // });
+      // console.log(data);
+      this.echarts.registerMap("shenzhen", geojson);
 
-      myChart.setOption({
+      var option = {
         geo3D: {
-          map: "world",
+          map: "shenzhen",
           shading: "realistic",
           silent: true,
-          environment: "#121E38",
+          environment: "#111C38",
           realisticMaterial: {
             roughness: 0.8,
             metalness: 0
@@ -54,21 +82,35 @@ export default {
           viewControl: {
             distance: 70,
             alpha: 89,
-
+            minDistance:10,
+            maxDistance:100,
             panMouseButton: "left",
             rotateMouseButton: "right"
           },
-
+          // polyline:true,
           itemStyle: {
-            areaColor: "#000"
+            areaColor: "#000",
+            color:'#1A427D',
+            borderWidth: "1" ,// 描边
+            borderColor:'#fff'
           },
-
-          regionHeight: 0.5
+          blendMode:'lighter',
+          emphasis:{
+            label:{
+              show:true,
+              formatter: '{b}: {c}'
+            }
+          },
+          // effect:{
+          //   show:true,
+          // },
+          regionHeight: 3
         },
+
         series: [
           {
+            name: "深圳",
             type: "lines3D",
-
             coordinateSystem: "geo3D",
 
             effect: {
@@ -78,31 +120,44 @@ export default {
               trailLength: 0.2,
               constantSpeed: 5
             },
-
+            // polyline: true,
             blendMode: "lighter",
 
             lineStyle: {
-              width: 1,
+              width: 0.2,
               opacity: 0.05
+              // color:'red'  //线条颜色
             },
-            data: routes
+
+            // 113.884583,22.584793
+            // 114.264602,22.626966
+            // 114.082353,22.818978
+            // 114.085803,22.542074
             // data: [
-            //   [[145.391881, -6.081689], [-18.916667, 66.133333]],
-            //   [[-139.040556, 61.371111], [-57.391388, 49.210833]]
+            //   [[113.884583, 22.584793], [114.264602, 22.626966]],
+            //   [[114.082353, 22.818978], [114.085803, 22.542074]]
+            // ],
+            data:data,
+            // data: [
+            //   {
+            //       coords:[ [113.884583, 22.584793], [114.264602, 22.626966] ,[114.082353, 22.818978], [114.085803, 22.542074]],
+            //       // 数据值
+            //       value: 10000,
+            //       // 数据名
+            //       name: 'foo',
+            //       // 线条样式
+            //       lineStyle: {
+            //         // color:'yellow',
+            //         // width:'10'
+            //       }
+            //   }
             // ]
           }
         ]
-      });
-
-      window.addEventListener("keydown", function() {
-        myChart.dispatchAction({
-          type: "lines3DToggleEffect",
-          seriesIndex: 0
-        });
-      });
-      window.onresize = function() {
-        myChart.resize();
       };
+
+      this.myChart.setOption(option);
+      this.myChart.hideLoading();
     }
   }
 };
@@ -111,7 +166,7 @@ export default {
 .od {
   width: 100%;
   height: 100%;
-  background-color: yellowgreen;
+  // background-color: yellowgreen;
   background-clip: content-box;
   box-sizing: border-box;
   padding: 26px;

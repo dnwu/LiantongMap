@@ -12,14 +12,14 @@
       <el-container>
         <el-aside width="330px">
           <img class="adorn" src="../assets/adorn.png" alt="">
-          <ul>
+          <ul class="listbox">
             <li class="level1">
               <div class="title">居民出行调查系统</div>
               <ul>
                 <li class="level2 active"><router-link to="/od">人口时空分析</router-link></li>
-                <li class="level3 active">区域人口密度</li>
-                <li class="level3">地理功能区演化</li>
-                <li class="level3">交通走廊时空分析</li>
+                <li class="level3 active"><router-link to="/density">区域人口密度</router-link></li>
+                <li class="level3"><router-link to="/density">地理功能区演化</router-link></li>
+                <li class="level3"><router-link to="density">交通走廊时空分析</router-link></li>
                 <li class="level2"><router-link to="/od">OD状况</router-link></li>
                 <li class="level2"><router-link to="/od">职网分布</router-link></li>
                 <li class="level2"><router-link to="/od">通勤特征</router-link></li>
@@ -96,7 +96,13 @@
                 </div>
               </div>
             </div>
-            <router-view/>
+
+
+            <!-- <keep-alive> -->
+              <router-view/>
+            <!-- </keep-alive> -->
+
+
           </div>
         </el-main>
       </el-container>
@@ -132,6 +138,9 @@ export default {
       type:'出发地点人口密度人力图',
       slider:[0,1]
     };
+  },
+  created(){
+
   },
   methods:{
     sliderDataFormat(e){
@@ -184,6 +193,10 @@ $backgroundHover:#111D38;
         width: 72px;
         right:262px;
       }
+      .listbox{
+        padding-left:40px;
+        margin:16px 0;
+      }
       li {
         color: #fff;
         list-style: none;
@@ -201,6 +214,7 @@ $backgroundHover:#111D38;
         ul {
           margin-top:-10px;
           margin-left:-8px;
+          padding-left:40px;
           .level2,.level3{
 
             a{
@@ -252,13 +266,17 @@ $backgroundHover:#111D38;
             height: 30px;
             margin: 10px 0 0 30px;
             line-height: 30px;
-            padding-left: 20px;
+            // padding-left: 20px;
             font-size: 14px;
             color: #7dcae9;
             cursor: pointer;
             &.active {
               background: url("../assets/level3_act.png") no-repeat;
               color: #3ef0f6;
+            }
+            a{
+              padding:0;
+              padding-left:20px;
             }
           }
         }

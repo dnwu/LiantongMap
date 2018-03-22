@@ -14,11 +14,13 @@ export default new Router({
       path: '/',
       name: 'Box',
       component: Box,
+      redirect:'/od',
       children:[
         {
           path:'/density',
           name:'Density',
-          component:Density
+          component:Density,
+
         },{
           path:'/od',
           name:'od',
