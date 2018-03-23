@@ -4,7 +4,7 @@
 </template>
 <script>
 // require("../map/js/world.js");
-import flightData from "../json/test2.json";
+import flightData from "../json/test.json";
 export default {
   name: "OD",
   data() {
@@ -36,7 +36,7 @@ export default {
     },
     getGeoJson() {
       this.axios
-        .get("/mapStatic/geojson/sz_jiedao_6.json")
+        .get("/static/geojson/sz_jiedao_6.json")
         .then(geojson => {
           this.drawmap(geojson.data);
         });

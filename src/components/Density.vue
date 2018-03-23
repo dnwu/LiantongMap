@@ -32,7 +32,7 @@ export default {
     },
     getGeoJson() {
       this.axios
-        .get("/mapStatic/geojson/sz_jiedao_6.json")
+        .get("/static/geojson/sz_jiedao_6.json")
         .then(geojson => {
           this.drawmap(geojson.data);
         });
