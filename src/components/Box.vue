@@ -90,6 +90,7 @@
                   <el-slider
                     v-model="slider"
                     range
+                    @change = 'timeChange'
                     :format-tooltip = 'sliderDataFormat'
                     :max="12">
                   </el-slider>
@@ -136,7 +137,8 @@ export default {
         },
       ],
       type:'出发地点人口密度人力图',
-      slider:[0,1]
+      slider:[0,1],
+      chacheSlider:[0,1]
     };
   },
   created(){
@@ -145,12 +147,32 @@ export default {
   methods:{
     sliderDataFormat(e){
       return `${e*2}:00`
+    },
+    timeChange(){
+      var fir = this.slider[0]
+      var sec = this.slider[1]
+      if(fir !== this.chacheSlider[0] && sec !== this.chacheSlider[1]){
+        this.slider = [sec-1,sec]
+      }
+      if(fir !== this.chacheSlider[0]){
+        this.slider = [fir,fir+1]
+        //this.slider[0] = fir
+        console.log('第一个数')
+      }
+      if(sec !== this.chacheSlider[1]){
+        var _fir = sec-1
+        var _sec = sec
+        this.slider = [_fir,_sec]
+        console.log('第二个数',fir,sec,this.slider)
+        
+      }
+      this.chacheSlider = [...this.slider]
+      //this.slider = [fir , sec]
     }
   },
   computed:{
     initTime(){
       return `${this.slider[0]*2}:00-${this.slider[1]*2}:00`
-
     }
   }
 };
@@ -187,11 +209,15 @@ $backgroundHover:#111D38;
     .el-aside {
       // border-right: 1px solid red;
       position: relative;
+      ::-webkit-scrollbar{
+        display: none;
+      }
       .adorn{
         position: absolute;
         height: 100%;
         width: 72px;
         right:262px;
+        left:-6px ;
       }
       .listbox{
         padding-left:40px;

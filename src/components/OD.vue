@@ -4,25 +4,21 @@
 </template>
 <script>
 // require("../map/js/world.js");
-import flightData from "../json/test2.json";
+import flightData from "../json/test.json";
 export default {
   name: "OD",
   data() {
     return {};
   },
   mounted() {
-    // this.axios({
-    //   method:'get',
-    //   url:'@/map/sz_jiedao_6.geojson'
-    // }).then(geojson => {
-    //   // console.log(data);
-    //   this.drawmap(geojson);
-    // })
   },
   created() {
     this.$nextTick(()=>{
       this.initDom()
       this.getGeoJson();
+    })
+    this.axios.get('http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=12').then(data => {
+      console.log(data.data.data) // [[[],[]],[[],[]]]
     })
   },
   methods: {
@@ -36,14 +32,14 @@ export default {
     },
     getGeoJson() {
       this.axios
-        .get("/mapStatic/geojson/sz_jiedao_6.json")
+        .get("/static/geojson/sz_jiedao_6.json")
         .then(geojson => {
           this.drawmap(geojson.data);
         });
     },
     drawmap(geojson) {
 
-      var data = flightData;
+      var data = flightData.slice(0,100);
 
       // console.log(flightData);
       // data.forEach(element => {
