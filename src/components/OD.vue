@@ -4,42 +4,61 @@
 </template>
 <script>
 // require("../map/js/world.js");
-import flightData from "../json/test.json";
+// import flightData from "../json/test.json";
 export default {
   name: "OD",
   data() {
-    return {};
+    return {
+      // url:"http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=12"
+      url:"/static/test.json"
+    };
   },
-  mounted() {
+  props: {
+    slider: {
+      type: Array,
+      default: [0, 1],
+      required: true
+    }
   },
+  mounted() {},
   created() {
-    this.$nextTick(()=>{
-      this.initDom()
+    this.$nextTick(() => {
+      this.initDom();
       this.getGeoJson();
-    })
-    this.axios.get('http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=12').then(data => {
-      console.log(data.data.data) // [[[],[]],[[],[]]]
-    })
+    });
   },
   methods: {
-    initDom(){
+    initDom() {
       this.myChart = this.echarts.init(document.querySelector(".od"));
       this.myChart.showLoading();
-      window.onresize = ()=>{
-        console.log('11');
-        this.myChart.resize()
-      }
+      window.onresize = () => {
+        console.log("11");
+        this.myChart.resize();
+      };
     },
     getGeoJson() {
+      this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
+        this.echarts.registerMap("shenzhen", geojson.data);
+        this.getMapData(this.url)
+      });
+    },
+    getMapData(url) {
+      this.myChart.showLoading();
       this.axios
-        .get("/static/geojson/sz_jiedao_6.json")
-        .then(geojson => {
-          this.drawmap(geojson.data);
+        .get(
+          url
+        )
+        .then(data => {
+          // console.log(data.data.data); // [[[],[]],[[],[]]]
+          // if(data.data.status == 200){
+          //   this.drawmap(data.data.data)
+          // }
+          console.log('data',data);
+          this.drawmap(data.data)
         });
     },
-    drawmap(geojson) {
-
-      var data = flightData.slice(0,100);
+    drawmap(data) {
+      // var data = flightData.slice(0, 100);
 
       // console.log(flightData);
       // data.forEach(element => {
@@ -48,7 +67,7 @@ export default {
       //   })
       // });
       // console.log(data);
-      this.echarts.registerMap("shenzhen", geojson);
+
 
       var option = {
         geo3D: {
@@ -78,23 +97,23 @@ export default {
           viewControl: {
             distance: 70,
             alpha: 89,
-            minDistance:10,
-            maxDistance:100,
+            minDistance: 10,
+            maxDistance: 100,
             panMouseButton: "left",
             rotateMouseButton: "right"
           },
           // polyline:true,
           itemStyle: {
             areaColor: "#000",
-            color:'#1A427D',
-            borderWidth: "1" ,// 描边
-            borderColor:'#fff'
+            color: "#1A427D",
+            borderWidth: "1", // 描边
+            borderColor: "#fff"
           },
-          blendMode:'lighter',
-          emphasis:{
-            label:{
-              show:true,
-              formatter: '{b}: {c}'
+          blendMode: "lighter",
+          emphasis: {
+            label: {
+              show: true,
+              formatter: "{b}: {c}"
             }
           },
           // effect:{
@@ -133,7 +152,7 @@ export default {
             //   [[113.884583, 22.584793], [114.264602, 22.626966]],
             //   [[114.082353, 22.818978], [114.085803, 22.542074]]
             // ],
-            data:data,
+            data: data
             // data: [
             //   {
             //       coords:[ [113.884583, 22.584793], [114.264602, 22.626966] ,[114.082353, 22.818978], [114.085803, 22.542074]],
@@ -154,6 +173,20 @@ export default {
 
       this.myChart.setOption(option);
       this.myChart.hideLoading();
+    }
+  },
+  watch: {
+    slider(b, a) {
+      // console.log(JSON.stringify(b) === JSON.stringify(a));
+      clearInterval(this.timer)
+      this.timer = setTimeout(()=>{
+        if(JSON.stringify(b) === JSON.stringify(a)){
+          return
+        }
+        this.url = '/static/test2.json'
+
+        this.getMapData(this.url)
+      },2000)
     }
   }
 };

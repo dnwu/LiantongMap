@@ -100,7 +100,7 @@
 
 
             <!-- <keep-alive> -->
-              <router-view/>
+              <router-view :slider='chacheSlider'></router-view>
             <!-- </keep-alive> -->
 
 
@@ -156,18 +156,12 @@ export default {
       }
       if(fir !== this.chacheSlider[0]){
         this.slider = [fir,fir+1]
-        //this.slider[0] = fir
-        console.log('第一个数')
       }
       if(sec !== this.chacheSlider[1]){
-        var _fir = sec-1
-        var _sec = sec
-        this.slider = [_fir,_sec]
-        console.log('第二个数',fir,sec,this.slider)
-        
+        this.slider = [sec-1,sec]
+
       }
       this.chacheSlider = [...this.slider]
-      //this.slider = [fir , sec]
     }
   },
   computed:{
