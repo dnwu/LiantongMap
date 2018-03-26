@@ -9,8 +9,9 @@ export default {
   name: "OD",
   data() {
     return {
-      // url:"http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=12"
-      url:"/static/test.json"
+      url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
+      // url:"http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
+      //url:"/static/test.json"
     };
   },
   props: {
@@ -32,43 +33,31 @@ export default {
       this.myChart = this.echarts.init(document.querySelector(".od"));
       this.myChart.showLoading();
       window.onresize = () => {
-        console.log("11");
         this.myChart.resize();
       };
     },
     getGeoJson() {
       this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
         this.echarts.registerMap("shenzhen", geojson.data);
-        this.getMapData(this.url)
+        this.getMapData(this.url,this.slider)
       });
     },
-    getMapData(url) {
+    getMapData(url,slider) {
       this.myChart.showLoading();
       this.axios
         .get(
-          url
+          url + slider[0]*2
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
-          // if(data.data.status == 200){
-          //   this.drawmap(data.data.data)
-          // }
-          console.log('data',data);
-          this.drawmap(data.data)
+          if(data.data.status == 200){
+            this.drawmap(data.data.data)
+          }
+          // console.log('data',data);
+          // this.drawmap(data.data)
         });
     },
     drawmap(data) {
-      // var data = flightData.slice(0, 100);
-
-      // console.log(flightData);
-      // data.forEach(element => {
-      //   element.forEach(e => {
-      //     e.push(400000)
-      //   })
-      // });
-      // console.log(data);
-
-
       var option = {
         geo3D: {
           map: "shenzhen",
@@ -97,8 +86,8 @@ export default {
           viewControl: {
             distance: 70,
             alpha: 89,
-            minDistance: 10,
-            maxDistance: 100,
+            //minDistance: 10,
+            //maxDistance: 100,
             panMouseButton: "left",
             rotateMouseButton: "right"
           },
@@ -109,13 +98,13 @@ export default {
             borderWidth: "1", // 描边
             borderColor: "#fff"
           },
-          blendMode: "lighter",
-          emphasis: {
-            label: {
-              show: true,
-              formatter: "{b}: {c}"
-            }
-          },
+          // blendMode: "lighter",
+          // emphasis: {
+          //  label: {
+          //    show: true,
+          //    formatter: "{b}: {c}"
+          //  }
+          //},
           // effect:{
           //   show:true,
           // },
@@ -183,9 +172,9 @@ export default {
         if(JSON.stringify(b) === JSON.stringify(a)){
           return
         }
-        this.url = '/static/test2.json'
+        // this.url = '/static/test2.json'
 
-        this.getMapData(this.url)
+        this.getMapData(this.url,b)
       },2000)
     }
   }

@@ -42,7 +42,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../map'),
-    assetsSubDirectory: 'mapStatic',
+    assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 
     /**
