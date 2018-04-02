@@ -9,9 +9,9 @@ export default {
   name: "OD",
   data() {
     return {
-      url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
+      // url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
       // url:"http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
-      //url:"/static/test.json"
+      url:"/static/test.json"
     };
   },
   props: {
@@ -21,7 +21,6 @@ export default {
       required: true
     }
   },
-  mounted() {},
   created() {
     this.$nextTick(() => {
       this.initDom();
@@ -46,7 +45,8 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          url + slider[0]*2
+          // url + slider[0]*2
+          url
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
@@ -54,7 +54,7 @@ export default {
             this.drawmap(data.data.data)
           }
           // console.log('data',data);
-          // this.drawmap(data.data)
+          this.drawmap(data.data)
         });
     },
     drawmap(data) {
@@ -142,20 +142,6 @@ export default {
             //   [[114.082353, 22.818978], [114.085803, 22.542074]]
             // ],
             data: data
-            // data: [
-            //   {
-            //       coords:[ [113.884583, 22.584793], [114.264602, 22.626966] ,[114.082353, 22.818978], [114.085803, 22.542074]],
-            //       // 数据值
-            //       value: 10000,
-            //       // 数据名
-            //       name: 'foo',
-            //       // 线条样式
-            //       lineStyle: {
-            //         // color:'yellow',
-            //         // width:'10'
-            //       }
-            //   }
-            // ]
           }
         ]
       };

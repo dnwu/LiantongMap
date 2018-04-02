@@ -16,10 +16,10 @@
             <li class="level1">
               <div class="title">居民出行调查系统</div>
               <ul>
-                <li class="level2 active"><router-link to="/od">人口时空分析</router-link></li>
+                <li class="level2 title active">人口时空分析</li>
                 <li class="level3 active"><router-link to="/density">区域人口密度</router-link></li>
-                <li class="level3"><router-link to="/density">地理功能区演化</router-link></li>
-                <li class="level3"><router-link to="density">交通走廊时空分析</router-link></li>
+                <li class="level3"><router-link to="/function">地理功能区演化</router-link></li>
+                <li class="level3"><router-link to="/trafficLine">交通走廊时空分析</router-link></li>
                 <li class="level2"><router-link to="/od">OD状况</router-link></li>
                 <li class="level2"><router-link to="/od">职网分布</router-link></li>
                 <li class="level2"><router-link to="/od">通勤特征</router-link></li>
@@ -29,7 +29,7 @@
             <li class="level1">
               <div class="title">多维群体行为预测</div>
               <ul>
-                <li class="level2"><router-link to="/od">人群流动预测</router-link></li>
+                <li class="level2"><router-link to="/flow">人群流动预测</router-link></li>
                 <li class="level2"><router-link to="/od">城市人口演化</router-link></li>
                 <li class="level2"><router-link to="/od">城市特征演化</router-link></li>
               </ul>
