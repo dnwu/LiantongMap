@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="router-contain">
-            <div class="time-slider">
+            <div class="time-slider" v-if="sliderControl">
               <div class="top">
                 <div class="time">{{initTime}}</div>
                 <div class="type">{{type}}</div>
@@ -116,57 +116,72 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      sliderNum:12,
-      time:new Date(),
-      types:[
+      sliderNum: 12,
+      time: new Date(),
+      types: [
         {
-          value: '出发地点人口密度人力图',
-          label: '出发地点人口密度人力图'
+          value: "出发地点人口密度人力图",
+          label: "出发地点人口密度人力图"
         },
         {
-          value: '出发地点人口密度人力',
-          label: '出发地点人口密度人力'
+          value: "出发地点人口密度人力",
+          label: "出发地点人口密度人力"
         },
         {
-          value: '出发地点人口密度人',
-          label: '出发地点人口密度人'
+          value: "出发地点人口密度人",
+          label: "出发地点人口密度人"
         },
         {
-          value: '出发地点人口密度',
-          label: '出发地点人口密度'
-        },
+          value: "出发地点人口密度",
+          label: "出发地点人口密度"
+        }
       ],
-      type:'出发地点人口密度人力图',
-      slider:[0,1],
-      chacheSlider:[0,1]
+      type: "出发地点人口密度人力图",
+      slider: [0, 1],
+      chacheSlider: [0, 1],
+      fullPath: "",
+      sliderControl: true
     };
   },
-  created(){
-
-  },
-  methods:{
-    sliderDataFormat(e){
-      return `${e*2}:00`
-    },
-    timeChange(){
-      var fir = this.slider[0]
-      var sec = this.slider[1]
-      if(fir !== this.chacheSlider[0] && sec !== this.chacheSlider[1]){
-        this.slider = [sec-1,sec]
-      }
-      if(fir !== this.chacheSlider[0]){
-        this.slider = [fir,fir+1]
-      }
-      if(sec !== this.chacheSlider[1]){
-        this.slider = [sec-1,sec]
-
-      }
-      this.chacheSlider = [...this.slider]
+  created() {
+    this.fullPath = this.$route.fullPath;
+    if (this.fullPath == "/function") {
+      this.sliderControl = false;
+    } else {
+      this.sliderControl = true;
     }
   },
-  computed:{
-    initTime(){
-      return `${this.slider[0]*2}:00-${this.slider[1]*2}:00`
+  methods: {
+    sliderDataFormat(e) {
+      return `${e * 2}:00`;
+    },
+    timeChange() {
+      var fir = this.slider[0];
+      var sec = this.slider[1];
+      if (fir !== this.chacheSlider[0] && sec !== this.chacheSlider[1]) {
+        this.slider = [sec - 1, sec];
+      }
+      if (fir !== this.chacheSlider[0]) {
+        this.slider = [fir, fir + 1];
+      }
+      if (sec !== this.chacheSlider[1]) {
+        this.slider = [sec - 1, sec];
+      }
+      this.chacheSlider = [...this.slider];
+    }
+  },
+  computed: {
+    initTime() {
+      return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
+    }
+  },
+  watch: {
+    $route(a, b) {
+      if (a.fullPath == "function") {
+        this.sliderControl = false;
+      } else {
+        this.sliderControl = true;
+      }
     }
   }
 };
@@ -182,9 +197,9 @@ export default {
 }
 </style>
 <style lang='scss'>
-$color:#6EBDCC;
-$background:#0A427F;
-$backgroundHover:#111D38;
+$color: #6ebdcc;
+$background: #0a427f;
+$backgroundHover: #111d38;
 
 .is-vertical {
   height: 100%;
@@ -203,27 +218,27 @@ $backgroundHover:#111D38;
     .el-aside {
       // border-right: 1px solid red;
       position: relative;
-      ::-webkit-scrollbar{
+      ::-webkit-scrollbar {
         display: none;
       }
-      .adorn{
+      .adorn {
         position: absolute;
         height: 100%;
         width: 72px;
-        right:262px;
-        left:-6px ;
+        right: 262px;
+        left: -6px;
       }
-      .listbox{
-        padding-left:40px;
-        margin:16px 0;
+      .listbox {
+        padding-left: 40px;
+        margin: 16px 0;
       }
       li {
         color: #fff;
         list-style: none;
       }
       .level1 {
-        &:first-child{
-          margin-bottom:20px;
+        &:first-child {
+          margin-bottom: 20px;
         }
         .title {
           background: url("../assets/level1.png") no-repeat;
@@ -232,19 +247,19 @@ $backgroundHover:#111D38;
           padding-left: 44px;
         }
         ul {
-          margin-top:-10px;
-          margin-left:-8px;
-          padding-left:40px;
-          .level2,.level3{
-
-            a{
-              padding-left:50px;
+          margin-top: -10px;
+          margin-left: -8px;
+          padding-left: 40px;
+          .level2,
+          .level3 {
+            a {
+              padding-left: 50px;
               display: inline-block;
               width: 100%;
               height: 100%;
               text-decoration: none;
-              box-sizing:border-box;
-              color:$color;
+              box-sizing: border-box;
+              color: $color;
             }
           }
           .level2 {
@@ -256,28 +271,28 @@ $backgroundHover:#111D38;
             font-size: 14px;
             color: #ecefe8;
             cursor: pointer;
-            &.active{
-              &::before{
-                content:'';
+            &.active {
+              &::before {
+                content: "";
                 display: inline-block;
-                position:absolute;
-                top:28px;
-                left:30px;
+                position: absolute;
+                top: 28px;
+                left: 30px;
                 width: 4px;
                 height: 4px;
-                background: #02D2E8;
-                border-radius:50%;
+                background: #02d2e8;
+                border-radius: 50%;
               }
-              &::after{
-                content:'';
+              &::after {
+                content: "";
                 display: inline-block;
-                position:absolute;
-                top:25px;
-                left:27px;
+                position: absolute;
+                top: 25px;
+                left: 27px;
                 width: 8px;
                 height: 8px;
-                border-radius:50%;
-                border:1px solid #02D2E8;
+                border-radius: 50%;
+                border: 1px solid #02d2e8;
               }
             }
           }
@@ -294,163 +309,162 @@ $backgroundHover:#111D38;
               background: url("../assets/level3_act.png") no-repeat;
               color: #3ef0f6;
             }
-            a{
-              padding:0;
-              padding-left:20px;
+            a {
+              padding: 0;
+              padding-left: 20px;
             }
           }
         }
       }
     }
     .el-main {
-      display:flex;
-      flex-direction:column;
-      .top-bar{
+      display: flex;
+      flex-direction: column;
+      .top-bar {
         height: 50px;
-        display:flex;
-        .time-select{
+        display: flex;
+        .time-select {
           width: 500px;
-          background-image: url('../assets/time-select.png');
-          background-repeat:no-repeat;
-          padding-left:162px;
-          box-sizing:border-box;
-          .time{
-            .el-input{
-              input{
-                background:transparent;
+          background-image: url("../assets/time-select.png");
+          background-repeat: no-repeat;
+          padding-left: 162px;
+          box-sizing: border-box;
+          .time {
+            .el-input {
+              input {
+                background: transparent;
                 height: 20px;
-                border:none;
-                margin-top:14px;
-                color:$color
+                border: none;
+                margin-top: 14px;
+                color: $color;
               }
-              .el-input__prefix,.el-input__suffix{
+              .el-input__prefix,
+              .el-input__suffix {
                 display: none;
               }
             }
           }
-
         }
-        .type-select{
+        .type-select {
           width: 500px;
-          background-image:url('../assets/type-select.png');
-          background-repeat:no-repeat;
-          .type{
+          background-image: url("../assets/type-select.png");
+          background-repeat: no-repeat;
+          .type {
             height: 20px;
             width: 190px;
-            margin:12px 0 0 160px;
-            font-size:12px;
+            margin: 12px 0 0 160px;
+            font-size: 12px;
             // background-color: red;
-            color:#fff;
-            .el-select{
-              .el-input{
-                input{
-                  background:transparent;
-                  border:none;
+            color: #fff;
+            .el-select {
+              .el-input {
+                input {
+                  background: transparent;
+                  border: none;
                   width: 190px;
                   height: 20px;
-                  padding:0;
-                  color:$color;
+                  padding: 0;
+                  color: $color;
                 }
               }
             }
           }
         }
-        .position{
-          flex:1;
+        .position {
+          flex: 1;
         }
       }
-      .router-contain{
-        flex:1;
+      .router-contain {
+        flex: 1;
         position: relative;
-        background-image: url('../assets/map_bgc.png');
+        background-image: url("../assets/map_bgc.png");
         // background-size:contain;
-        background-size:100% 100%;
-        background-repeat:no-repeat;
-        .time-slider{
-          z-index:999;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        .time-slider {
+          z-index: 999;
           position: absolute;
-          bottom:40px;
+          bottom: 40px;
           width: 90%;
           height: 100px;
-          margin-left:5%;
-          background-image:url('../assets/time-slider.png');
-          .top{
-            display:flex;
-            .time{
+          margin-left: 5%;
+          background-image: url("../assets/time-slider.png");
+          .top {
+            display: flex;
+            .time {
               width: 100px;
               height: 20px;
-              box-sizing:border-box;
-              margin:13px 0 0 180px;
-              padding-left:20px;
-              color:$color;
-              font-size:12px;
-              line-height:20px;
-
+              box-sizing: border-box;
+              margin: 13px 0 0 180px;
+              padding-left: 20px;
+              color: $color;
+              font-size: 12px;
+              line-height: 20px;
             }
-            .type{
-              font-size:12px;
-              line-height:20px;
-              color:$color;
+            .type {
+              font-size: 12px;
+              line-height: 20px;
+              color: $color;
               width: 160px;
               height: 20px;
-              padding-left:10px;
-              margin:13px 0 0 180px;
+              padding-left: 10px;
+              margin: 13px 0 0 180px;
             }
           }
-          .slider{
+          .slider {
             width: 98%;
             height: 40px;
-            margin-top:20px;
-            margin-left:1%;
+            margin-top: 20px;
+            margin-left: 1%;
             // background-color: skyblue;
-            .calibration{
-              display:flex;
-              .block{
-                display:flex;
+            .calibration {
+              display: flex;
+              .block {
+                display: flex;
                 width: (1/12)*100%;
                 height: 10px;
                 position: relative;
-                &::before{
-                  content:'';
+                &::before {
+                  content: "";
                   display: inline-block;
                   position: absolute;
                   width: 1px;
                   height: 12px;
                   background-color: $color;
-                  left:0;
-                  top:16px;
+                  left: 0;
+                  top: 16px;
                 }
-                &::after{
-                  content:'';
+                &::after {
+                  content: "";
                   display: inline-block;
                   position: absolute;
                   width: 1px;
                   height: 12px;
                   background-color: $color;
-                  right:0;
-                  top:16px;
+                  right: 0;
+                  top: 16px;
                 }
-                span{
+                span {
                   width: 1px;
                   height: 6px;
                   background-color: $color;
-                  margin-left:(1/11)*100%;
-                  margin-top:20px;
+                  margin-left: (1/11)*100%;
+                  margin-top: 20px;
                 }
               }
             }
-            .el-slider__runway{
-              background:$backgroundHover;
-              .el-slider__bar{
-                background:$background;
+            .el-slider__runway {
+              background: $backgroundHover;
+              .el-slider__bar {
+                background: $background;
               }
-              .el-slider__button-wrapper{
-                .el-slider__button{
+              .el-slider__button-wrapper {
+                .el-slider__button {
                   width: 10px;
                   height: 10px;
-                  border-color:#fff;
-                  border-width:1px;
-                  background:$backgroundHover;
+                  border-color: #fff;
+                  border-width: 1px;
+                  background: $backgroundHover;
                 }
               }
             }
@@ -463,39 +477,40 @@ $backgroundHover:#111D38;
 </style>
 // 定制选择框样式
 <style lang="scss">
-$background:#0A427F;
-$backgroundHover:#111D38;
-$color:#6EBDCC;
-.el-select-dropdown{
-  border:#111D38;
-  background:#0A427F;
-  .el-scrollbar{
-    .el-select-dropdown__wrap{
-      .el-scrollbar__view{
-          border-radius:60px;
-          background:$background;
-        li{
-          color:$color;
-          &:hover{
-            background:$backgroundHover;
+$background: #0a427f;
+$backgroundHover: #111d38;
+$color: #6ebdcc;
+.el-select-dropdown {
+  border: #111d38;
+  background: #0a427f;
+  .el-scrollbar {
+    .el-select-dropdown__wrap {
+      .el-scrollbar__view {
+        border-radius: 60px;
+        background: $background;
+        li {
+          color: $color;
+          &:hover {
+            background: $backgroundHover;
           }
-          &.hover{
-            background:$backgroundHover;
+          &.hover {
+            background: $backgroundHover;
           }
         }
       }
     }
   }
 }
-.el-picker-panel{
-  color:$color;
-  background:$background;
-  border:none;
-  .el-picker-panel__body-wrapper{
-    .el-picker-panel__body{
-      .el-date-picker__header{
-        span,button{
-          color:$color;
+.el-picker-panel {
+  color: $color;
+  background: $background;
+  border: none;
+  .el-picker-panel__body-wrapper {
+    .el-picker-panel__body {
+      .el-date-picker__header {
+        span,
+        button {
+          color: $color;
         }
       }
     }

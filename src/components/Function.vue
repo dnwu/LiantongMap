@@ -50,9 +50,9 @@ export default {
       var option = {
         geo: {
           show: true,
-          map: "gongneng",
+          // map: "gongneng",
           roam: true,
-          aspectScale: 2,
+
           itemStyle: {
             areaColor: "skyblue"
           },
@@ -63,7 +63,7 @@ export default {
           },
           regions: [
             {
-              name: "test",
+              name: "6169",
               itemStyle: {
                 areaColor: "red",
                 color: "red"
@@ -71,12 +71,32 @@ export default {
             }
           ]
         },
+        visualMap: {
+          // show:false,
+          type: "piecewise",
+          splitNumber: 4,
+          textStyle: {
+            color: "#fff"
+          },
+          // categories:['商业区','居民区','生活区','购物区'],
+          left: "right",
+          bottom: 150,
+          min: 1,
+          max: 4,
+          inRange: {
+            color: ["red", "green", "blue", "yellow"]
+          },
+          // text: ["High", "Low"], // 文本，默认为数值文本
+          calculable: true,
+          zlevel: 9999
+        },
         series: [
           {
             name: "shenzhen gongneng",
             type: "map",
             roam: true,
-            // map: "gongneng",
+            map: "gongneng",
+            aspectScale: 2,
             itemStyle: {
               emphasis: { label: { show: true } }
             },
@@ -84,7 +104,25 @@ export default {
             textFixed: {
               Alaska: [20, -20]
             },
-            data: data
+            // data: data
+            data: [
+              {
+                name: 6169,
+                value: 1
+              },
+              {
+                name: 7916,
+                value: 2
+              },
+              {
+                name: 6265,
+                value: 3
+              },
+              {
+                name: 7907,
+                value: 4
+              }
+            ]
           }
         ]
       };
