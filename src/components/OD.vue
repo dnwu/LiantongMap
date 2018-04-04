@@ -9,9 +9,9 @@ export default {
   name: "OD",
   data() {
     return {
-      // url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
+      url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
       // url:"http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
-      url:"/static/test.json"
+      // url:"/static/test.json"
     };
   },
   props: {
@@ -45,8 +45,8 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + slider[0]*2
-          url
+          url + slider[0]*2
+          // url
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]

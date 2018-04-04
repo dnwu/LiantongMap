@@ -1,5 +1,5 @@
 <template>
-<div class="function">
+<div class="commute">
   function
 </div>
 </template>
@@ -7,9 +7,17 @@
 export default {
   data() {
     return {
-      // url: "http://192.168.1.102:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w",
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w"
+      // url: "http://192.168.1.102:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&date=2018-03-29&hour=",
+      url:
+        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&date=2018-03-29"
     };
+  },
+  props: {
+    slider: {
+      type: Array,
+      default: [0, 1],
+      required: true
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -19,7 +27,7 @@ export default {
   },
   methods: {
     initDom() {
-      this.myChart = this.echarts.init(document.querySelector(".function"));
+      this.myChart = this.echarts.init(document.querySelector(".commute"));
       this.myChart.showLoading();
       window.onresize = () => {
         this.myChart.resize();
@@ -33,19 +41,17 @@ export default {
     },
     getMapData(url, slider) {
       this.myChart.showLoading();
-      this.axios
-        .get(
-          // url + slider[0]*2
+      this.axios.get(
+          // url + slider[0]
           url
-        )
-        .then(data => {
-          // console.log(data.data.data); // [[[],[]],[[],[]]]
-          if (data.data.status == 200) {
-            this.drawmap(data.data.data);
-          }
-          // console.log('data',data);
-          // this.drawmap(data.data);
-        });
+        ).then(data => {
+        // console.log(data.data.data); // [[[],[]],[[],[]]]
+        if (data.data.status == 200) {
+          this.drawmap(data.data.data);
+        }
+        // console.log('data',data);
+        // this.drawmap(data.data);
+      });
     },
     drawmap(data) {
       var option = {
@@ -79,15 +85,14 @@ export default {
           textStyle: {
             color: "#fff"
           },
-          // categories:['商业区','居民区','生活区','购物区'],
           left: "right",
           bottom: 150,
-          min: 10,
-          max: 40,
+          splitNumber: 7,
+          min: -1,
+          max: 1,
           inRange: {
-            color: ["red", "green", "blue", "yellow"]
+            color: ["yellow", "blue", "green", "red"]
           },
-          // text: ["High", "Low"], // 文本，默认为数值文本
           calculable: true,
           zlevel: 9999
         },
@@ -131,11 +136,25 @@ export default {
       this.myChart.setOption(option);
       this.myChart.hideLoading();
     }
+  },
+  watch: {
+    slider(b, a) {
+      // console.log(JSON.stringify(b) === JSON.stringify(a));
+      clearInterval(this.timer);
+      this.timer = setTimeout(() => {
+        if (JSON.stringify(b) === JSON.stringify(a)) {
+          return;
+        }
+        // this.url = '/static/test2.json'
+
+        this.getMapData(this.url, b);
+      }, 2000);
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
-.function {
+.commute {
   width: 100%;
   height: 100%;
   // background-color: yellowgreen;

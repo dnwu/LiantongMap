@@ -22,7 +22,7 @@
                 <li class="level3"><router-link to="/trafficLine">交通走廊时空分析</router-link></li>
                 <li class="level2"><router-link to="/od">OD状况</router-link></li>
                 <li class="level2"><router-link to="/od">职网分布</router-link></li>
-                <li class="level2"><router-link to="/od">通勤特征</router-link></li>
+                <li class="level2"><router-link to="/commute">通勤特征</router-link></li>
                 <li class="level2"><router-link to="/od">城市特征</router-link></li>
               </ul>
             </li>
@@ -74,7 +74,7 @@
               </div>
               <div class="slider">
                 <div class="calibration">
-                  <span v-for="(item,index) in sliderNum" :key='index' class="block">
+                  <span v-for="(item,index) in sliderNum" :key='index' :style="'width: (1/'+sliderNum+')*100%'" class="block" ref="block">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -92,7 +92,7 @@
                     range
                     @change = 'timeChange'
                     :format-tooltip = 'sliderDataFormat'
-                    :max="12">
+                    :max="sliderNum">
                   </el-slider>
                 </div>
               </div>
@@ -144,16 +144,27 @@ export default {
     };
   },
   created() {
+    
     this.fullPath = this.$route.fullPath;
-    if (this.fullPath == "/function") {
+    if (this.fullPath == "/function" || this.fullPath == "/commute") {
       this.sliderControl = false;
     } else {
       this.sliderControl = true;
     }
+    if (this.fullPath == "/density") {
+      this.sliderNum = 24;
+    } else {
+      this.sliderNum = 12;
+    }
   },
   methods: {
     sliderDataFormat(e) {
-      return `${e * 2}:00`;
+      if(this.fullPath == "/commute"){
+        return `${e}:00`;
+      }else{
+        return `${e * 2}:00`;
+      }
+      
     },
     timeChange() {
       var fir = this.slider[0];
@@ -172,15 +183,24 @@ export default {
   },
   computed: {
     initTime() {
-      return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
+      if(this.fullPath == "/commute"){
+        return `${this.slider[0]}:00-${this.slider[1]}:00`;
+      }else{
+        return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
+      }
     }
   },
   watch: {
     $route(a, b) {
-      if (a.fullPath == "function") {
+      if (a.fullPath == "/function" || a.fullPath == "/commute") {
         this.sliderControl = false;
       } else {
         this.sliderControl = true;
+      }
+      if (a.fullPath == "/density") {
+        this.sliderNum = 24;
+      } else {
+        this.sliderNum = 12;
       }
     }
   }
@@ -419,6 +439,7 @@ $backgroundHover: #111d38;
             // background-color: skyblue;
             .calibration {
               display: flex;
+              width: 100%;
               .block {
                 display: flex;
                 width: (1/12)*100%;
@@ -444,12 +465,18 @@ $backgroundHover: #111d38;
                   right: 0;
                   top: 16px;
                 }
-                span {
-                  width: 1px;
-                  height: 6px;
-                  background-color: $color;
-                  margin-left: (1/11)*100%;
-                  margin-top: 20px;
+
+                @for $i from 1 through 9 {
+                  //.item-#{$i} { width: 2em * $i; }
+                  span:nth-of-type(#{$i}) {
+                    width: 1px;
+                    height: 6px;
+                    background-color: $color;
+                    //margin-left: (1/11)*100%;
+                    position: absolute;
+                    left: ($i/10)*100%;
+                    margin-top: 20px;
+                  }
                 }
               }
             }

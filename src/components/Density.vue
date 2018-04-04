@@ -4,7 +4,7 @@
 </div>
 </template>
 <script>
-import flightData from "../json/test3.json";
+// import flightData from "../json/test3.json";
 // 113.884583,22.584793
 // 114.264602,22.626966
 // 114.082353,22.818978
@@ -13,42 +13,65 @@ import flightData from "../json/test3.json";
 export default {
   name: "Density",
   data() {
-    return {};
+    return {
+      // url: "http://192.168.1.102:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&date=2017-12-19&hour=",
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&date=2017-12-19&hour="
+    };
+  },
+  props: {
+    slider: {
+      type: Array,
+      default: [0, 1],
+      required: true
+    }
   },
   created() {
-    this.$nextTick(()=>{
-      this.initDom()
+    this.$nextTick(() => {
+      this.initDom();
       this.getGeoJson();
-
-    })
+    });
   },
   methods: {
-    initDom(){
+    initDom() {
       this.myChart = this.echarts.init(document.querySelector(".density"));
       this.myChart.showLoading();
-      window.onresize = ()=>{
-        this.myChart.resize()
-      }
+      window.onresize = () => {
+        this.myChart.resize();
+      };
     },
     getGeoJson() {
+      this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
+        this.echarts.registerMap("shenzhen", geojson.data);
+        this.getMapData(this.url, this.slider);
+      });
+    },
+    getMapData(url, slider) {
+      this.myChart.showLoading();
       this.axios
-        .get("/static/geojson/sz_jiedao_6.json")
-        .then(geojson => {
-          this.drawmap(geojson.data);
+        .get(
+          url + slider[0]
+          // url
+        )
+        .then(data => {
+          console.log(data.data.data); // [[[],[]],[[],[]]]
+          if (data.data.status == 200) {
+            this.drawmap(data.data.data);
+          }
+          // console.log('data',data);
+          // this.drawmap(data.data);
         });
     },
-    drawmap(geojson) {
-
-      var data = flightData.slice(0,20000);
+    drawmap(data) {
+      //var data = flightData.slice(0, 20000);
       // console.log(data);
-      this.echarts.registerMap("shenzhen", geojson);
+      // this.echarts.registerMap("shenzhen", geojson);
       var option = {
         backgroundColor: "#cdcfd5",
         geo3D: {
           map: "shenzhen",
-          shading: "color",  //没有阴影
+          shading: "color", //没有阴影
           // shading: "lambert",
-          environment:'#00142D',
+          environment: "#00142D",
           light: {
             main: {
               intensity: 5,
@@ -67,15 +90,15 @@ export default {
           },
           viewControl: {
             distance: 50,
-            minDistance:10,
-            maxDistance:80,
+            minDistance: 10,
+            maxDistance: 80,
             panMouseButton: "left",
             rotateMouseButton: "right"
           },
 
           groundPlane: {
             show: true,
-            color:'#00142D'
+            color: "#00142D"
           },
           postEffect: {
             enable: true,
@@ -99,19 +122,19 @@ export default {
           },
           itemStyle: {
             areaColor: "#000",
-            color:'#1A427D',
-            borderWidth: "1" ,// 描边
-            borderColor:'#fff'
+            color: "#1A427D",
+            borderWidth: "1", // 描边
+            borderColor: "#fff"
           },
 
           regionHeight: 2
         },
         visualMap: {
-          max: 1600,
+          max: 260000,
           calculable: true,
           realtime: false,
-          left:'10',
-          top:'10',
+          left: "10",
+          top: "10",
           inRange: {
             color: [
               // "#313695",
@@ -125,9 +148,9 @@ export default {
               // "#f46d43",
               // "#d73027",
               // "#a50026"
-              '#fff',
-              'yellow',
-              'red',
+              "#fff",
+              "yellow",
+              "red"
             ]
           },
           outOfRange: {
@@ -149,9 +172,22 @@ export default {
             }
           }
         ]
-      }
+      };
       this.myChart.setOption(option);
       this.myChart.hideLoading();
+    }
+  },
+  watch: {
+    slider(b, a) {
+      clearInterval(this.timer);
+      this.timer = setTimeout(() => {
+        if (JSON.stringify(b) === JSON.stringify(a)) {
+          return;
+        }
+        // this.url = '/static/test2.json'
+
+        this.getMapData(this.url, b);
+      }, 2000);
     }
   }
 };
