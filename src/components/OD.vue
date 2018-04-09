@@ -9,8 +9,7 @@ export default {
   name: "OD",
   data() {
     return {
-      url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
-      // url:"http://192.168.1.100:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
       // url:"/static/test.json"
     };
   },
@@ -54,7 +53,7 @@ export default {
             this.drawmap(data.data.data)
           }
           // console.log('data',data);
-          this.drawmap(data.data)
+          // this.drawmap(data.data)
         });
     },
     drawmap(data) {

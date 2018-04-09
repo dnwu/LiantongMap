@@ -151,15 +151,16 @@ export default {
     } else {
       this.sliderControl = true;
     }
-    if (this.fullPath == "/density") {
+    if (this.fullPath == "/density" || this.fullPath == "/flow") {
       this.sliderNum = 24;
+      // console.log(this.sliderNum)
     } else {
       this.sliderNum = 12;
     }
   },
   methods: {
     sliderDataFormat(e) {
-      if(this.fullPath == "/commute"){
+      if(this.fullPath == "/density" || this.fullPath == "/flow"){
         return `${e}:00`;
       }else{
         return `${e * 2}:00`;
@@ -178,12 +179,19 @@ export default {
       if (sec !== this.chacheSlider[1]) {
         this.slider = [sec - 1, sec];
       }
+      if(fir === 0 && sec === 0) {
+        this.slider = [fir, fir + 1];
+      }
+      if(fir === 12 && sec === 12 || fir === 24 && sec === 24) {
+        this.slider = [sec - 1, sec];
+      }
       this.chacheSlider = [...this.slider];
     }
   },
   computed: {
     initTime() {
-      if(this.fullPath == "/commute"){
+      // console.log(this.fullPath)
+      if(this.fullPath == "/density" || this.fullPath == "/flow"){
         return `${this.slider[0]}:00-${this.slider[1]}:00`;
       }else{
         return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
@@ -192,12 +200,13 @@ export default {
   },
   watch: {
     $route(a, b) {
+      this.fullPath = a.fullPath
       if (a.fullPath == "/function" || a.fullPath == "/commute") {
         this.sliderControl = false;
       } else {
         this.sliderControl = true;
       }
-      if (a.fullPath == "/density") {
+      if (a.fullPath == "/density" || this.fullPath == "/flow") {
         this.sliderNum = 24;
       } else {
         this.sliderNum = 12;

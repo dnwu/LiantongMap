@@ -7,9 +7,7 @@
 export default {
   data() {
     return {
-      // url: "http://192.168.1.102:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&date=2018-04-14&hour=",
-      url:
-        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&date=2018-04-04"
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&date=2018-04-04",
     };
   },
   props: {

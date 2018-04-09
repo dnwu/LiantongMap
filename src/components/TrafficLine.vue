@@ -7,7 +7,7 @@ tranffic
 export default {
   data() {
     return {
-      url: "/static/trafficline.json"
+      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&date=2017-12-19"
     };
   },
   props: {
@@ -50,7 +50,7 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data);
-          this.drawmap(data.data);
+          //this.drawmap(data.data);
         });
     },
     drawmap(data) {

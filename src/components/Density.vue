@@ -5,17 +5,11 @@
 </template>
 <script>
 // import flightData from "../json/test3.json";
-// 113.884583,22.584793
-// 114.264602,22.626966
-// 114.082353,22.818978
-// 114.085803,22.542074
-// var flightData =[[114.085803,22.542074,1600]]
 export default {
   name: "Density",
   data() {
     return {
-      // url: "http://192.168.1.102:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&date=2017-12-19&hour=",
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&date=2017-12-19&hour="
+      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&date=2017-12-19&hour="
     };
   },
   props: {
@@ -53,7 +47,7 @@ export default {
           // url
         )
         .then(data => {
-          console.log(data.data.data); // [[[],[]],[[],[]]]
+          // console.log(data.data.data); // [[[],[]],[[],[]]]
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
@@ -130,27 +124,24 @@ export default {
           regionHeight: 2
         },
         visualMap: {
-          max: 260000,
+          max: 30,
           calculable: true,
           realtime: false,
           left: "10",
           top: "10",
           inRange: {
             color: [
-              // "#313695",
-              // "#4575b4",
-              // "#74add1",
-              // "#abd9e9",
-              // "#e0f3f8",
-              // "#ffffbf",
-              // "#fee090",
-              // "#fdae61",
-              // "#f46d43",
-              // "#d73027",
-              // "#a50026"
-              "#fff",
-              "yellow",
-              "red"
+              "#313695",
+              "#4575b4",
+              "#74add1",
+              "#abd9e9",
+              "#e0f3f8",
+              "#ffffbf",
+              "#fee090",
+              "#fdae61",
+              "#f46d43",
+              "#d73027",
+              "#a50026"
             ]
           },
           outOfRange: {
@@ -163,8 +154,8 @@ export default {
             coordinateSystem: "geo3D",
             shading: "lambert",
             data: data,
-            barSize: 0.05,
-            minHeight: 0,
+            barSize: 0.1,
+            minHeight: 0.2,
             silent: true,
             itemStyle: {
               color: "orange"
