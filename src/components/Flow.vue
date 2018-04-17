@@ -42,8 +42,8 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + slider[0]
-          url
+          //url + slider[0]
+         url
         )
         .then(data => {
           // console.log('213213',data.data); // [[[],[]],[[],[]]]
@@ -56,7 +56,7 @@ export default {
     },
     drawmap(data) {
       var option = {
-        backgroundColor: "#cdcfd5",
+        // backgroundColor: "#cdcfd5",
         visualMap: {
           left: "right",
           // min: minMag,
@@ -88,7 +88,13 @@ export default {
           map: "shenzhen",
           center: [113.997287, 22.551127],
           zoom: 1,
-          roam: true
+          roam: true,
+          itemStyle: {
+            areaColor: "#1A427D",
+            color: "#1A427D",
+            borderWidth: "1", // 描边
+            borderColor: "#fff"
+          },
         },
         series: [
           {
@@ -96,14 +102,14 @@ export default {
             coordinateSystem: "geo",
             data: data,
             supersampling: 4,
-            particleType: "line",
-            particleDensity: 128,
+            particleType: "point",
+            particleDensity: 60,
             particleSpeed: 1,
             // gridWidth: windData.nx,
             // gridHeight: windData.ny,
             itemStyle: {
-              opacity: 0.7,
-              color: 'yellowgreen'
+              opacity: 1,
+              // color: 'blue'
             }
           }
         ]
@@ -130,7 +136,7 @@ export default {
 .flow {
   width: 100%;
   height: 100%;
-  // background-color: yellowgreen;
+  background-color: #111C38;
   background-clip: content-box;
   box-sizing: border-box;
   padding: 26px;

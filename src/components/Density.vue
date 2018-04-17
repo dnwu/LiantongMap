@@ -124,7 +124,7 @@ export default {
           regionHeight: 2
         },
         visualMap: {
-          max: 30,
+          max: 250,
           calculable: true,
           realtime: false,
           left: "10",

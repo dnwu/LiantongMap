@@ -7,7 +7,8 @@ tranffic
 export default {
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&date=2017-12-19"
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&date=2017-12-19&hour="
+      // url: "/static/trafficline.json"
     };
   },
   props: {
@@ -25,7 +26,9 @@ export default {
   },
   methods: {
     initDom() {
-      this.myChart = this.echarts.init(document.querySelector(".tranffic-line"));
+      this.myChart = this.echarts.init(
+        document.querySelector(".tranffic-line")
+      );
       this.myChart.showLoading();
       window.onresize = () => {
         this.myChart.resize();
@@ -41,29 +44,24 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + slider[0]*2
-          url
+          url + slider[0]*2
+          // url
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          //this.drawmap(data.data);
+          // console.log('data',data.data);
+          // this.drawmap(data.data);
         });
     },
     drawmap(data) {
       var option = {
-        geo3D: {
+        geo: {
           map: "shenzhen",
+          roam: true,
           shading: "realistic",
-          silent: true,
-          environment: "#111C38",
-          realisticMaterial: {
-            roughness: 0.8,
-            metalness: 0
-          },
           postEffect: {
             enable: true
           },
@@ -87,60 +85,34 @@ export default {
             panMouseButton: "left",
             rotateMouseButton: "right"
           },
-          // polyline:true,
           itemStyle: {
-            areaColor: "#000",
+            areaColor: "#1A427D",
             color: "#1A427D",
             borderWidth: "1", // 描边
             borderColor: "#fff"
           },
-          // blendMode: "lighter",
-          // emphasis: {
-          //  label: {
-          //    show: true,
-          //    formatter: "{b}: {c}"
-          //  }
-          //},
-          // effect:{
-          //   show:true,
-          // },
+          
           regionHeight: 3
         },
 
         series: [
           {
-            name: "深圳",
-            type: "lines3D",
-            coordinateSystem: "geo3D",
-
-            effect: {
-              show: true,
-              trailWidth: 2,
-              // trailOpacity: 0.5,
-              trailOpacity:1,
-              trailLength: 0.2,
-              constantSpeed: 5,
-              period:10,
-              constantSpeed :50
-            },
-            // polyline: true,
-            blendMode: "lighter",
-
+            type: "lines",
+            coordinateSystem: "geo",
+            polyline: true,
+            data: data,
             lineStyle: {
-              width: 0.2,
-              opacity: 0.05
-              // color:'red'  //线条颜色
+              normal: {
+                width: 0
+              }
             },
-
-            // 113.884583,22.584793
-            // 114.264602,22.626966
-            // 114.082353,22.818978
-            // 114.085803,22.542074
-            // data: [
-            //   [[113.884583, 22.584793], [114.264602, 22.626966]],
-            //   [[114.082353, 22.818978], [114.085803, 22.542074]]
-            // ],
-            data: data
+            effect: {
+              constantSpeed: 20,
+              show: true,
+              trailLength: 0.1,
+              symbolSize: 1.5
+            },
+            zlevel: 1
           }
         ]
       };
@@ -169,7 +141,7 @@ export default {
 .tranffic-line {
   width: 100%;
   height: 100%;
-  background-color: yellowgreen;
+  background-color: #111C38;
   background-clip: content-box;
   box-sizing: border-box;
   padding: 26px;
