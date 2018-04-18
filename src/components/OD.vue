@@ -9,7 +9,8 @@ export default {
   name: "OD",
   data() {
     return {
-      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
+      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
       // url:"/static/test.json"
     };
   },
@@ -18,6 +19,9 @@ export default {
       type: Array,
       default: [0, 1],
       required: true
+    },
+    time: {
+      type: String
     }
   },
   created() {
@@ -37,20 +41,20 @@ export default {
     getGeoJson() {
       this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
         this.echarts.registerMap("shenzhen", geojson.data);
-        this.getMapData(this.url,this.slider)
+        this.getMapData(this.url, this.time, this.slider);
       });
     },
-    getMapData(url,slider) {
+    getMapData(url, time, slider) {
       this.myChart.showLoading();
       this.axios
         .get(
-          url + slider[0]*2
-          // url
+          // url + slider[0] * 2
+          url + `date=${time}&hour=${slider[0] * 2}`
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
-          if(data.data.status == 200){
-            this.drawmap(data.data.data)
+          if (data.data.status == 200) {
+            this.drawmap(data.data.data);
           }
           // console.log('data',data);
           // this.drawmap(data.data)
@@ -152,15 +156,18 @@ export default {
   watch: {
     slider(b, a) {
       // console.log(JSON.stringify(b) === JSON.stringify(a));
-      clearInterval(this.timer)
-      this.timer = setTimeout(()=>{
-        if(JSON.stringify(b) === JSON.stringify(a)){
-          return
+      clearInterval(this.timer);
+      this.timer = setTimeout(() => {
+        if (JSON.stringify(b) === JSON.stringify(a)) {
+          return;
         }
         // this.url = '/static/test2.json'
 
-        this.getMapData(this.url,b)
-      },2000)
+        this.getMapData(this.url, this.time, b);
+      }, 2000);
+    },
+    time(a, b) {
+      this.getMapData(this.url, a, this.slider);
     }
   }
 };

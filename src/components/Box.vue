@@ -21,17 +21,17 @@
                 <li class="level3"><router-link to="/function">地理功能区演化</router-link></li>
                 <li class="level3"><router-link to="/trafficLine">交通走廊时空分析</router-link></li>
                 <li class="level2"><router-link to="/od">OD状况</router-link></li>
-                <li class="level2"><router-link to="/od">职网分布</router-link></li>
+                <!-- <li class="level2"><router-link to="/od">职网分布</router-link></li> -->
                 <li class="level2"><router-link to="/commute">通勤特征</router-link></li>
-                <li class="level2"><router-link to="/od">城市特征</router-link></li>
+                <!-- <li class="level2"><router-link to="/od">城市特征</router-link></li> -->
               </ul>
             </li>
             <li class="level1">
               <div class="title">多维群体行为预测</div>
               <ul>
                 <li class="level2"><router-link to="/flow">人群流动预测</router-link></li>
-                <li class="level2"><router-link to="/od">城市人口演化</router-link></li>
-                <li class="level2"><router-link to="/od">城市特征演化</router-link></li>
+                <!-- <li class="level2"><router-link to="/od">城市人口演化</router-link></li> -->
+                <!-- <li class="level2"><router-link to="/od">城市特征演化</router-link></li> -->
               </ul>
             </li>
           </ul>
@@ -43,13 +43,14 @@
                 <el-date-picker
                   v-model="time"
                   type="date"
-                  value-format ='yyyy/MM/dd'
-                  format='yyyy / MM / dd'
+                  value-format ='yyyy-MM-dd'
+                  format='yyyy-MM-dd'
+                  @change = 'dateChange'
                   placeholder="选择日期">
                 </el-date-picker>
               </div>
             </div>
-            <div class="type-select">
+            <div class="type-select" v-show="false">
               <div class="type">
                 <el-select v-model="type" placeholder="请选择">
                   <el-option
@@ -61,7 +62,7 @@
                 </el-select>
               </div>
             </div>
-            <div class="position">
+            <div class="position" v-show="false">
               <img src="../assets/time-level.png" alt="">
               <img src="../assets/postion.png" alt="">
             </div>
@@ -70,7 +71,7 @@
             <div class="time-slider" v-if="sliderControl">
               <div class="top">
                 <div class="time">{{initTime}}</div>
-                <div class="type">{{type}}</div>
+                <div class="type" v-show="false">{{type}}</div>
               </div>
               <div class="slider">
                 <div class="calibration">
@@ -100,7 +101,7 @@
 
 
             <!-- <keep-alive> -->
-              <router-view :slider='chacheSlider'></router-view>
+              <router-view :slider='chacheSlider' :time='time'></router-view>
             <!-- </keep-alive> -->
 
 
@@ -122,18 +123,6 @@ export default {
         {
           value: "出发地点人口密度人力图",
           label: "出发地点人口密度人力图"
-        },
-        {
-          value: "出发地点人口密度人力",
-          label: "出发地点人口密度人力"
-        },
-        {
-          value: "出发地点人口密度人",
-          label: "出发地点人口密度人"
-        },
-        {
-          value: "出发地点人口密度",
-          label: "出发地点人口密度"
         }
       ],
       type: "出发地点人口密度人力图",
@@ -144,9 +133,12 @@ export default {
     };
   },
   created() {
-    
     this.fullPath = this.$route.fullPath;
-    if (this.fullPath == "/function" || this.fullPath == "/commute") {
+    if (
+      this.fullPath == "/function" ||
+      this.fullPath == "/commute" ||
+      this.fullPath == "/flow"
+    ) {
       this.sliderControl = false;
     } else {
       this.sliderControl = true;
@@ -157,15 +149,25 @@ export default {
     } else {
       this.sliderNum = 12;
     }
+    this.initDate();
   },
   methods: {
+    initDate() {
+      let date = this.time;
+      let year = date.getFullYear();
+      let month = (date.getMonth() + 1)<10?`0${date.getMonth() + 1}`:(date.getMonth() + 1);
+      let day = date.getDate()<10?`0${date.getDate()}`:date.getDate();
+      this.time = `${year}-${month}-${day}` 
+    },
     sliderDataFormat(e) {
-      if(this.fullPath == "/density" || this.fullPath == "/flow"){
+      if (this.fullPath == "/density" || this.fullPath == "/flow") {
         return `${e}:00`;
-      }else{
+      } else {
         return `${e * 2}:00`;
       }
-      
+    },
+    dateChange(e) {
+      // console.log(e);
     },
     timeChange() {
       var fir = this.slider[0];
@@ -179,10 +181,10 @@ export default {
       if (sec !== this.chacheSlider[1]) {
         this.slider = [sec - 1, sec];
       }
-      if(fir === 0 && sec === 0) {
+      if (fir === 0 && sec === 0) {
         this.slider = [fir, fir + 1];
       }
-      if(fir === 12 && sec === 12 || fir === 24 && sec === 24) {
+      if ((fir === 12 && sec === 12) || (fir === 24 && sec === 24)) {
         this.slider = [sec - 1, sec];
       }
       this.chacheSlider = [...this.slider];
@@ -191,17 +193,21 @@ export default {
   computed: {
     initTime() {
       // console.log(this.fullPath)
-      if(this.fullPath == "/density" || this.fullPath == "/flow"){
+      if (this.fullPath == "/density" || this.fullPath == "/flow") {
         return `${this.slider[0]}:00-${this.slider[1]}:00`;
-      }else{
+      } else {
         return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
       }
     }
   },
   watch: {
     $route(a, b) {
-      this.fullPath = a.fullPath
-      if (a.fullPath == "/function" || a.fullPath == "/commute") {
+      this.fullPath = a.fullPath;
+      if (
+        a.fullPath == "/function" ||
+        a.fullPath == "/commute" ||
+        a.fullPath == "/flow"
+      ) {
         this.sliderControl = false;
       } else {
         this.sliderControl = true;

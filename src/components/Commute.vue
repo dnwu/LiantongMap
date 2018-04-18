@@ -7,7 +7,8 @@
 export default {
   data() {
     return {
-      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&date=2018-04-04",
+      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&date=2018-04-04&hour=",
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
     };
   },
   props: {
@@ -15,6 +16,9 @@ export default {
       type: Array,
       default: [0, 1],
       required: true
+    },
+    time: {
+      type: String
     }
   },
   mounted() {
@@ -34,22 +38,24 @@ export default {
     getGeoJson() {
       this.axios.get("/static/geojson/geojson_gongneng.json").then(geojson => {
         this.echarts.registerMap("gongneng", geojson.data);
-        this.getMapData(this.url, this.slider);
+        this.getMapData(this.url, this.time, this.slider);
       });
     },
-    getMapData(url, slider) {
+    getMapData(url, time, slider) {
       this.myChart.showLoading();
-      this.axios.get(
+      this.axios
+        .get(
           // url + slider[0]
-          url
-        ).then(data => {
-        // console.log(data.data.data); // [[[],[]],[[],[]]]
-        if (data.data.status == 200) {
-          this.drawmap(data.data.data);
-        }
-        // console.log('data',data);
-        // this.drawmap(data.data);
-      });
+          url + `date=${time}`
+        )
+        .then(data => {
+          // console.log(data.data.data); // [[[],[]],[[],[]]]
+          if (data.data.status == 200) {
+            this.drawmap(data.data.data);
+          }
+          // console.log('data',data);
+          // this.drawmap(data.data);
+        });
     },
     drawmap(data) {
       var option = {
@@ -145,8 +151,11 @@ export default {
         }
         // this.url = '/static/test2.json'
 
-        this.getMapData(this.url, b);
+        this.getMapData(this.url, this.time, b);
       }, 2000);
+    },
+    time(a, b) {
+      this.getMapData(this.url, a, this.slider);
     }
   }
 };

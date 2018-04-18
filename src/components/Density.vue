@@ -9,7 +9,8 @@ export default {
   name: "Density",
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&date=2017-12-19&hour="
+      // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&date=2017-12-19&hour=",
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
     };
   },
   props: {
@@ -17,6 +18,9 @@ export default {
       type: Array,
       default: [0, 1],
       required: true
+    },
+    time: {
+      type: String
     }
   },
   created() {
@@ -36,15 +40,15 @@ export default {
     getGeoJson() {
       this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
         this.echarts.registerMap("shenzhen", geojson.data);
-        this.getMapData(this.url, this.slider);
+        this.getMapData(this.url, this.time, this.slider);
       });
     },
-    getMapData(url, slider) {
+    getMapData(url, time, slider) {
       this.myChart.showLoading();
       this.axios
         .get(
-          url + slider[0]
-          // url
+          // url + slider[0]
+          url + `date=${time}&hour=${slider[0]}`
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
@@ -124,7 +128,7 @@ export default {
           regionHeight: 2
         },
         visualMap: {
-          max: 250,
+          max: 16,
           calculable: true,
           realtime: false,
           left: "10",
@@ -177,8 +181,12 @@ export default {
         }
         // this.url = '/static/test2.json'
 
-        this.getMapData(this.url, b);
+        this.getMapData(this.url, this.time, b);
       }, 2000);
+    },
+    time(a, b) {
+      console.log(b)
+      this.getMapData(this.url, a, this.slider);
     }
   }
 };

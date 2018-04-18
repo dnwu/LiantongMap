@@ -1,14 +1,21 @@
 <template>
 <div class="function">
-  function
+  <div class="mark"></div>
 </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&date=2018-03-30",
+      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&date=2018-03-30",
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      url: ''
     };
+  },
+  props: {
+    time: {
+      type: String
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -27,14 +34,14 @@ export default {
     getGeoJson() {
       this.axios.get("/static/geojson/geojson_gongneng.json").then(geojson => {
         this.echarts.registerMap("gongneng", geojson.data);
-        this.getMapData(this.url, this.slider);
+        this.getMapData(this.url, this.time);
       });
     },
-    getMapData(url, slider) {
+    getMapData(url, time) {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + slider[0]*2
+          // url + `date=${time}`
           url
         )
         .then(data => {
@@ -43,7 +50,7 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data);
-          // this.drawmap(data.data);
+          this.drawmap(data.data);
         });
     },
     drawmap(data) {
@@ -78,9 +85,9 @@ export default {
           textStyle: {
             color: "#fff"
           },
-          // categories:['商业区','居民区','生活区','购物区'],
+          categories:['商业区','居民区','生活区','购物区'],
           left: "right",
-          bottom: 150,
+          bottom: 'bottom',
           min: 10,
           max: 40,
           inRange: {
@@ -130,6 +137,11 @@ export default {
       this.myChart.setOption(option);
       this.myChart.hideLoading();
     }
+  },
+  watch: {
+    time(a, b) {
+      this.getMapData(this.url, a);
+    }
   }
 };
 </script>
@@ -141,5 +153,15 @@ export default {
   background-clip: content-box;
   box-sizing: border-box;
   padding: 26px;
+  position: relative;
+  .mark{
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-color: yellowgreen;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+  }
 }
 </style>

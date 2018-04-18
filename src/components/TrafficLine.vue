@@ -7,8 +7,9 @@ tranffic
 export default {
   data() {
     return {
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&date=2017-12-19&hour="
-      // url: "/static/trafficline.json"
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&date=2017-12-19&hour=",
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&"
+      url: "/static/trafficline.json"
     };
   },
   props: {
@@ -16,6 +17,9 @@ export default {
       type: Array,
       default: [0, 1],
       required: true
+    },
+    time: {
+      type: String
     }
   },
   created() {
@@ -37,15 +41,16 @@ export default {
     getGeoJson() {
       this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
         this.echarts.registerMap("shenzhen", geojson.data);
-        this.getMapData(this.url, this.slider);
+        this.getMapData(this.url, this.time, this.slider);
       });
     },
-    getMapData(url, slider) {
+    getMapData(url, time, slider) {
       this.myChart.showLoading();
       this.axios
         .get(
-          url + slider[0]*2
-          // url
+          //url + slider[0]*2
+          // url + `date=${time}&hour=${slider[0] * 2}`
+          url
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
@@ -53,7 +58,7 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data.data);
-          // this.drawmap(data.data);
+          this.drawmap(data.data);
         });
     },
     drawmap(data) {
@@ -91,7 +96,7 @@ export default {
             borderWidth: "1", // 描边
             borderColor: "#fff"
           },
-          
+
           regionHeight: 3
         },
 
@@ -102,15 +107,17 @@ export default {
             polyline: true,
             data: data,
             lineStyle: {
+              width:2,
               normal: {
                 width: 0
               }
             },
             effect: {
-              constantSpeed: 20,
+              constantSpeed: 66,
               show: true,
-              trailLength: 0.1,
-              symbolSize: 1.5
+              period:10,
+              trailLength: 0.9,
+              symbolSize: 4
             },
             zlevel: 1
           }
@@ -131,8 +138,11 @@ export default {
         }
         // this.url = '/static/test2.json'
 
-        this.getMapData(this.url, b);
+        this.getMapData(this.url, this.time, b);
       }, 2000);
+    },
+    time(a, b) {
+      this.getMapData(this.url, a, this.slider);
     }
   }
 };
@@ -141,7 +151,7 @@ export default {
 .tranffic-line {
   width: 100%;
   height: 100%;
-  background-color: #111C38;
+  background-color: #111c38;
   background-clip: content-box;
   box-sizing: border-box;
   padding: 26px;
