@@ -14,19 +14,25 @@ export default {
     };
   },
   mounted() {
-    clearInterval(this.timer);
-    this.timer = setInterval(() => {
+    // clearInterval(this.timer);
+    this.imgDOM = this.$refs.img;
+    this.imgDOM.onload = () => {
       this.index++;
       if (this.index > 143) {
         this.index = 1;
       }
-      this.$refs.img.setAttribute(
-        "src",
-        `/static/Streamline/sites_20171020_time${this.index}.jpg`
-      );
-    }, 1000);
+      setTimeout(() => {
+        this.resetImg(this.index)
+      }, 500);
+    };
   },
-  methods:{
+  methods: {
+    resetImg(index) {
+      this.imgDOM.setAttribute(
+        "src",
+        `/static/Streamline/sites_20171020_time${index}.jpg`
+      );
+    }
   }
 };
 </script>
