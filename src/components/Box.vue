@@ -10,29 +10,59 @@
         </div>
       </el-header>
       <el-container>
-        <el-aside width="330px">
-          <img class="adorn" src="../assets/adorn.png" alt="">
+        <el-aside width="280px">
+          <!-- <img class="adorn" src="../assets/adorn.png" alt=""> -->
           <ul class="listbox">
             <li class="level1">
-              <div class="title">居民出行调查系统</div>
-              <ul>
-                <li class="level2 title active">人口时空分析</li>
-                <li class="level3 active"><router-link to="/density">区域人口密度</router-link></li>
-                <li class="level3"><router-link to="/function">地理功能区演化</router-link></li>
-                <li class="level3"><router-link to="/trafficLine">交通走廊时空分析</router-link></li>
-                <li class="level2"><router-link to="/od">OD状况</router-link></li>
-                <!-- <li class="level2"><router-link to="/od">职网分布</router-link></li> -->
-                <li class="level2"><router-link to="/commute">通勤特征</router-link></li>
-                <!-- <li class="level2"><router-link to="/od">城市特征</router-link></li> -->
-              </ul>
+              <div class="title" @click="toggle('slider1')"><span class="info">人口时空分布</span><span v-show="!slider1" class="tip"></span></div>
+              <transition name="slider">
+                <ul v-show="slider1">
+                  <li class="level2"><router-link to="/density">区域人口密度</router-link></li>
+                  <li class="level2"><router-link to="/od">人口迁徙分布</router-link></li>
+                  <li class="level2"><router-link to="/commute">人口密度地理功能区演化</router-link></li>
+                  <li class="level2"><router-link to="/density">街道人口分布</router-link></li>
+                </ul>
+              </transition>
             </li>
             <li class="level1">
-              <div class="title">多维群体行为预测</div>
-              <ul>
-                <li class="level2"><router-link to="/flow">人群流动预测</router-link></li>
-                <!-- <li class="level2"><router-link to="/od">城市人口演化</router-link></li> -->
-                <!-- <li class="level2"><router-link to="/od">城市特征演化</router-link></li> -->
-              </ul>
+              <div class="title" @click="toggle('slider2')"><span class="info">OD状况</span><span v-show="!slider2" class="tip"></span></div>
+              <transition name="slider">
+                <ul v-show="slider2">
+                  <li class="level2"><router-link to="/od">OD出行图</router-link></li>
+                  <li class="level2"><router-link to="/od">OD出行链</router-link></li>
+                  <li class="level2"><router-link to="/trafficLine">OD聚类分布</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('slider3')"><span class="info">职网分布</span><span v-show="!slider3" class="tip"></span></div>
+              <transition name="slider">
+                <ul v-show="slider3">
+                  <li class="level2"><router-link to="/commute">职网分布</router-link></li>
+                  <li class="level2"><router-link to="/od">职住出行分布</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('slider4')"><span class="info">通勤特征</span><span v-show="!slider4" class="tip"></span></div>
+              <transition name="slider">
+                <ul v-show="slider4">
+                  <li class="level2"><router-link to="/od">OD出行链</router-link></li>
+                  <li class="level2"><router-link to="/trafficLine">交通走廊</router-link></li>
+                  <li class="level2"><router-link to="/flow">迁徙分布</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('slider5')"><span class="info">城市特征</span><span v-show="!slider5" class="tip"></span></div>
+              <transition name="slider">
+                <ul v-show="slider5">
+                  <li class="level2"><router-link to="/function">职住区域分析</router-link></li>
+                  <li class="level2"><router-link to="/commute">街道人口分布</router-link></li>
+                  <li class="level2"><router-link to="/function">地理功能区域</router-link></li>
+                  <li class="level2"><router-link to="/flow">潮汐运动</router-link></li>
+                </ul>
+              </transition>
             </li>
           </ul>
         </el-aside>
@@ -119,6 +149,12 @@ export default {
     return {
       sliderNum: 12,
       time: new Date(),
+      slider1: true,
+      slider2: false,
+      slider3: false,
+      slider4: false,
+      slider5: false,
+      tips: ["折叠", "展开", "展开", "展开", "展开"],
       types: [
         {
           value: "出发地点人口密度人力图",
@@ -152,12 +188,18 @@ export default {
     this.initDate();
   },
   methods: {
+    toggle(item) {
+      this[item] = !this[item];
+    },
     initDate() {
       let date = this.time;
       let year = date.getFullYear();
-      let month = (date.getMonth() + 1)<10?`0${date.getMonth() + 1}`:(date.getMonth() + 1);
-      let day = date.getDate()<10?`0${date.getDate()}`:date.getDate();
-      this.time = `${year}-${month}-${day}` 
+      let month =
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : date.getMonth() + 1;
+      let day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      this.time = `${year}-${month}-${day}`;
     },
     sliderDataFormat(e) {
       if (this.fullPath == "/density" || this.fullPath == "/flow") {
@@ -236,6 +278,14 @@ $color: #6ebdcc;
 $background: #0a427f;
 $backgroundHover: #111d38;
 
+@keyframes twinkle {
+  to {
+    color: transparent;
+    background-color: transparent;
+    border: 2px solid transparent;
+  }
+}
+
 .is-vertical {
   height: 100%;
   display: flex;
@@ -264,7 +314,7 @@ $backgroundHover: #111d38;
         left: -6px;
       }
       .listbox {
-        padding-left: 40px;
+        padding-left: 56px;
         margin: 16px 0;
       }
       li {
@@ -272,23 +322,38 @@ $backgroundHover: #111d38;
         list-style: none;
       }
       .level1 {
-        &:first-child {
-          margin-bottom: 20px;
-        }
+        margin-bottom: 20px;
+        cursor: pointer;
         .title {
           background: url("../assets/level1.png") no-repeat;
           height: 55px;
           line-height: 36px;
-          padding-left: 44px;
+          padding-left: 30px;
+          padding-right: 20px;
+          display: flex;
+          user-select: none;
+          .info {
+            flex: 1;
+          }
+          .tip {
+            // color: rgba(255,255,255,0.5);
+            animation: twinkle 1s ease infinite;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #004b9d;
+            margin-top: 15px;
+            margin-right: 30px;
+            border: 2px solid #0376f7;
+          }
         }
         ul {
           margin-top: -10px;
           margin-left: -8px;
-          padding-left: 40px;
-          .level2,
-          .level3 {
+          padding-left: 14px;
+          .level2 {
             a {
-              padding-left: 50px;
+              padding-left: 30px;
               display: inline-block;
               width: 100%;
               height: 100%;
@@ -306,48 +371,6 @@ $backgroundHover: #111d38;
             font-size: 14px;
             color: #ecefe8;
             cursor: pointer;
-            &.active {
-              &::before {
-                content: "";
-                display: inline-block;
-                position: absolute;
-                top: 28px;
-                left: 30px;
-                width: 4px;
-                height: 4px;
-                background: #02d2e8;
-                border-radius: 50%;
-              }
-              &::after {
-                content: "";
-                display: inline-block;
-                position: absolute;
-                top: 25px;
-                left: 27px;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                border: 1px solid #02d2e8;
-              }
-            }
-          }
-          .level3 {
-            background: url("../assets/level3.png") no-repeat;
-            height: 30px;
-            margin: 10px 0 0 30px;
-            line-height: 30px;
-            // padding-left: 20px;
-            font-size: 14px;
-            color: #7dcae9;
-            cursor: pointer;
-            &.active {
-              background: url("../assets/level3_act.png") no-repeat;
-              color: #3ef0f6;
-            }
-            a {
-              padding: 0;
-              padding-left: 20px;
-            }
           }
         }
       }
