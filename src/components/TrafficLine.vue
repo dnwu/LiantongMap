@@ -154,6 +154,6 @@ export default {
   background-color: #111c38;
   background-clip: content-box;
   box-sizing: border-box;
-  padding: 26px;
+  // padding: 26px;
 }
 </style>

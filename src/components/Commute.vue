@@ -1,5 +1,5 @@
 <template>
-<div class="commute">
+<div class="commute" ref="commute">
   function
 </div>
 </template>
@@ -29,7 +29,8 @@ export default {
   },
   methods: {
     initDom() {
-      this.myChart = this.echarts.init(document.querySelector(".commute"));
+      let dom = this.$refs.commute
+      this.myChart = this.echarts.init(dom);
       this.myChart.showLoading();
       window.onresize = () => {
         this.myChart.resize();
@@ -167,6 +168,6 @@ export default {
   // background-color: yellowgreen;
   background-clip: content-box;
   box-sizing: border-box;
-  padding: 26px;
+  // padding: 26px;
 }
 </style>

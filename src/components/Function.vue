@@ -152,7 +152,7 @@ export default {
   // background-color: yellowgreen;
   background-clip: content-box;
   box-sizing: border-box;
-  padding: 26px;
+  // padding: 26px;
   position: relative;
   .mark{
     position: absolute;
