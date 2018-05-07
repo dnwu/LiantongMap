@@ -102,14 +102,14 @@ export default {
             coordinateSystem: "geo",
             data: data,
             supersampling: 4,
-            particleType: "point",
-            particleDensity: 60,
+            particleType: "line",
+            particleDensity: 128,
             particleSpeed: 1,
             // gridWidth: windData.nx,
             // gridHeight: windData.ny,
             itemStyle: {
               opacity: 1,
-              // color: 'blue'
+              color: 'red'
             }
           }
         ]

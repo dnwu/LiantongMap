@@ -90,8 +90,8 @@ export default {
           textStyle: {
             color: "#fff"
           },
-          left: "right",
-          bottom: 150,
+          right: 20,
+          top: 150,
           splitNumber: 7,
           min: -1,
           max: 1,

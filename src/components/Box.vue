@@ -19,7 +19,7 @@
                 <ul v-show="slider1">
                   <li class="level2"><router-link to="/density">区域人口密度</router-link></li>
                   <li class="level2"><router-link to="/od">人口迁徙分布</router-link></li>
-                  <li class="level2"><router-link to="/commute">地理功能区演化</router-link></li>
+                  <li class="level2"><router-link to="/function">地理功能区演化</router-link></li>
                   <li class="level2"><router-link to="/density">街道人口分布</router-link></li>
                 </ul>
               </transition>
@@ -57,8 +57,8 @@
               <div class="title" @click="toggle('slider5')"><span class="info">城市特征</span><span :class="slider5?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider5">
-                  <li class="level2"><router-link to="/function">职住区域分析</router-link></li>
-                  <li class="level2"><router-link to="/commute">街道人口分布</router-link></li>
+                  <li class="level2"><router-link to="/commute">职住区域分析</router-link></li>
+                  <li class="level2"><router-link to="/density">街道人口分布</router-link></li>
                   <li class="level2"><router-link to="/function">地理功能区域</router-link></li>
                   <li class="level2"><router-link to="/flow">潮汐运动</router-link></li>
                 </ul>
@@ -99,7 +99,7 @@
           </div>
           <div class="router-contain">
             <div class="contain">
-              <div class="time-slider" v-if="sliderControl">
+              <div class="time-slider" v-show="sliderControl">
                 <div class="top">
                   <div class="time">{{initTime}}</div>
                   <div class="type" v-show="false">{{type}}</div>
@@ -520,9 +520,7 @@
                 </div>
               </div>
 
-              <!-- <keep-alive> -->
-                <router-view :slider='chacheSlider' :time='time'></router-view>
-              <!-- </keep-alive> -->
+              <router-view :slider='chacheSlider' :time='time'></router-view>              
 
             </div>
 
@@ -677,7 +675,7 @@ export default {
         },
         series: [
           {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            data: [820, 932, 901, 934, 1290, 1330, 2320],
             type: "line"
           }
         ]
@@ -732,7 +730,7 @@ export default {
             name: "直接访问",
             type: "bar",
             barWidth: "60%",
-            data: [10, 52, 200, 334, 390, 330, 220]
+            data: [10, 52, 200, 334, 390, 330, 420]
           }
         ]
       };

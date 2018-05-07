@@ -8,8 +8,8 @@ export default {
   data() {
     return {
       // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&date=2018-03-30",
-      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
-      url: ''
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      // url: ''
     };
   },
   props: {
@@ -41,8 +41,8 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + `date=${time}`
-          url
+          url + `date=${time}`
+          // url
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
@@ -50,7 +50,7 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data);
-          this.drawmap(data.data);
+          // this.drawmap(data.data);
         });
     },
     drawmap(data) {
@@ -85,12 +85,13 @@ export default {
           textStyle: {
             color: "#fff"
           },
-          categories:['商业区','居民区','生活区','购物区'],
+          // categories:['商业区','工作区','住宅区','混合区'],
           left: "right",
           bottom: 'bottom',
           min: 10,
           max: 40,
           inRange: {
+            // 商业区, 工作区, 住宅区 ,混合区
             color: ["red", "green", "blue", "yellow"]
           },
           // text: ["High", "Low"], // 文本，默认为数值文本
