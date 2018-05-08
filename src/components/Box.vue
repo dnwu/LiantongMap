@@ -648,7 +648,7 @@ export default {
     trendForm() {
       this.$refs.trendForm.style.width = "432px";
       this.$refs.trendForm.style.height = "140px";
-      let dom = this.$refs.trendForm
+      let dom = this.$refs.trendForm;
       var myChart1 = this.echarts.init(dom);
       var option = {
         xAxis: {
@@ -658,6 +658,15 @@ export default {
             color: "#929CA5",
             fontSize: "8"
           }
+        },
+        legend: {
+          data: ["流入", "流出"],
+          textStyle: {
+            color: "#fff"
+          }
+        },
+        tooltip: {
+          trigger: "axis"
         },
         yAxis: {
           type: "value",
@@ -669,14 +678,31 @@ export default {
         grid: {
           left: 0,
           right: 0,
-          top: 10,
+          top: 30,
           bottom: 0,
           containLabel: true
         },
         series: [
           {
-            data: [820, 932, 901, 934, 1290, 1330, 2320],
-            type: "line"
+            name: "流入",
+            type: "line",
+            stack: "总量",
+            itemStyle: {
+              color: "red"
+            },
+            // lineStyle: {
+            //   color: '#fff'
+            // },
+            data: [120, 132, 101, 134, 90, 230, 210]
+          },
+          {
+            name: "流出",
+            type: "line",
+            stack: "总量",
+            itemStyle: {
+              color: "#18A1BE"
+            },
+            data: [220, 182, 191, 234, 290, 330, 310]
           }
         ]
       };
@@ -685,7 +711,7 @@ export default {
     densityForm() {
       this.$refs.densityForm.style.width = "432px";
       this.$refs.densityForm.style.height = "140px";
-      let dom = this.$refs.densityForm
+      let dom = this.$refs.densityForm;
       var myChart2 = this.echarts.init(dom);
       var option = {
         color: ["#3398DB"],
@@ -1332,11 +1358,12 @@ $backgroundHover: #111d38;
                         font-size: 14px;
                         padding: 10px 20px 0;
                       }
-                      .trend-form,.density-form{
+                      .trend-form,
+                      .density-form {
                         height: 140px;
                         width: 432px;
-                        >div{
-                          margin:0;
+                        > div {
+                          margin: 0;
                         }
                       }
                     }
