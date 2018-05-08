@@ -150,15 +150,15 @@
                           <ul class="title">
                             <li>排名</li>
                             <li>区域ID</li>
-                            <li>人口数量(人)</li>
                             <li>人口密度</li>
+                            <li>交通语义</li>
                           </ul>
                           <div class="list-contain">
                             <ul class="list" v-for="(item,index) in arr" :key="index">
                               <li>{{index+1}}</li>
                               <li>福田区324</li>
-                              <li>23123123</li>
-                              <li>312442</li>
+                              <li>3.12</li>
+                              <li>住宅区</li>
                             </ul>
                           </div>
                           <div class="page">
@@ -520,7 +520,7 @@
                 </div>
               </div>
 
-              <router-view :slider='chacheSlider' :time='time'></router-view>              
+              <router-view :slider='chacheSlider' :time='time'></router-view>
 
             </div>
 

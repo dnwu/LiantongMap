@@ -9,7 +9,6 @@ export default {
     return {
       // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&date=2018-03-30",
       url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
-      // url: ''
     };
   },
   props: {
@@ -81,7 +80,13 @@ export default {
         visualMap: {
           // show:false,
           type: "piecewise",
-          splitNumber: 4,
+          // splitNumber: 4,
+          pieces: [
+            {value: 10, label: '商业区', color: 'red'},
+            {value: 20, label: '工作区', color: 'green'},
+            {value: 30, label: '住宅区', color: 'blue'},
+            {value: 40, label: '混合区', color: 'yellow'},
+          ],
           textStyle: {
             color: "#fff"
           },
@@ -90,10 +95,10 @@ export default {
           bottom: 'bottom',
           min: 10,
           max: 40,
-          inRange: {
-            // 商业区, 工作区, 住宅区 ,混合区
-            color: ["red", "green", "blue", "yellow"]
-          },
+          // inRange: {
+          //   // 商业区10, 工作区20, 住宅区30 ,混合区40
+          //   color: ["red", "green", "blue", "yellow"]
+          // },
           // text: ["High", "Low"], // 文本，默认为数值文本
           calculable: true,
           zlevel: 9999

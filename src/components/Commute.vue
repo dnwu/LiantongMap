@@ -46,7 +46,6 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + slider[0]
           url + `date=${time}`
         )
         .then(data => {
@@ -83,6 +82,13 @@ export default {
             }
           ]
         },
+        title: {
+          text:'通勤指数\n(0到1代表流出,值越大表示流出越大,0到-1表示流入,绝对值越大表示流入越大)',
+          textStyle: {
+            color: '#6ebdcc'
+          },
+          left:'center'
+        },
         visualMap: {
           // show:false,
           type: "piecewise",
@@ -92,11 +98,11 @@ export default {
           },
           right: 20,
           top: 150,
-          splitNumber: 7,
+          splitNumber: 8,
           min: -1,
           max: 1,
           inRange: {
-            color: ["yellow", "blue", "green", "red"]
+            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
           },
           calculable: true,
           zlevel: 9999
