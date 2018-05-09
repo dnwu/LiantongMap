@@ -9,8 +9,8 @@ export default {
   name: "OD",
   data() {
     return {
-      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&date=2017-12-19&hour=",
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
       // url:"/static/test.json"
     };
   },

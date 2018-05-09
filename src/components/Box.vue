@@ -154,19 +154,20 @@
                             <li>交通语义</li>
                           </ul>
                           <div class="list-contain">
-                            <ul class="list" v-for="(item,index) in arr" :key="index">
-                              <li>{{index+1}}</li>
-                              <li>福田区324</li>
-                              <li>3.12</li>
-                              <li>住宅区</li>
+                            <ul class="list" v-for="(item,index) in PopulationList.list" :key="index">
+                              <li>{{item[0]}}</li>
+                              <li>{{item[1]}}</li>
+                              <li>{{item[2]}}</li>
+                              <li>{{item[3]}}</li>
                             </ul>
                           </div>
                           <div class="page">
                             <el-pagination
                               small
                               layout="prev, pager, next"
+                              page-size = 60
                               @current-change="handleCurrentChange"
-                              :total="50000">
+                              :total="PopulationList.totalNum">
                             </el-pagination>
                           </div>
                         </div>
@@ -179,30 +180,30 @@
                           <div class="title">
                             <span class="el-icon-loading"></span>
                             <span>基站</span>
-                            <span>福田区195</span>
+                            <span>{{input5}}</span>
                           </div>
                           <div class="form1">
-                            <div class="tit"><span>OD起始</span><span>上梅林*** - 下梅林***</span></div>
+                            <div class="tit"><span>OD起始</span></div>
                             <div class="main">
                               <div class="midu">
                                 <span>人口密度</span>
-                                <span>5.29</span>
+                                <span>{{odInfo.density}}</span>
                               </div>
                               <div class="yuyi">
                                 <span>交通语义</span>
-                                <span>商业区</span>
+                                <span>{{odInfo.semantics}}</span>
                               </div>
                               <div class="zhishu">
                                 <span>通勤指数</span>
-                                <span>1.254</span>
+                                <span>{{odInfo.commuter}}</span>
                               </div>
                               <div class="od-start">
                                 <span>OD出发量</span>
-                                <span>203564</span>
+                                <span>{{odInfo.original}}</span>
                               </div>
                               <div class="od-end">
                                 <span>OD进入量</span>
-                                <span>101864</span>
+                                <span>{{odInfo.destination}}</span>
                               </div>
                             </div>
                           </div>
@@ -219,31 +220,32 @@
                     </div>
                     <div class="od-tab" v-show="tabControl == 'od'?true:false">
                       <div class="tabs">
-                        <div class="tab1" @click="changeChildTab" :class="childtabControl?'active':''">OD出发人口密度</div>
-                        <div class="tab2" @click="changeChildTab" :class="!childtabControl?'active':''">OD进入人口密度</div>
+                        <div class="tab1" @click="changeChildTab" :class="childtabControl?'active':''">OD出发人口数量</div>
+                        <div class="tab2" @click="changeChildTab" :class="!childtabControl?'active':''">OD进入人口数量</div>
                       </div>
                       <div class="main">
                         <div class="main-tab1" v-show="childtabControl">
                           <ul class="title">
                             <li>排序</li>
                             <li>区域ID</li>
-                            <li>人口密度</li>
+                            <li>人口数量</li>
                             <li>交通语义</li>
                           </ul>
                           <div class="list-contain">
-                            <ul class="list" v-for="(item,index) in arr" :key="index">
-                              <li>{{index+1}}</li>
-                              <li>福田区324</li>
-                              <li>5.21</li>
-                              <li>幸福区</li>
+                            <ul class="list" v-for="(item,index) in odOutNumList.list" :key="index">
+                              <li>{{item[0]}}</li>
+                              <li>{{item[1]}}</li>
+                              <li>{{item[2]}}</li>
+                              <li>{{item[3]}}</li>
                             </ul>
                           </div>
                           <div class="page">
                             <el-pagination
                               small
                               layout="prev, pager, next"
-                              @current-change="handleCurrentChange"
-                              :total="50000">
+                              @current-change="odOutCurrentChange"
+                              page-size = 60
+                              :total="odOutNumList.totalNum">
                             </el-pagination>
                           </div>
                         </div>
@@ -251,29 +253,30 @@
                           <ul class="title">
                             <li>排序</li>
                             <li>区域ID</li>
-                            <li>人口密度</li>
+                            <li>人口数量</li>
                             <li>交通语义</li>
                           </ul>
                           <div class="list-contain">
-                            <ul class="list" v-for="(item,index) in arr" :key="index">
-                              <li>{{index+1}}</li>
-                              <li>福田区324</li>
-                              <li>5.20</li>
-                              <li>幸福区</li>
+                            <ul class="list" v-for="(item,index) in odInNumList.list" :key="index">
+                              <li>{{item[0]}}</li>
+                              <li>{{item[1]}}</li>
+                              <li>{{item[2]}}</li>
+                              <li>{{item[3]}}</li>
                             </ul>
                           </div>
                           <div class="page">
                             <el-pagination
                               small
                               layout="prev, pager, next"
-                              @current-change="handleCurrentChange"
-                              :total="50000">
+                              @current-change="odInCurrentChange"
+                              page-size = 60
+                              :total="odInNumList.totalNum">
                             </el-pagination>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="commute-tab" v-show="tabControl == 'commute'?true:false">
+                    <div class="commute-tab" v-if="'detail' in commuteInfo" v-show="tabControl == 'commute'?true:false">
                       <div class="box1">
                         <div class="h1">全市职住比例统计</div>
                         <div class="tit">
@@ -282,34 +285,39 @@
                           <div>住宅区数量</div>
                         </div>
                         <div class="content">
-                          <div>0-0.05</div>
-                          <div>5</div>
-                          <div>10</div>
+                          <div class="section"><span class="left">1</span><span class="mid">-</span><span class="right">0.71426</span></div>
+                          <div>{{commuteInfo.detail.fat.workplace}}</div>
+                          <div>{{commuteInfo.detail.fat.residence}}</div>
                         </div>
                         <div class="content">
-                          <div>0-0.05</div>
-                          <div>5</div>
-                          <div>10</div>
+                          <div class="section"><span class="left">0.71426</span><span class="mid">-</span><span class="right">0.42855</span></div>
+                          <div>{{commuteInfo.detail.obese.workplace}}</div>
+                          <div>{{commuteInfo.detail.obese.residence}}</div>
                         </div>
                         <div class="content">
-                          <div>0-0.05</div>
-                          <div>5</div>
-                          <div>10</div>
+                          <div class="section"><span class="left">0.42855</span><span class="mid">-</span><span class="right">0.14284</span></div>
+                          <div>{{commuteInfo.detail.jimp.workplace}}</div>
+                          <div>{{commuteInfo.detail.jimp.residence}}</div>
                         </div>
                         <div class="content">
-                          <div>0-0.05</div>
-                          <div>5</div>
-                          <div>10</div>
+                          <div class="section"><span class="left">0.14284</span><span class="mid">-</span><span class="right">-0.14287</span></div>
+                          <div>{{commuteInfo.detail.slinky.workplace}}</div>
+                          <div>{{commuteInfo.detail.slinky.residence}}</div>
                         </div>
                         <div class="content">
-                          <div>0-0.05</div>
-                          <div>5</div>
-                          <div>10</div>
+                          <div class="section"><span class="left">-0.14287</span><span class="mid">-</span><span class="right">-0.42858</span></div>
+                          <div>{{commuteInfo.detail.slender.workplace}}</div>
+                          <div>{{commuteInfo.detail.slender.residence}}</div>
                         </div>
                         <div class="content">
-                          <div>0-0.05</div>
-                          <div>5</div>
-                          <div>10</div>
+                          <div class="section"><span class="left">-0.42858</span><span class="mid">-</span><span class="right">-0.71429</span></div>
+                          <div>{{commuteInfo.detail.slight.workplace}}</div>
+                          <div>{{commuteInfo.detail.slight.residence}}</div>
+                        </div>
+                        <div class="content">
+                          <div class="section"><span class="left">-0.71429</span><span class="mid">-</span><span class="right">-1</span></div>
+                          <div>{{commuteInfo.detail.slim.workplace}}</div>
+                          <div>{{commuteInfo.detail.slim.residence}}</div>
                         </div>
                       </div>
                       <div class="box2">
@@ -318,7 +326,7 @@
                           <div class="left">
                             <div class="title">工作区全市百分比比例</div>
                             <div class="content">
-                              <el-progress type="circle" color="#8e71c7" :width='100' :percentage="25"></el-progress>
+                              <el-progress type="circle" color="#8e71c7" :width='100' :percentage="commuteInfo.total.workplace.percentage"></el-progress>
                             </div>
                           </div>
                           <div class="right">
@@ -351,7 +359,7 @@
                           <div class="left">
                             <div class="title">住宅区全市百分比比例</div>
                             <div class="content">
-                              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="25"></el-progress>
+                              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.residence.percentage"></el-progress>
                             </div>
                           </div>
                           <div class="right">
@@ -536,70 +544,16 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+      baseUrl:'http://132.102.126.71:6889',
       currentPage3: 1,
       tabControl: "population",
       childtabControl: true,
-      input5: "",
-      arr: [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        ,
-        1,
-        11,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        11,
-        1,
-        1,
-        11,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        11,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        11,
-        1,
-        1,
-        1,
-        1,
-        ,
-        1
-      ],
+      input5: "3922",
+      odInfo:{},
+      commuteInfo:{},
+      PopulationList: [],
+      odInNumList:[],
+      odOutNumList:[],
       sliderNum: 12,
       time: new Date(),
       slider1: true,
@@ -622,8 +576,7 @@ export default {
     };
   },
   mounted() {
-    this.trendForm();
-    this.densityForm();
+    this.densityForm()
   },
   created() {
     this.fullPath = this.$route.fullPath;
@@ -643,9 +596,10 @@ export default {
       this.sliderNum = 12;
     }
     this.initDate();
+    this.totalRequest()
   },
   methods: {
-    trendForm() {
+    trendForm(inData,outData) {
       this.$refs.trendForm.style.width = "432px";
       this.$refs.trendForm.style.height = "140px";
       let dom = this.$refs.trendForm;
@@ -653,7 +607,7 @@ export default {
       var option = {
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: ["00:00", "2:00", "4:00", "6:00", "8:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "22:00"],
           axisLabel: {
             color: "#929CA5",
             fontSize: "8"
@@ -693,7 +647,7 @@ export default {
             // lineStyle: {
             //   color: '#fff'
             // },
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: inData
           },
           {
             name: "流出",
@@ -702,7 +656,7 @@ export default {
             itemStyle: {
               color: "#18A1BE"
             },
-            data: [220, 182, 191, 234, 290, 330, 310]
+            data: outData
           }
         ]
       };
@@ -762,6 +716,95 @@ export default {
       };
       myChart2.setOption(option);
     },
+    totalRequest() {
+      this.getOdInfo(3922)
+      this.getCommuteInfo()
+      this.getPopulationList(1)
+      this.getOdInNumList(1)
+      this.getOdOutNumList(1)
+      this.getTrendFormData(3922)
+    },
+    getOdInfo(id) {
+      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/station/station_info`,{
+        params: {
+          token: 'w',
+          date:this.time,
+          cell_id: id
+        }
+      }).then(data => {
+        console.log('odInfo',data.data.data)
+        this.odInfo = data.data.data
+      })
+    },
+    getTrendFormData(id) {
+      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/line/flow_trend`,{
+        params: {
+          token: 'w',
+          date: this.time,
+          cell_id: id
+        }
+      }).then(data => {
+        console.log('TrendFormData',data.data)
+        var _data = data.data.data
+        this.trendForm(_data.in,_data.out)
+      })
+    },
+    getCommuteInfo() {
+      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/commuter/region_all`,{
+        // 商业区： businessArea
+        // 工作区： workplace
+        // 住宅区： residence
+        // 混合区: mixedArea
+        params: {
+          token: 'w',
+          date:this.time
+        }
+      }).then(data => {
+        console.log('commuteInfo',data)
+        this.commuteInfo = data.data.data
+      })
+    },
+    getPopulationList(page) {
+      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/density/density_sort`,{
+        params: {
+          token: 'w',
+          date: this.time,
+          page: page,
+          rows: 60
+        }
+      }).then(data => {
+        console.log('PopulationList',data)
+        this.PopulationList = data.data.data
+      })
+    },
+    getOdInNumList(page) {
+      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/line/volume_sort`,{
+        params: {
+          token: 'w',
+          date: this.time,
+          type: 'in',
+          page: page,
+          rows: 60
+        }
+      }).then(data => {
+        console.log('odInNumList',data)
+        this.odInNumList = data.data.data
+      })
+    },
+    getOdOutNumList(page) {
+      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/line/volume_sort`,{
+        params: {
+          token: 'w',
+          date: this.time,
+          type: 'out',
+          page: page,
+          rows: 60
+        }
+      }).then(data => {
+        console.log('odOutNumList',data)
+        this.odOutNumList = data.data.data
+      })
+    },
     toggle(item) {
       this[item] = !this[item];
     },
@@ -784,6 +827,7 @@ export default {
     },
     dateChange(e) {
       // console.log(e);
+      this.totalRequest()
     },
     timeChange() {
       var fir = this.slider[0];
@@ -820,6 +864,13 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.getPopulationList(val)
+    },
+    odOutCurrentChange(val) {
+      this.getOdOutNumList(val)
+    },
+    odInCurrentChange(val) {
+      this.getOdInNumList(val)
     }
   },
   computed: {
@@ -1392,10 +1443,22 @@ $backgroundHover: #111d38;
                   .tit,
                   .content {
                     display: flex;
-                    > div {
+                    > div:not(.section) {
                       flex: 1;
                       text-align: center;
                       font-size: 14px;
+                    }
+                    .section{
+                      width: 140px;
+                      font-size: 14px;
+                      text-align: center;
+                      display: flex;
+                      .left,.right{
+                        flex:1;
+                      }
+                      .mid{
+                        width: 20px;
+                      }
                     }
                   }
                   .content {

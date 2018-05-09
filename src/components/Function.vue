@@ -7,8 +7,8 @@
 export default {
   data() {
     return {
-      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&date=2018-03-30",
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
     };
   },
   props: {
