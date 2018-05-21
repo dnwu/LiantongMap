@@ -20,7 +20,7 @@
                   <li class="level2"><router-link to="/density">区域人口密度</router-link></li>
                   <li class="level2"><router-link to="/od">人口迁徙分布</router-link></li>
                   <li class="level2"><router-link to="/function">地理功能区演化</router-link></li>
-                  <li class="level2"><router-link to="/density">街道人口分布</router-link></li>
+                  <li class="level2"><router-link to="/density2d">街道人口分布</router-link></li>
                 </ul>
               </transition>
             </li>

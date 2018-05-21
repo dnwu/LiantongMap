@@ -61,73 +61,29 @@ export default {
         });
     },
     drawmap(data) {
-      //var data = flightData.slice(0, 20000);
-      // console.log(data);
-      // this.echarts.registerMap("shenzhen", geojson);
       var option = {
-        backgroundColor: "#cdcfd5",
-        geo3D: {
+        backgroundColor: "#00142D",
+        geo: {
           map: "shenzhen",
-          shading: "color", //没有阴影
-          // shading: "lambert",
-          environment: "#00142D",
-          light: {
-            main: {
-              intensity: 5,
-              shadow: true,
-              shadowQuality: "high",
-              alpha: 30
-            },
-            ambient: {
-              intensity: 0
-            },
-            ambientCubemap: {
-              // texture: "../json/canyon.hdr",
-              exposure: 1,
-              diffuseIntensity: 0.5
-            }
-          },
-          viewControl: {
-            distance: 50,
-            minDistance: 10,
-            maxDistance: 80,
-            panMouseButton: "left",
-            rotateMouseButton: "right"
-          },
-
-          groundPlane: {
-            show: true,
-            color: "#00142D"
-          },
-          postEffect: {
-            enable: true,
-            bloom: {
-              enable: false
-            },
-            SSAO: {
-              radius: 1,
-              intensity: 1,
-              enable: true
-            },
-            depthOfField: {
-              enable: false,
-              focalRange: 10,
-              blurRadius: 10,
-              fstop: 1
-            }
-          },
-          temporalSuperSampling: {
-            enable: true
-          },
+          roam: true,
           itemStyle: {
-            areaColor: "#000",
+            areaColor: "#65A7CD",
             color: "#1A427D",
             borderWidth: "1", // 描边
             borderColor: "#fff"
-          },
-
-          regionHeight: 2
+          }
         },
+        visualMap: {
+          min: 0,
+          max: 10,
+          splitNumber: 5,
+          inRange: {
+            color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+          },
+          textStyle: {
+            color: '#fff'
+          }
+         },
         visualMap: {
           max: 16,
           calculable: true,
@@ -141,27 +97,16 @@ export default {
               "#a50026"
             ]
           },
-          outOfRange: {
-            colorAlpha: 0
-          },
           textStyle: {
             color:"#fff"
           }
         },
         series: [
           {
-            type: "bar3D",
-            coordinateSystem: "geo3D",
-            shading: "lambert",
-            data: data,
-            barSize: 0.15,
-            bevelSize: 0.3,
-            minHeight: 2,
-            silent: true,
-            itemStyle: {
-              color: "orange"
-              // opacity: 0.8
-            }
+            name: 'AQI',
+            type: "heatmap",
+            coordinateSystem: "geo",
+            data: data
           }
         ]
       };

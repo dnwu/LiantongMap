@@ -56,8 +56,8 @@ export default {
     },
     drawmap(data) {
       var option = {
-        // backgroundColor: "#cdcfd5",
-        
+        backgroundColor: "#fff",
+
         geo: {
           map: "shenzhen",
           center: [114.167287, 22.651127],
@@ -82,8 +82,8 @@ export default {
             // gridWidth: windData.nx,
             // gridHeight: windData.ny,
             itemStyle: {
-              opacity: 1,
-              color: '#ffffbf'
+              opacity: 0.6,
+              color: '#fff'
             }
           }
         ]

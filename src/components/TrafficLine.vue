@@ -7,9 +7,9 @@ tranffic
 export default {
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&"
+      // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&"
       // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&"
-      // url: "/static/trafficline.json"
+      url: "/static/trafficline.json?"
     };
   },
   props: {
@@ -48,7 +48,6 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          //url + slider[0]*2
           url + `date=${time}&hour=${slider[0] * 2}`
           // url
         )
@@ -58,15 +57,21 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data.data);
-          // this.drawmap(data.data);
+          this.drawmap(data.data);
         });
     },
     drawmap(data) {
       var option = {
-        geo: {
+        geo3D: {
           map: "shenzhen",
           roam: true,
           shading: "realistic",
+          silent: true,
+          environment: "#333",
+          realisticMaterial: {
+            roughness: 0.8,
+            metalness: 0
+          },
           postEffect: {
             enable: true
           },
@@ -85,47 +90,57 @@ export default {
           viewControl: {
             distance: 70,
             alpha: 89,
-            //minDistance: 10,
-            //maxDistance: 100,
+
             panMouseButton: "left",
             rotateMouseButton: "right"
           },
+
           itemStyle: {
-            areaColor: "#1A427D",
+            areaColor: "#111C38",
             color: "#1A427D",
             borderWidth: "1", // 描边
             borderColor: "#fff"
           },
 
-          regionHeight: 3
+          regionHeight: 0.5
         },
 
         series: [
           {
-            type: "lines",
-            coordinateSystem: "geo",
-            polyline: true,
-            data: data,
-            lineStyle: {
-              width:2,
-              normal: {
-                width: 0
-              }
-            },
+            type: "lines3D",
+
+            coordinateSystem: "geo3D",
+
             effect: {
-              constantSpeed: 66,
               show: true,
-              period:10,
-              trailLength: 0.9,
-              symbolSize: 4
+              trailWidth: 4,
+              trailOpacity: 0.5,
+              trailLength: 1,
+              constantSpeed: 5
             },
-            zlevel: 1
+
+            blendMode: "lighter",
+
+            lineStyle: {
+              width: 4,
+              color: "red",
+              opacity: 0.05
+            },
+
+            data: data
           }
         ]
       };
 
       this.myChart.setOption(option);
       this.myChart.hideLoading();
+      var _this= this
+      window.addEventListener("keydown", function() {
+       _this.myChart.dispatchAction({
+          type: "lines3DToggleEffect",
+          seriesIndex: 0
+        });
+      });
     }
   },
   watch: {

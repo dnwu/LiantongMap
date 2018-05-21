@@ -6,6 +6,8 @@ const Box = () =>
   import ('@/components/Box')
 const Density = () =>
   import ('@/components/Density')
+const Density2d = () =>
+  import ('@/components/Density2d')
 const OD = () =>
   import ('@/components/OD')
 const Function = () =>
@@ -28,7 +30,12 @@ export default new Router({
       path: '/density',
       name: 'Density',
       component: Density
-    }, {
+    },{
+      path: '/density2d',
+      name: 'Density2d',
+      component: Density2d
+    }
+    , {
       path: '/od',
       name: 'od',
       component: OD

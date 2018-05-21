@@ -54,8 +54,9 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data);
-          // this.drawmap(data.data);
+          this.drawmap(data.data);
         });
+        this.drawmap([])
     },
     drawmap(data) {
       var option = {
@@ -83,7 +84,8 @@ export default {
           ]
         },
         title: {
-          text:'通勤指数\n(0到1代表流出,值越大表示流出越大,0到-1表示流入,绝对值越大表示流入越大)',
+          text:'通勤指数',
+          subtext: "(0到1代表流出,值越大表示流出越大,0到-1表示流入,绝对值越大表示流入越大)",
           textStyle: {
             color: '#6ebdcc'
           },
