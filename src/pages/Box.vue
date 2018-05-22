@@ -1,0 +1,956 @@
+<template>
+  <div class="index">
+    <el-container>
+      <el-header height='150px'>
+        <div>
+          <img src="../assets/title_pic.png" alt="">
+        </div>
+        <div>
+          <el-button type="primary" round size="mini" @click="dialogVisible = true"><i class="el-icon-download el-icon--right"></i>导出报表</el-button>
+          <el-dialog
+            :visible.sync="dialogVisible"
+            width="478px"
+            :show-close= false
+            :close-on-click-modal= false
+            top= "100px">
+            <div slot="title">
+              导出报表
+            </div>
+            <div class="body">
+              <div class="tit"><span :class="exportType == 1?'active':''" @click="toggletype(1)">导出统计报表</span><span :class="exportType == 2?'active':''" @click="toggletype(2)">导出所有信息报表</span></div>
+              <div class="selected">
+                <el-radio v-model="radio" label="1">人口相关统计报告</el-radio>
+                <el-radio v-model="radio" label="2">OD线路统计报告</el-radio>
+                <el-radio v-model="radio" label="3">职住情况统计报告</el-radio>
+                <el-radio v-model="radio" label="4">功能区趋势统计报告</el-radio>
+              </div>
+            </div>
+            <div slot="footer">
+              <el-button type="success" size="mini" plain>确认导出</el-button>
+              <el-button type="warning" size="mini" plain @click= "close">取消</el-button>
+            </div>
+          </el-dialog>
+        </div>
+      </el-header>
+      <el-container>
+        <el-aside width="280px">
+          <!-- <img class="adorn" src="../assets/adorn.png" alt=""> -->
+          <div class="toggle">
+            <div class="left" @click="left"><img src="../assets/left.png" alt=""></div>
+            <div class="mid">{{system == "now"?"居民出行调查支持系统":"群体行为预测系统"}}</div>
+            <div class="right" @click="right"><img src="../assets/right.png" alt=""></div>
+          </div>
+          <ul class="listbox" ref="nowList">
+            <li class="level1">
+              <div class="title" @click="toggle('slider1')"><span class="info">人口时空分布</span><span :class="slider1?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="slider1">
+                  <li class="level2"><router-link to="/density">区域人口密度</router-link></li>
+                  <li class="level2"><router-link to="/od">人口迁徙分布</router-link></li>
+                  <li class="level2"><router-link to="/function">地理功能区演化</router-link></li>
+                  <li class="level2"><router-link to="/density2d">街道人口分布</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('slider2')"><span class="info">OD状况</span><span :class="slider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="slider2">
+                  <li class="level2"><router-link to="/od">OD出行图</router-link></li>
+                  <li class="level2"><router-link to="/od">OD出行链</router-link></li>
+                  <li class="level2"><router-link to="/trafficLine">OD聚类分布</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('slider3')"><span class="info">职网分布</span><span :class="slider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="slider3">
+                  <li class="level2"><router-link to="/commute">职网分布</router-link></li>
+                  <li class="level2"><router-link to="/od">职住出行分布</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('slider4')"><span class="info">通勤特征</span><span :class="slider4?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="slider4">
+                  <li class="level2"><router-link to="/od">OD出行链</router-link></li>
+                  <li class="level2"><router-link to="/trafficLine">交通走廊</router-link></li>
+                  <li class="level2"><router-link to="/flow">迁徙分布</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('slider5')"><span class="info">城市特征</span><span :class="slider5?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="slider5">
+                  <li class="level2"><router-link to="/commute">职住区域分析</router-link></li>
+                  <li class="level2"><router-link to="/density">街道人口分布</router-link></li>
+                  <li class="level2"><router-link to="/function">地理功能区域</router-link></li>
+                  <li class="level2"><router-link to="/flow">潮汐运动</router-link></li>
+                </ul>
+              </transition>
+            </li>
+          </ul>
+          <ul class="forecast-listbox" ref="forecastList">
+            <li class="level1">
+              <div class="title" @click="toggle('forecastSlider1')"><span class="info">人口流动预测</span><span :class="forecastSlider1?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="forecastSlider1">
+                  <li class="level2"><router-link to="/density">人口流动预测</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('forecastSlider2')"><span class="info">城市人口演化预测</span><span :class="forecastSlider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="forecastSlider2">
+                  <li class="level2"><router-link to="/od">城市人口演化</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title" @click="toggle('forecastSlider3')"><span class="info">城市特征演化分析</span><span :class="forecastSlider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <transition name="slider">
+                <ul v-show="forecastSlider3">
+                  <li class="level2"><router-link to="/commute">城市特征演化</router-link></li>
+                </ul>
+              </transition>
+            </li>
+            <li class="level1">
+              <div class="title hold"><span class="info">人口时空分布分析</span></div>
+            </li>
+            <li class="level1">
+              <div class="title hold"><span class="info">OD状况分析</span></div>
+            </li>
+            <li class="level1">
+              <div class="title hold"><span class="info">职网分布分析</span></div>
+            </li>
+            <li class="level1">
+              <div class="title hold"><span class="info">通勤特征分析</span></div>
+            </li>
+            <li class="level1">
+              <div class="title hold"><span class="info">城市特征分析</span></div>
+            </li>
+          </ul>
+        </el-aside>
+        <el-main>
+          <div class="top-bar">
+            <div class="time-select">
+              <div class="time">
+                <el-date-picker
+                  v-model="time"
+                  type="date"
+                  value-format ='yyyy-MM-dd'
+                  format='yyyy-MM-dd'
+                  @change = 'dateChange'
+                  placeholder="选择日期">
+                </el-date-picker>
+              </div>
+            </div>
+            <div class="type-select" v-show="false">
+              <div class="type">
+                <el-select v-model="type" placeholder="请选择">
+                  <el-option
+                    v-for="item in types"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="position" v-show="false">
+              <img src="../assets/time-level.png" alt="">
+              <img src="../assets/postion.png" alt="">
+            </div>
+          </div>
+          <div class="router-contain">
+            <div class="contain">
+              <div class="time-slider" v-show="sliderControl">
+                <div class="top">
+                  <div class="time">{{initTime}}</div>
+                  <div class="type" v-show="false">{{type}}</div>
+                </div>
+                <div class="slider">
+                  <div class="calibration">
+                    <span v-for="(item,index) in sliderNum" :key='index' :style="'width: (1/'+sliderNum+')*100%'" class="block" ref="block">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                  </div>
+                  <div class="slider-bar">
+                    <el-slider
+                      v-model="slider"
+                      range
+                      @change = 'timeChange'
+                      :format-tooltip = 'sliderDataFormat'
+                      :max="sliderNum">
+                    </el-slider>
+                  </div>
+                </div>
+              </div>
+              <div class="form-slider" :class="sliderStatus?'':'show'">
+                <div class="btn" :class="sliderStatus?'el-icon-d-arrow-left':'el-icon-d-arrow-right'" @click="sliderStatusControl"></div>
+                <div class="line"></div>
+                <div class="slider-contain">
+                  <FormNow v-show="system == 'now'?true:false"></FormNow>
+                  <FormAfter v-show="system == 'now'?false:true"></FormAfter>
+                </div>
+              </div>
+
+              <router-view :slider='chacheSlider' :time='time'></router-view>
+
+            </div>
+
+          </div>
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+</template>
+
+<script>
+import FormNow from "@/components/FormNow";
+import FormAfter from "@/components/FormAfter";
+export default {
+  name: "HelloWorld",
+  components: { FormNow,FormAfter },
+  data() {
+    return {
+      radio: '1',
+      exportType: 1,
+      dialogVisible: false,
+      baseUrl: "http://132.102.126.71:6889",
+      system: 'now',
+      currentPage3: 1,
+      sliderNum: 12,
+      time: new Date(),
+      slider1: true,
+      slider2: false,
+      slider3: false,
+      slider4: false,
+      slider5: false,
+      forecastSlider1:true,
+      forecastSlider2:false,
+      forecastSlider3:false,
+      types: [
+        {
+          value: "出发地点人口密度人力图",
+          label: "出发地点人口密度人力图"
+        }
+      ],
+      type: "出发地点人口密度人力图",
+      slider: [0, 1],
+      chacheSlider: [0, 1],
+      fullPath: "",
+      sliderControl: true,
+      sliderStatus: true,
+      nowListDOM: null,
+      forecastListDOM: null,
+      activeDOM: "nowList",
+      throttle: true
+    };
+  },
+
+  created() {
+    this.fullPath = this.$route.fullPath;
+    if (
+      this.fullPath == "/function" ||
+      this.fullPath == "/commute" ||
+      this.fullPath == "/flow"
+    ) {
+      this.sliderControl = false;
+    } else {
+      this.sliderControl = true;
+    }
+    if (this.fullPath == "/density" || this.fullPath == "/flow") {
+      this.sliderNum = 24;
+      // console.log(this.sliderNum)
+    } else {
+      this.sliderNum = 12;
+    }
+    this.initDate();
+  },
+  mounted () {
+    this.nowListDOM = this.$refs.nowList
+    this.forecastListDOM = this.$refs.forecastList
+  },
+  methods: {
+    toggletype(item) {
+      this.exportType = item
+    },
+    close() {
+      this.dialogVisible = false
+    },
+    left() {
+      if(this.throttle) {
+        this.throttle = false
+        this.sliderStatus = true
+        this.runLeft()
+      }
+    },
+    right() {
+      if(this.throttle) {
+        this.throttle = false
+        this.sliderStatus = true
+        this.runRight()
+      }
+    },
+    runLeft(){
+      if(this.activeDOM == "nowList") {
+        this.activeDOM = "forecastList"
+        this.forecastListDOM.style.left = "266px";
+        setTimeout(() => {
+          this.forecastListDOM.style.transition = "left 0.5s ease-out";
+          this.nowListDOM.style.transition = "left 0.5s ease-out";
+          this.forecastListDOM.style.left = "0px";
+          this.nowListDOM.style.left = "-266px";
+        }, 100);
+        setTimeout(() => {
+          this.forecastListDOM.style.transition = "";
+          this.nowListDOM.style.transition = "";
+          // this.nowListDOM.style.left = "266px";
+          this.toggleSystem()
+          this.throttle = true
+        }, 600);
+      }else if(this.activeDOM == "forecastList") {
+        this.activeDOM = "nowList"
+        this.nowListDOM.style.left = "266px";
+        setTimeout(() => {
+          this.nowListDOM.style.transition = "left 0.5s ease-out";
+          this.forecastListDOM.style.transition = "left 0.5s ease-out";
+          this.nowListDOM.style.left = "0px";
+          this.forecastListDOM.style.left = "-266px";
+        }, 100);
+        setTimeout(() => {
+          this.forecastListDOM.style.transition = "";
+          this.nowListDOM.style.transition = "";
+          // this.forecastListDOM.style.left = "266px";
+          this.toggleSystem()
+          this.throttle = true
+        }, 600);
+      }
+    },
+    runRight(){
+      if(this.activeDOM == "nowList") {
+        this.activeDOM = "forecastList"
+        this.forecastListDOM.style.left = "-266px";
+        setTimeout(() => {
+          this.forecastListDOM.style.transition = "left 0.5s ease-out";
+          this.nowListDOM.style.transition = "left 0.5s ease-out";
+          this.forecastListDOM.style.left = "0px";
+          this.nowListDOM.style.left = "266px";
+        }, 200);
+        setTimeout(() => {
+          this.forecastListDOM.style.transition = "";
+          this.nowListDOM.style.transition = "";
+          // this.nowListDOM.style.left = "-266px";
+          this.toggleSystem()
+          this.throttle = true
+        }, 600);
+      }else if(this.activeDOM == "forecastList") {
+        this.activeDOM = "nowList"
+        this.nowListDOM.style.left = "-266px";
+        setTimeout(() => {
+          this.nowListDOM.style.transition = "left 0.5s ease-out";
+          this.forecastListDOM.style.transition = "left 0.5s ease-out";
+          this.nowListDOM.style.left = "0px";
+          this.forecastListDOM.style.left = "266px";
+        }, 200);
+        setTimeout(() => {
+          this.forecastListDOM.style.transition = "";
+          this.nowListDOM.style.transition = "";
+          // this.forecastListDOM.style.left = "-266px";
+          this.toggleSystem()
+          this.throttle = true
+        }, 600);
+      }
+    },
+    toggleSystem() {
+      if(this.system == 'now') {
+        this.system = "forecast"
+      }else {
+        this.system = "now"
+      }
+    },
+    toggle(item) {
+      this[item] = !this[item];
+    },
+    initDate() {
+      let date = this.time;
+      let year = date.getFullYear();
+      let month =
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : date.getMonth() + 1;
+      let day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      this.time = `${year}-${month}-${day}`;
+    },
+    sliderDataFormat(e) {
+      if (this.fullPath == "/density" || this.fullPath == "/flow") {
+        return `${e}:00`;
+      } else {
+        return `${e * 2}:00`;
+      }
+    },
+    dateChange(e) {
+      // console.log(e);
+      this.totalRequest();
+    },
+    timeChange() {
+      var fir = this.slider[0];
+      var sec = this.slider[1];
+      if (fir !== this.chacheSlider[0] && sec !== this.chacheSlider[1]) {
+        this.slider = [sec - 1, sec];
+      }
+      if (fir !== this.chacheSlider[0]) {
+        this.slider = [fir, fir + 1];
+      }
+      if (sec !== this.chacheSlider[1]) {
+        this.slider = [sec - 1, sec];
+      }
+      if (fir === 0 && sec === 0) {
+        this.slider = [fir, fir + 1];
+      }
+      if ((fir === 12 && sec === 12) || (fir === 24 && sec === 24)) {
+        this.slider = [sec - 1, sec];
+      }
+      this.chacheSlider = [...this.slider];
+    },
+    sliderStatusControl() {
+      this.sliderStatus = !this.sliderStatus;
+    }
+  },
+  computed: {
+    initTime() {
+      // console.log(this.fullPath)
+      if (this.fullPath == "/density" || this.fullPath == "/flow") {
+        return `${this.slider[0]}:00-${this.slider[1]}:00`;
+      } else {
+        return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
+      }
+    }
+  },
+  watch: {
+    $route(a, b) {
+      this.fullPath = a.fullPath;
+      if (
+        a.fullPath == "/function" ||
+        a.fullPath == "/commute" ||
+        a.fullPath == "/flow"
+      ) {
+        this.sliderControl = false;
+      } else {
+        this.sliderControl = true;
+      }
+      if (a.fullPath == "/density" || this.fullPath == "/flow") {
+        this.sliderNum = 24;
+      } else {
+        this.sliderNum = 12;
+      }
+    }
+  }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang='scss'>
+.index {
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/bg.jpg");
+  // background-size: 100% 100%;
+}
+</style>
+<style lang='scss'>
+$color: #6ebdcc;
+$background: #0a427f;
+$backgroundHover: #111d38;
+
+@keyframes twinkle {
+  to {
+    color: transparent;
+    background-color: transparent;
+    border: 2px solid transparent;
+  }
+}
+
+.is-vertical {
+  height: 100%;
+  display: flex;
+  .el-header {
+    // border-bottom: 1px solid red;
+    display: flex;
+    div:first-child {
+      img {
+        transform: translateY(90px);
+      }
+    }
+    div:last-child {
+      flex: 1;
+      box-sizing: border-box;
+      padding: 100px 100px 0 0;
+      text-align: right;
+      .el-button{
+        background-color: #0E4460;
+        color: $color;
+      }
+    }
+  }
+  .el-container {
+    flex: 1;
+    .el-aside {
+      // border-right: 1px solid red;
+      position: relative;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .toggle{
+        display: flex;
+        padding-left: 20px;
+        margin-top:20px;
+        .mid {
+          width: 220px;
+          background-image: url('../assets/toggle.png');
+          line-height: 44px;
+          font-weight: 700;
+          text-align: center;
+          color: #fff;
+          background-size: cover;
+        }
+        .left,.right{
+          flex: 1;
+          text-align: center;
+          img{
+            height: 39px;
+            transform: translateY(6px);
+            cursor: pointer;
+          }
+        }
+        .right {
+          img {
+            transform: translate(2px,6px);
+          }
+        }
+      }
+      // .adorn {
+      //   position: absolute;
+      //   height: 100%;
+      //   width: 72px;
+      //   right: 262px;
+      //   left: -6px;
+      // }
+      .listbox,.forecast-listbox {
+        padding-left: 56px;
+        margin: 16px 0;
+        position: absolute;
+        // transition: left 5s;
+      }
+      .listbox {
+        left: 0px;
+      }
+      .forecast-listbox {
+        left: 266px;
+      }
+      li {
+        color: #fff;
+        list-style: none;
+      }
+      .level1 {
+        margin-bottom: 20px;
+        cursor: pointer;
+        .title {
+          background: url("../assets/level1.png") no-repeat;
+          height: 55px;
+          line-height: 36px;
+          padding-left: 30px;
+          padding-right: 20px;
+          display: flex;
+          user-select: none;
+          &.hold{
+            background: url("../assets/level1_hold.png") no-repeat;
+            cursor:default;
+            color: #4C5E74;
+          }
+          .info {
+            // flex: 1;
+            width: 128px;
+          }
+          .tip {
+            // color: rgba(255,255,255,0.5);
+            // animation: twinkle 5s ease infinite;
+            // width: 6px;
+            // height: 6px;
+            // border-radius: 50%;
+            // background-color: #004b9d;
+            margin-top: 10px;
+            margin-right: 30px;
+            // border: 2px solid #0376f7;
+            width: 15px;
+            height: 15px;
+            &.active {
+              transform: rotate(90deg);
+            }
+          }
+        }
+        ul {
+          margin-top: -10px;
+          margin-left: -8px;
+          padding-left: 14px;
+          .level2 {
+            a {
+              padding-left: 30px;
+              display: inline-block;
+              width: 100%;
+              height: 100%;
+              text-decoration: none;
+              box-sizing: border-box;
+              color: $color;
+            }
+          }
+          .level2 {
+            position: relative;
+            background: url("../assets/level2.png") no-repeat;
+            margin-top: 10px;
+            height: 47px;
+            line-height: 58px;
+            font-size: 14px;
+            color: #ecefe8;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .el-main {
+      display: flex;
+      flex-direction: column;
+      .top-bar {
+        height: 50px;
+        display: flex;
+        .time-select {
+          width: 500px;
+          background-image: url("../assets/time-select.png");
+          background-repeat: no-repeat;
+          padding-left: 162px;
+          box-sizing: border-box;
+          .time {
+            .el-input {
+              input {
+                background: transparent;
+                height: 20px;
+                border: none;
+                margin-top: 14px;
+                color: $color;
+              }
+              .el-input__prefix,
+              .el-input__suffix {
+                display: none;
+              }
+            }
+          }
+        }
+        .type-select {
+          width: 500px;
+          background-image: url("../assets/type-select.png");
+          background-repeat: no-repeat;
+          .type {
+            height: 20px;
+            width: 190px;
+            margin: 12px 0 0 160px;
+            font-size: 12px;
+            // background-color: red;
+            color: #fff;
+            .el-select {
+              .el-input {
+                input {
+                  background: transparent;
+                  border: none;
+                  width: 190px;
+                  height: 20px;
+                  padding: 0;
+                  color: $color;
+                }
+              }
+            }
+          }
+        }
+        .position {
+          flex: 1;
+        }
+      }
+      .router-contain {
+        flex: 1;
+        position: relative;
+
+        background-image: url("../assets/map_bgc.png");
+        // background-size:contain;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        padding: 26px;
+        .contain {
+          height: 100%;
+          position: relative;
+
+          overflow: hidden;
+        }
+
+        .time-slider {
+          z-index: 999;
+          position: absolute;
+          bottom: 10px;
+          width: 90%;
+          height: 100px;
+          margin-left: 5%;
+          background-image: url("../assets/time-slider.png");
+          background-size: cover;
+          background-repeat: no-repeat;
+          .top {
+            display: flex;
+            .time {
+              width: 100px;
+              height: 20px;
+              box-sizing: border-box;
+              margin: 13px 0 0 180px;
+              padding-left: 20px;
+              color: $color;
+              font-size: 12px;
+              line-height: 20px;
+            }
+            .type {
+              font-size: 12px;
+              line-height: 20px;
+              color: $color;
+              width: 160px;
+              height: 20px;
+              padding-left: 10px;
+              margin: 13px 0 0 180px;
+            }
+          }
+          .slider {
+            width: 98%;
+            height: 40px;
+            margin-top: 20px;
+            margin-left: 1%;
+            // background-color: skyblue;
+            .calibration {
+              display: flex;
+              width: 100%;
+              .block {
+                display: flex;
+                width: (1/12) * 100%;
+                height: 10px;
+                position: relative;
+                &::before {
+                  content: "";
+                  display: inline-block;
+                  position: absolute;
+                  width: 1px;
+                  height: 12px;
+                  background-color: $color;
+                  left: 0;
+                  top: 16px;
+                }
+                &::after {
+                  content: "";
+                  display: inline-block;
+                  position: absolute;
+                  width: 1px;
+                  height: 12px;
+                  background-color: $color;
+                  right: 0;
+                  top: 16px;
+                }
+
+                @for $i from 1 through 9 {
+                  //.item-#{$i} { width: 2em * $i; }
+                  span:nth-of-type(#{$i}) {
+                    width: 1px;
+                    height: 6px;
+                    background-color: $color;
+                    //margin-left: (1/11)*100%;
+                    position: absolute;
+                    left: ($i/10) * 100%;
+                    margin-top: 20px;
+                  }
+                }
+              }
+            }
+            .el-slider__runway {
+              background: $backgroundHover;
+              .el-slider__bar {
+                background: $background;
+              }
+              .el-slider__button-wrapper {
+                .el-slider__button {
+                  width: 10px;
+                  height: 10px;
+                  border-color: #fff;
+                  border-width: 1px;
+                  background: $backgroundHover;
+                }
+              }
+            }
+          }
+        }
+        .form-slider {
+          z-index: 999;
+          position: absolute;
+          right: -432px;
+          width: 450px;
+          height: 100%;
+          // padding: 26px;
+          background-clip: content-box;
+          box-sizing: border-box;
+          transition: right 1s;
+          display: flex;
+          // flex-direction:column ;
+          align-items: center;
+          &.show {
+            right: 0px;
+          }
+          .btn {
+            width: 16px;
+            height: 200px;
+            background-color: #64acd2;
+            line-height: 200px;
+            cursor: pointer;
+          }
+          .line {
+            width: 2px;
+            height: 100%;
+            background-color: rgba(106, 174, 211, 0.8);
+          }
+          .slider-contain {
+            flex: 1;
+            height: 100%;
+            background-color: rgba(3, 38, 66, 0.8);
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+<style lang="scss">
+// 定制选择框样式
+$background: #0a427f;
+$backgroundHover: #111d38;
+$color: #6ebdcc;
+.el-select-dropdown {
+  border: #111d38;
+  background: #0a427f;
+  .el-scrollbar {
+    .el-select-dropdown__wrap {
+      .el-scrollbar__view {
+        border-radius: 60px;
+        background: $background;
+        li {
+          color: $color;
+          &:hover {
+            background: $backgroundHover;
+          }
+          &.hover {
+            background: $backgroundHover;
+          }
+        }
+      }
+    }
+  }
+}
+.el-picker-panel {
+  color: $color;
+  background: $background;
+  border: none;
+  .el-picker-panel__body-wrapper {
+    .el-picker-panel__body {
+      .el-date-picker__header {
+        span,
+        button {
+          color: $color;
+        }
+      }
+    }
+  }
+}
+// 定制模态框样式
+.index{
+  .el-header{
+    .el-dialog__wrapper{
+      .el-dialog{
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+        background-image:url('../assets/model.png');
+        background-size:478px 404px;
+        background-repeat: no-repeat;
+        .el-dialog__header{
+          box-sizing: border-box;
+          padding: 10px 0 10px 0;
+          >div{
+            padding: 0;
+            text-align: center;
+            line-height: 50px;
+            font-size:20px;
+            font-weight:700;
+            color:#fff;
+            text-shadow:0 0 4px 4px #fff;
+          }
+        }
+        .el-dialog__body{
+          padding: 0;
+          .body {
+            padding:0;
+            .tit{
+              padding:0 20px;
+              display:flex;
+              span{
+                text-align: center;
+                line-height: 30px;
+                height: 30px;
+                color: #527696;
+                border: 1px solid #335E93;
+                cursor:pointer;
+                flex:1;
+                &.active{
+                  background-color: #315C8F;
+                  color: #A1FCFF;
+                }
+              }
+            }
+            .selected{
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              text-align: left;
+              label {
+                margin: 20px 0px 20px 80px;
+                color: #A1FCFF;
+              }
+            }
+          }
+        }
+        .el-dialog__footer{
+          padding: 0;
+          >div{
+            padding: 20px 0;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+
+
