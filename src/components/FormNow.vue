@@ -402,6 +402,7 @@ export default {
       input5: "3922",
       odInfo: {},
       tabControl: "population",
+      baseUrl: "http://132.102.126.71:6889",
       childtabControl: true,
       PopulationList: [],
       odOutNumList: [],
@@ -417,12 +418,12 @@ export default {
   },
   methods: {
     totalRequest() {
-      // this.getOdInfo(3922);
-      // this.getCommuteInfo();
-      // this.getPopulationList(1);
-      // this.getOdInNumList(1);
-      // this.getOdOutNumList(1);
-      // this.getTrendFormData(3922);
+      this.getOdInfo(3922);
+      this.getCommuteInfo();
+      this.getPopulationList(1);
+      this.getOdInNumList(1);
+      this.getOdOutNumList(1);
+      this.getTrendFormData(3922);
     },
     trendForm(inData, outData) {
       let dom = this.$refs.trendForm;

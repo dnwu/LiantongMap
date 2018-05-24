@@ -57,12 +57,12 @@ export default {
     drawmap(data) {
       var option = {
         backgroundColor: "#fff",
-
         geo: {
           map: "shenzhen",
           center: [114.167287, 22.651127],
           zoom: 1.5,
-          roam: true,
+          aspectScale: 1,
+          // roam: true,
           itemStyle: {
             areaColor: "#1A427D",
             color: "#1A427D",
@@ -78,11 +78,11 @@ export default {
             supersampling: 4,
             particleType: "point",
             particleDensity: 128,
-            particleSpeed: 1,
+            particleSpeed: 2,
             // gridWidth: windData.nx,
             // gridHeight: windData.ny,
             itemStyle: {
-              opacity: 0.6,
+              opacity: 1,
               color: '#fff'
             }
           }

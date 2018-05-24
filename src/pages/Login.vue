@@ -18,6 +18,7 @@
           placeholder="密码"
           prefix-icon="icon-lock"
           type="password"
+          @keyup.enter.native="login"
           v-model="pass">
         </el-input>
       </div>
@@ -84,10 +85,10 @@ export default {
       window.sessionStorage.setItem("name", name);
       window.sessionStorage.setItem("pass", pass);
     },
-    removeSessionStorage() {
-      window.sessionStorage.removeItem("name");
-      window.sessionStorage.removeItem("pass");
-    },
+    // removeSessionStorage() {
+    //   window.sessionStorage.removeItem("name");
+    //   window.sessionStorage.removeItem("pass");
+    // },
     judgeAuto() {
       var name = window.sessionStorage.getItem("name");
       var pass = window.sessionStorage.getItem("pass");
