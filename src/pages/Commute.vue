@@ -7,8 +7,8 @@
 export default {
   data() {
     return {
-      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
-      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
+      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
     };
   },
   props: {
@@ -54,9 +54,9 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data);
-          this.drawmap(data.data);
+          // this.drawmap(data.data);
         });
-        this.drawmap([])
+        // this.drawmap([])
     },
     drawmap(data) {
       var option = {

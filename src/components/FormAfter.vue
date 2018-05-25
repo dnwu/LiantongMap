@@ -12,7 +12,7 @@
   </div>
   <div class="content">
     <ul>
-      <li v-for='item in new Array(60)'><span>1</span><span>福田区66</span><span>1654654</span><span>63.64</span></li>
+      <li v-for='(item,index) in new Array(60)' :key="index"><span>1</span><span>福田区66</span><span>1654654</span><span>63.64</span></li>
     </ul>
   </div>
   <div class="page">

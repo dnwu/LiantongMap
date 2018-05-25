@@ -9,9 +9,9 @@ export default {
   name: "Density",
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
+      // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
       // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
-      // url: "/static/density.json?"
+      url: "/static/density.json?"
     };
   },
   props: {
@@ -57,7 +57,7 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data);
-          // this.drawmap(data.data);
+          this.drawmap(data.data);
         });
     },
     drawmap(data) {
@@ -65,6 +65,7 @@ export default {
         backgroundColor: "#00142D",
         geo: {
           map: "shenzhen",
+          zoom:2,
           roam: true,
           itemStyle: {
             areaColor: "#65A7CD",
@@ -73,17 +74,6 @@ export default {
             borderColor: "#fff"
           }
         },
-        visualMap: {
-          min: 0,
-          max: 10,
-          splitNumber: 5,
-          inRange: {
-            color: ['#d94e5d','#eac736','#50a3ba'].reverse()
-          },
-          textStyle: {
-            color: '#fff'
-          }
-         },
         visualMap: {
           max: 16,
           calculable: true,

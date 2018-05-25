@@ -402,13 +402,19 @@ export default {
       input5: "3922",
       odInfo: {},
       tabControl: "population",
-      baseUrl: "http://132.102.126.71:6889",
+      // baseUrl: "http://132.102.126.71:6889",
+      baseUrl: "http://10.123.60.101:6889",
       childtabControl: true,
       PopulationList: [],
       odOutNumList: [],
       odInNumList: [],
       commuteInfo: {}
     };
+  },
+  props: {
+    time: {
+      type: String
+    }
   },
   mounted() {
     this.densityForm();
@@ -692,6 +698,11 @@ export default {
     odInCurrentChange(val) {
       this.getOdInNumList(val);
     }
+  },
+  watch: {
+    time(a, b) {
+      this.totalRequest();
+    }
   }
 };
 </script>
@@ -702,6 +713,8 @@ $backgroundHover: #111d38;
 .form-now {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   .title {
     height: 32px;
     margin: 10px;
@@ -1051,10 +1064,30 @@ $backgroundHover: #111d38;
 }
 </style>
 <style lang="scss">
+$color: #6ebdcc;
 .el-progress {
   .el-progress__text {
     color: #fff !important;
     font-size: 26px !important;
+  }
+}
+.page {
+  height: 30px;
+  text-align: center;
+  margin: 10px 0 0px 0;
+  button.btn-prev,
+  button.btn-next {
+    background-color: transparent;
+    color: $color;
+  }
+  ul.el-pager {
+    li {
+      background-color: transparent;
+      color: $color;
+      &.active {
+        color: #fff;
+      }
+    }
   }
 }
 </style>
