@@ -31,7 +31,7 @@ export default {
       };
     },
     getGeoJson() {
-      this.axios.get("/static/geojson/geojson_gongneng.json").then(geojson => {
+      this.axios.get("/static/geojson/voronoi_Project2-2.json").then(geojson => {
         this.echarts.registerMap("gongneng", geojson.data);
         this.getMapData(this.url, this.time);
       });
@@ -50,32 +50,34 @@ export default {
           }
           // console.log('data',data);
           // this.drawmap(data.data);
-        });
+        }).catch(e => {
+          this.drawmap([])
+        })
     },
     drawmap(data) {
       var option = {
         geo: {
-          show: true,
+          // show: true,
           // map: "gongneng",
-          roam: true,
+          // roam: true,
 
-          itemStyle: {
-            areaColor: "skyblue"
-          },
-          emphasis: {
-            itemStyle: {
-              areaColor: "#fff"
-            }
-          },
-          regions: [
-            {
-              name: "6169",
-              itemStyle: {
-                areaColor: "red",
-                color: "red"
-              }
-            }
-          ]
+          // itemStyle: {
+          //   areaColor: "skyblue"
+          // },
+          // emphasis: {
+          //   itemStyle: {
+          //     areaColor: "#fff"
+          //   }
+          // },
+          // regions: [
+          //   {
+          //     name: "6169",
+          //     itemStyle: {
+          //       areaColor: "red",
+          //       color: "red"
+          //     }
+          //   }
+          // ]
         },
         visualMap: {
           // show:false,

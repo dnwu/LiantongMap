@@ -7,8 +7,9 @@
 export default {
   data() {
     return {
-      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
+      // url: "/static/commute.json?"
     };
   },
   props: {
@@ -37,7 +38,7 @@ export default {
       };
     },
     getGeoJson() {
-      this.axios.get("/static/geojson/geojson_gongneng.json").then(geojson => {
+      this.axios.get("/static/geojson/voronoi_Project2-2.json").then(geojson => {
         this.echarts.registerMap("gongneng", geojson.data);
         this.getMapData(this.url, this.time, this.slider);
       });
@@ -55,33 +56,34 @@ export default {
           }
           // console.log('data',data);
           // this.drawmap(data.data);
-        });
-        // this.drawmap([])
+        }).catch(e=> {
+        this.drawmap([])
+        })
     },
     drawmap(data) {
       var option = {
         geo: {
-          show: true,
+          // show: true,
           // map: "gongneng",
-          roam: true,
+          // roam: true,
 
-          itemStyle: {
-            areaColor: "skyblue"
-          },
-          emphasis: {
-            itemStyle: {
-              areaColor: "#fff"
-            }
-          },
-          regions: [
-            {
-              name: "6169",
-              itemStyle: {
-                areaColor: "red",
-                color: "red"
-              }
-            }
-          ]
+          // itemStyle: {
+          //   areaColor: "skyblue"
+          // },
+          // emphasis: {
+          //   itemStyle: {
+          //     areaColor: "#fff"
+          //   }
+          // },
+          // regions: [
+          //   {
+          //     name: "6169",
+          //     itemStyle: {
+          //       areaColor: "red",
+          //       color: "red"
+          //     }
+          //   }
+          // ]
         },
         title: {
           text:'通勤指数',
@@ -92,7 +94,6 @@ export default {
           left:'center'
         },
         visualMap: {
-          // show:false,
           type: "piecewise",
           splitNumber: 4,
           textStyle: {
@@ -106,23 +107,24 @@ export default {
           inRange: {
             color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
           },
-          calculable: true,
-          zlevel: 9999
+          // calculable: true,
+          zlevel: 999
         },
         series: [
           {
             name: "shenzhen gongneng",
             type: "map",
             roam: true,
+            // zoom:1,
             map: "gongneng",
             aspectScale: 2,
-            itemStyle: {
-              emphasis: { label: { show: true } }
-            },
+            // itemStyle: {
+            //   emphasis: { label: { show: true } }
+            // },
             // 文本位置修正
-            textFixed: {
-              Alaska: [20, -20]
-            },
+            // textFixed: {
+            //   Alaska: [20, -20]
+            // },
             data: data
             // data: [
             //  {
