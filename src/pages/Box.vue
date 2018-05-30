@@ -17,16 +17,16 @@
               导出报表
             </div>
             <div class="body">
-              <div class="tit"><span :class="exportType == 1?'active':''" @click="toggletype(1)">导出统计报表</span><span :class="exportType == 2?'active':''" @click="toggletype(2)">导出所有信息报表</span></div>
+              <div class="tit" v-if="false"><span :class="exportType == 1?'active':''" @click="toggletype(1)">导出统计报表</span><span :class="exportType == 2?'active':''" @click="toggletype(2)">导出所有信息报表</span></div>
               <div class="selected">
-                <el-radio v-model="radio" label="1">人口相关统计报告</el-radio>
-                <el-radio v-model="radio" label="2">OD线路统计报告</el-radio>
-                <el-radio v-model="radio" label="3">职住情况统计报告</el-radio>
-                <el-radio v-model="radio" label="4">功能区趋势统计报告</el-radio>
+                <el-radio v-model="radio" label="travel">OD数据报表</el-radio>
+                <el-radio v-model="radio" label="density">人口密度数据报表</el-radio>
+                <el-radio v-model="radio" label="commuter">通勤指数数据报表</el-radio>
+                <el-radio v-model="radio" label="semantics">交通语义数据报表</el-radio>
               </div>
             </div>
             <div slot="footer">
-              <el-button type="success" size="mini" plain>确认导出</el-button>
+              <el-button type="success" size="mini" @click="exportFile" plain>确认导出</el-button>
               <el-button type="warning" size="mini" plain @click= "close">取消</el-button>
             </div>
           </el-dialog>
@@ -229,15 +229,18 @@
 <script>
 import FormNow from "@/components/FormNow";
 import FormAfter from "@/components/FormAfter";
+import { download } from "@/config/js/load.js";
 export default {
   name: "HelloWorld",
-  components: { FormNow,FormAfter },
+  components: { FormNow, FormAfter },
   data() {
     return {
-      radio: '1',
+      // baseUrl: "http://132.102.126.71:6889",
+      baseUrl: "http://10.123.60.101:6889",
+      radio: "travel",
       exportType: 1,
       dialogVisible: false,
-      system: 'now',
+      system: "now",
       currentPage3: 1,
       sliderNum: 12,
       time: new Date(),
@@ -246,9 +249,9 @@ export default {
       slider3: false,
       slider4: false,
       slider5: false,
-      forecastSlider1:true,
-      forecastSlider2:false,
-      forecastSlider3:false,
+      forecastSlider1: true,
+      forecastSlider2: false,
+      forecastSlider3: false,
       types: [
         {
           value: "出发地点人口密度人力图",
@@ -287,15 +290,31 @@ export default {
     }
     this.initDate();
   },
-  mounted () {
-    this.nowListDOM = this.$refs.nowList
-    this.forecastListDOM = this.$refs.forecastList
+  mounted() {
+    this.nowListDOM = this.$refs.nowList;
+    this.forecastListDOM = this.$refs.forecastList;
   },
   methods: {
+    exportFile() {
+      console.log(this.time, this.radio);
+      this.axios
+        .get(
+          `${this.baseUrl}/ivenus/data/api/stream/monitoring/export/exportByStream`,
+          { responseType: "blob" ,
+            params: {
+              type: this.radio,
+              date: this.time
+            }
+          }
+        )
+        .then(data => {
+          download(data.data, `${this.radio}/${this.time}`);
+        });
+    },
     logout() {
-      this.removeLocalStorage()
-      this.removeSessionStorage()
-      this.$router.push('/login')
+      this.removeLocalStorage();
+      this.removeSessionStorage();
+      this.$router.push("/login");
     },
     removeLocalStorage() {
       window.localStorage.removeItem("name");
@@ -306,28 +325,28 @@ export default {
       window.sessionStorage.removeItem("pass");
     },
     toggletype(item) {
-      this.exportType = item
+      this.exportType = item;
     },
     close() {
-      this.dialogVisible = false
+      this.dialogVisible = false;
     },
     left() {
-      if(this.throttle) {
-        this.throttle = false
-        this.sliderStatus = true
-        this.runLeft()
+      if (this.throttle) {
+        this.throttle = false;
+        this.sliderStatus = true;
+        this.runLeft();
       }
     },
     right() {
-      if(this.throttle) {
-        this.throttle = false
-        this.sliderStatus = true
-        this.runRight()
+      if (this.throttle) {
+        this.throttle = false;
+        this.sliderStatus = true;
+        this.runRight();
       }
     },
-    runLeft(){
-      if(this.activeDOM == "nowList") {
-        this.activeDOM = "forecastList"
+    runLeft() {
+      if (this.activeDOM == "nowList") {
+        this.activeDOM = "forecastList";
         this.forecastListDOM.style.left = "266px";
         setTimeout(() => {
           this.forecastListDOM.style.transition = "left 0.5s ease-out";
@@ -339,11 +358,11 @@ export default {
           this.forecastListDOM.style.transition = "";
           this.nowListDOM.style.transition = "";
           // this.nowListDOM.style.left = "266px";
-          this.toggleSystem()
-          this.throttle = true
+          this.toggleSystem();
+          this.throttle = true;
         }, 600);
-      }else if(this.activeDOM == "forecastList") {
-        this.activeDOM = "nowList"
+      } else if (this.activeDOM == "forecastList") {
+        this.activeDOM = "nowList";
         this.nowListDOM.style.left = "266px";
         setTimeout(() => {
           this.nowListDOM.style.transition = "left 0.5s ease-out";
@@ -355,14 +374,14 @@ export default {
           this.forecastListDOM.style.transition = "";
           this.nowListDOM.style.transition = "";
           // this.forecastListDOM.style.left = "266px";
-          this.toggleSystem()
-          this.throttle = true
+          this.toggleSystem();
+          this.throttle = true;
         }, 600);
       }
     },
-    runRight(){
-      if(this.activeDOM == "nowList") {
-        this.activeDOM = "forecastList"
+    runRight() {
+      if (this.activeDOM == "nowList") {
+        this.activeDOM = "forecastList";
         this.forecastListDOM.style.left = "-266px";
         setTimeout(() => {
           this.forecastListDOM.style.transition = "left 0.5s ease-out";
@@ -374,11 +393,11 @@ export default {
           this.forecastListDOM.style.transition = "";
           this.nowListDOM.style.transition = "";
           // this.nowListDOM.style.left = "-266px";
-          this.toggleSystem()
-          this.throttle = true
+          this.toggleSystem();
+          this.throttle = true;
         }, 600);
-      }else if(this.activeDOM == "forecastList") {
-        this.activeDOM = "nowList"
+      } else if (this.activeDOM == "forecastList") {
+        this.activeDOM = "nowList";
         this.nowListDOM.style.left = "-266px";
         setTimeout(() => {
           this.nowListDOM.style.transition = "left 0.5s ease-out";
@@ -390,16 +409,16 @@ export default {
           this.forecastListDOM.style.transition = "";
           this.nowListDOM.style.transition = "";
           // this.forecastListDOM.style.left = "-266px";
-          this.toggleSystem()
-          this.throttle = true
+          this.toggleSystem();
+          this.throttle = true;
         }, 600);
       }
     },
     toggleSystem() {
-      if(this.system == 'now') {
-        this.system = "forecast"
-      }else {
-        this.system = "now"
+      if (this.system == "now") {
+        this.system = "forecast";
+      } else {
+        this.system = "now";
       }
     },
     toggle(item) {
@@ -521,8 +540,8 @@ $backgroundHover: #111d38;
       box-sizing: border-box;
       padding: 100px 100px 0 0;
       text-align: right;
-      .el-button{
-        background-color: #0E4460;
+      .el-button {
+        background-color: #0e4460;
         color: $color;
       }
     }
@@ -542,23 +561,24 @@ $backgroundHover: #111d38;
       ::-webkit-scrollbar {
         display: none;
       }
-      .toggle{
+      .toggle {
         display: flex;
         padding-left: 20px;
-        margin-top:20px;
+        margin-top: 20px;
         .mid {
           width: 220px;
-          background-image: url('../assets/toggle.png');
+          background-image: url("../assets/toggle.png");
           line-height: 44px;
           font-weight: 700;
           text-align: center;
           color: #fff;
           background-size: cover;
         }
-        .left,.right{
+        .left,
+        .right {
           flex: 1;
           text-align: center;
-          img{
+          img {
             height: 39px;
             transform: translateY(6px);
             cursor: pointer;
@@ -566,7 +586,7 @@ $backgroundHover: #111d38;
         }
         .right {
           img {
-            transform: translate(2px,6px);
+            transform: translate(2px, 6px);
           }
         }
       }
@@ -577,7 +597,8 @@ $backgroundHover: #111d38;
       //   right: 262px;
       //   left: -6px;
       // }
-      .listbox,.forecast-listbox {
+      .listbox,
+      .forecast-listbox {
         padding-left: 56px;
         margin: 16px 0;
         position: absolute;
@@ -604,10 +625,10 @@ $backgroundHover: #111d38;
           padding-right: 20px;
           display: flex;
           user-select: none;
-          &.hold{
+          &.hold {
             background: url("../assets/level1_hold.png") no-repeat;
-            cursor:default;
-            color: #4C5E74;
+            cursor: default;
+            color: #4c5e74;
           }
           .info {
             // flex: 1;
@@ -912,65 +933,65 @@ $color: #6ebdcc;
   }
 }
 // 定制模态框样式
-.index{
-  .el-header{
-    .el-dialog__wrapper{
-      .el-dialog{
+.index {
+  .el-header {
+    .el-dialog__wrapper {
+      .el-dialog {
         padding: 0;
         background: transparent;
         box-shadow: none;
-        background-image:url('../assets/model.png');
-        background-size:478px 404px;
+        background-image: url("../assets/model.png");
+        background-size: 478px 424px;
         background-repeat: no-repeat;
-        .el-dialog__header{
+        .el-dialog__header {
           box-sizing: border-box;
           padding: 10px 0 10px 0;
-          >div{
+          > div {
             padding: 0;
             text-align: center;
             line-height: 50px;
-            font-size:20px;
-            font-weight:700;
-            color:#fff;
-            text-shadow:0 0 4px 4px #fff;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 4px 4px #fff;
           }
         }
-        .el-dialog__body{
+        .el-dialog__body {
           padding: 0;
           .body {
-            padding:0;
-            .tit{
-              padding:0 20px;
-              display:flex;
-              span{
+            padding: 0;
+            .tit {
+              padding: 0 20px;
+              display: flex;
+              span {
                 text-align: center;
                 line-height: 30px;
                 height: 30px;
                 color: #527696;
-                border: 1px solid #335E93;
-                cursor:pointer;
-                flex:1;
-                &.active{
-                  background-color: #315C8F;
-                  color: #A1FCFF;
+                border: 1px solid #335e93;
+                cursor: pointer;
+                flex: 1;
+                &.active {
+                  background-color: #315c8f;
+                  color: #a1fcff;
                 }
               }
             }
-            .selected{
+            .selected {
               padding: 0;
               display: flex;
               flex-direction: column;
               text-align: left;
               label {
                 margin: 20px 0px 20px 80px;
-                color: #A1FCFF;
+                color: #a1fcff;
               }
             }
           }
         }
-        .el-dialog__footer{
+        .el-dialog__footer {
           padding: 0;
-          >div{
+          > div {
             padding: 20px 0;
             text-align: center;
           }

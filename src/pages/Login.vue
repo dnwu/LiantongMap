@@ -44,10 +44,6 @@ export default {
         {
           name: "admin",
           pass: "666666"
-        },
-        {
-          name: 'boss',
-          pass: '111111'
         }
       ]
     };

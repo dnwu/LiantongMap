@@ -40,9 +40,18 @@
           </div>
           <div class="main-tab2" v-show="!childtabControl">
             <div class="search">
-              <el-input placeholder="输入基站ID搜索" v-model="input5" size="mini" prefix-icon="el-icon-search" class="input-with-select">
+              <!-- <el-input placeholder="输入基站ID搜索" v-model="input5" size="mini" prefix-icon="el-icon-search" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search">搜索</el-button>
-              </el-input>
+              </el-input> -->
+              <el-select v-model="datumId" size="mini" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in datumList"
+                  :key="item[1]"
+                  :label="item[1]"
+                  :value="item[1]">
+                </el-option>
+              </el-select>
+              <el-button slot="append" size="mini" @click="getDatumInfo" icon="el-icon-search">搜索</el-button>
             </div>
             <div class="title">
               <span class="el-icon-loading"></span>
@@ -408,7 +417,9 @@ export default {
       PopulationList: [],
       odOutNumList: [],
       odInNumList: [],
-      commuteInfo: {}
+      commuteInfo: {},
+      datumList: [],
+      datumId: ""
     };
   },
   props: {
@@ -424,12 +435,17 @@ export default {
   },
   methods: {
     totalRequest() {
-      this.getOdInfo(3922);
+      // 請求默認值
+      // this.getOdInfo(3922);
+      // this.getTrendFormData(3922);
       this.getCommuteInfo();
       this.getPopulationList(1);
       this.getOdInNumList(1);
       this.getOdOutNumList(1);
-      this.getTrendFormData(3922);
+    },
+    getDatumInfo() {
+      this.getOdInfo(this.datumId);
+      this.getTrendFormData(this.datumId);
     },
     trendForm(inData, outData) {
       let dom = this.$refs.trendForm;
@@ -638,6 +654,10 @@ export default {
         .then(data => {
           console.log("PopulationList", data);
           this.PopulationList = data.data.data;
+          this.datumList = data.data.data.list;
+          var defaultId = this.datumList[0][1]
+          this.getOdInfo(defaultId);
+          this.getTrendFormData(defaultId);
         });
     },
     getOdInNumList(page) {
@@ -824,14 +844,18 @@ $backgroundHover: #111d38;
           height: 100%;
           .search {
             padding: 10px 10px;
-            input {
-              background: transparent;
-              border-color: #539593;
-              color: #539593;
-            }
-            .el-input-group__append {
-              background: #78c2ef;
-              color: #336985;
+            display: flex;
+            // input {
+            //   background: transparent;
+            //   border-color: #539593;
+            //   color: #539593;
+            // }
+            // .el-input-group__append {
+            //   background: #78c2ef;
+            //   color: #336985;
+            // }
+            .el-select {
+              flex: 1;
             }
           }
           .title {
