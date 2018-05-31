@@ -303,7 +303,8 @@ export default {
           { responseType: "blob" ,
             params: {
               type: this.radio,
-              date: this.time
+              date: this.time,
+              token: 'w'
             }
           }
         )
