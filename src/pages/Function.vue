@@ -93,17 +93,17 @@ export default {
             color: "#fff"
           },
           // categories:['商业区','工作区','住宅区','混合区'],
-          left: "right",
+          right: 24,
           bottom: 'bottom',
-          min: 10,
-          max: 40,
+          // min: 10,
+          // max: 40,
           // inRange: {
           //   // 商业区10, 工作区20, 住宅区30 ,混合区40
           //   color: ["red", "green", "blue", "yellow"]
           // },
           // text: ["High", "Low"], // 文本，默认为数值文本
           calculable: true,
-          zlevel: 9999
+          zlevel: 99
         },
         series: [
           {
