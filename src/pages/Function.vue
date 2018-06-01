@@ -7,8 +7,8 @@
 export default {
   data() {
     return {
-      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
     };
   },
   props: {
@@ -31,10 +31,12 @@ export default {
       };
     },
     getGeoJson() {
-      this.axios.get("/static/geojson/voronoi_Project2-2.json").then(geojson => {
-        this.echarts.registerMap("gongneng", geojson.data);
-        this.getMapData(this.url, this.time);
-      });
+      this.axios
+        .get("/static/geojson/voronoi_Project2-2.json")
+        .then(geojson => {
+          this.echarts.registerMap("gongneng", geojson.data);
+          this.getMapData(this.url, this.time);
+        });
     },
     getMapData(url, time) {
       this.myChart.showLoading();
@@ -50,9 +52,10 @@ export default {
           }
           // console.log('data',data);
           // this.drawmap(data.data);
-        }).catch(e => {
-          this.drawmap([])
         })
+        .catch(e => {
+          this.drawmap([]);
+        });
     },
     drawmap(data) {
       var option = {
@@ -60,7 +63,6 @@ export default {
           // show: true,
           // map: "gongneng",
           // roam: true,
-
           // itemStyle: {
           //   areaColor: "skyblue"
           // },
@@ -84,17 +86,17 @@ export default {
           type: "piecewise",
           // splitNumber: 4,
           pieces: [
-            {value: 10, label: '商业区', color: 'red'},
-            {value: 20, label: '工作区', color: 'green'},
-            {value: 30, label: '住宅区', color: 'blue'},
-            {value: 40, label: '混合区', color: 'yellow'},
+            { value: 10, label: "商业区", color: "red" },
+            { value: 20, label: "工作区", color: "green" },
+            { value: 30, label: "住宅区", color: "blue" },
+            { value: 40, label: "混合区", color: "yellow" }
           ],
           textStyle: {
             color: "#fff"
           },
           // categories:['商业区','工作区','住宅区','混合区'],
           right: 24,
-          bottom: 'bottom',
+          bottom: "bottom",
           // min: 10,
           // max: 40,
           // inRange: {
@@ -162,7 +164,7 @@ export default {
   box-sizing: border-box;
   // padding: 26px;
   position: relative;
-  .mark{
+  .mark {
     position: absolute;
     width: 200px;
     height: 200px;

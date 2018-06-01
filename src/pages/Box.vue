@@ -235,8 +235,8 @@ export default {
   components: { FormNow, FormAfter },
   data() {
     return {
-      // baseUrl: "http://132.102.126.71:6889",
-      baseUrl: "http://10.123.60.101:6889",
+      baseUrl: "http://132.102.126.71:6889",
+      // baseUrl: "http://10.123.60.101:6889",
       radio: "travel",
       exportType: 1,
       dialogVisible: false,
@@ -309,7 +309,9 @@ export default {
           }
         )
         .then(data => {
-          download(data.data, `${this.radio}/${this.time}`);
+          
+          download(data.data, `${this.time}${this.radio}`);
+          this.dialogVisible = false;
         });
     },
     logout() {

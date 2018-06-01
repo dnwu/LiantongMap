@@ -9,8 +9,8 @@ export default {
   name: "Density",
   data() {
     return {
-      // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
+      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
       // url: "/static/density.json?"
     };
   },
@@ -25,7 +25,7 @@ export default {
     }
   },
   created() {
-    console.log(this.time,'prop')
+    console.log(this.time, "prop");
     this.$nextTick(() => {
       this.initDom();
       this.getGeoJson();
@@ -59,6 +59,9 @@ export default {
           }
           // console.log('data',data);
           // this.drawmap(data.data);
+        })
+        .catch(e => {
+          this.drawmap([]);
         });
     },
     drawmap(data) {
@@ -130,23 +133,19 @@ export default {
           regionHeight: 2
         },
         visualMap: {
-          max: 16,
+          max: 1000,
           calculable: true,
           realtime: false,
           left: "10",
           top: "10",
           inRange: {
-            color: [
-              "green",
-              "#fee090",
-              "#a50026"
-            ]
+            color: ["green", "#fee090", "#a50026"]
           },
           outOfRange: {
             colorAlpha: 0
           },
           textStyle: {
-            color:"#fff"
+            color: "#fff"
           }
         },
         series: [

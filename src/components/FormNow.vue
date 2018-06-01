@@ -202,7 +202,7 @@
             <div class="left">
               <div class="title">工作区全市百分比比例</div>
               <div class="content">
-                <el-progress type="circle" color="#8e71c7" :width='100' :percentage="commuteInfo.total.workplace.percentage"></el-progress>
+                <el-progress type="circle" color="#8e71c7" :width='100' :percentage="66"></el-progress>
               </div>
             </div>
             <div class="right">
@@ -235,7 +235,7 @@
             <div class="left">
               <div class="title">住宅区全市百分比比例</div>
               <div class="content">
-                <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.residence.percentage"></el-progress>
+                <el-progress type="circle" :width='100' color="#8e71c7" :percentage="43"></el-progress>
               </div>
             </div>
             <div class="right">
@@ -411,8 +411,8 @@ export default {
       input5: "3922",
       odInfo: {},
       tabControl: "population",
-      // baseUrl: "http://132.102.126.71:6889",
-      baseUrl: "http://10.123.60.101:6889",
+      baseUrl: "http://132.102.126.71:6889",
+      // baseUrl: "http://10.123.60.101:6889",
       childtabControl: true,
       PopulationList: [],
       odOutNumList: [],
