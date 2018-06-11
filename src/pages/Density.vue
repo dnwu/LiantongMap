@@ -9,7 +9,8 @@ export default {
   name: "Density",
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
+      url:
+        "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
       // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
       // url: "/static/density.json?"
     };
@@ -136,7 +137,7 @@ export default {
           max: 1000,
           calculable: true,
           realtime: false,
-          left: "10",
+          right: "20",
           top: "10",
           inRange: {
             color: ["green", "#fee090", "#a50026"]

@@ -81,7 +81,7 @@ export default {
           max: 1000,
           calculable: true,
           realtime: false,
-          left: "10",
+          right: "20",
           top: "10",
           inRange: {
             color: ["green", "#fee090", "#a50026"]

@@ -5,6 +5,7 @@
       <div class="od-tab" @click="changeTab('od')"  :class="tabControl == 'od'?'active':''">OD</div>
       <div class="commute-tab" @click="changeTab('commute')"  :class="tabControl == 'commute'?'active':''">职住</div>
       <div class="function-tab" @click="changeTab('function')"  :class="tabControl == 'function'?'active':''">功能区</div>
+      <div class="count-tab" @click="changeTab('count')"  :class="tabControl == 'count'?'active':''">统计数据</div>
     </div>
     <div class="contain">
       <div class="population-tab" v-show="tabControl == 'population'?true:false">
@@ -400,6 +401,45 @@
           </div>
         </div>
       </div>
+      <div class="count-tab" v-show="tabControl == 'count'?true:false">
+        <div class="city">深圳全市</div>
+        <div class="select">
+          <div class="area">
+            <el-select v-model="area" size="mini" placeholder="请选择">
+              <el-option
+                v-for="item in areas"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="street">
+            <el-select v-model="street" size="mini" placeholder="请选择">
+              <el-option
+                v-for="item in streets"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="result">
+          <div>
+            <div class="key">人口数量</div>
+            <div class="value">1151</div>
+          </div>
+          <div>
+            <div class="key">人口出行量</div>
+            <div class="value">1151</div>
+          </div>
+          <div>
+            <div class="key">人口进入量</div>
+            <div class="value">1151</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -419,7 +459,21 @@ export default {
       odInNumList: [],
       commuteInfo: {},
       datumList: [],
-      datumId: ""
+      datumId: "",
+      areas: [
+        {
+          value: "全部",
+          label: "全部"
+        }
+      ],
+      area: "全部",
+      streets: [
+        {
+          value: "全部",
+          label: "全部"
+        }
+      ],
+      street: "全部"
     };
   },
   props: {
@@ -655,7 +709,7 @@ export default {
           console.log("PopulationList", data);
           this.PopulationList = data.data.data;
           this.datumList = data.data.data.list;
-          var defaultId = this.datumList[0][1]
+          var defaultId = this.datumList[0][1];
           this.getOdInfo(defaultId);
           this.getTrendFormData(defaultId);
         });
@@ -1080,6 +1134,43 @@ $backgroundHover: #111d38;
                 flex: 1;
               }
             }
+          }
+        }
+      }
+    }
+    .count-tab {
+      .city {
+        height: 30px;
+        background: linear-gradient(to right, #17a2bf, #233e8b);
+        color: #fff;
+        margin: 0 16px;
+        line-height: 30px;
+        text-align: center;
+      }
+      .select{
+        display: flex;
+        padding: 10px 16px;
+        justify-content: space-between;
+      }
+      .result{
+        border: 1px solid #fff;
+        margin: 16px;
+        color: #FFF;
+        >div{
+          display: flex;
+          margin: 10px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          font-size: 14px;
+          .key,.value{
+            flex: 1;
+          }
+          .key{
+            background-color: #064474;
+          }
+          .value{
+            background-color: #2D978B;
           }
         }
       }
