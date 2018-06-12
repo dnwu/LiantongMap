@@ -1,6 +1,18 @@
 <template>
-<div class="flow">
-flow
+<div class="flow-box">
+  <div class="flow">
+  flow
+  </div>
+  <div class="time-checked">
+    <div class="hour-block">
+      <span class="demonstration">小时</span>
+      <el-slider :format-tooltip='hourFormat' @change="hourChange" :max='23' v-model="hour"></el-slider>
+    </div>
+    <div class="minute-block">
+      <span class="demonstration">分时</span>
+      <el-slider :format-tooltip='minuteFormat' @change="minuteChange" :max="50" :step='10' v-model="minute"></el-slider>
+    </div>
+  </div>
 </div>
 </template>
 <script>
@@ -9,7 +21,9 @@ export default {
     return {
       // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
       // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
-      url: "/static/flow.json"
+      url: "/static/flow.json",
+      hour: 0,
+      minute: 0
     };
   },
   props: {
@@ -29,6 +43,20 @@ export default {
     });
   },
   methods: {
+    hourFormat(v) {
+      return v<10?`0${v}`:v
+    },
+    minuteFormat(v) {
+      return v<10?`0${v}`:v
+    },
+    hourChange() {
+      this.hour = this.hour < 10?`0${this.hour}`:this.hour
+      console.log(this.hour);
+    },
+    minuteChange() {
+      this.minute = this.minute < 10?`0${this.minute}`:this.minute
+      console.log(this.minute);
+    },
     initDom() {
       this.myChart = this.echarts.init(document.querySelector(".flow"));
       this.myChart.showLoading();
@@ -120,12 +148,40 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.flow {
+.flow-box{
   width: 100%;
   height: 100%;
-  background-color: #111c38;
-  background-clip: content-box;
-  box-sizing: border-box;
-  // padding: 26px;
+  position: relative;
+  .flow {
+    width: 100%;
+    height: 100%;
+    background-color: #111c38;
+    background-clip: content-box;
+    box-sizing: border-box;
+    // padding: 26px;
+  }
+  .time-checked{
+    position: absolute;
+    width: 500px;
+    // height: 90px;
+    background-color: rgba(16,48,97,0.4);
+    padding:0 20px;
+    top: 20px;
+    left: 20px;
+    border-radius: 20px;
+    >div{
+      height: 30px;
+      line-height: 30px;
+      display: flex;
+      color: #fff;
+      span{
+        margin-right: 20px;
+        width: 40px;
+      }
+      .el-slider{
+        flex: 1;
+      }
+    }
+  }
 }
 </style>
