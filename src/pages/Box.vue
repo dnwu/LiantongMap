@@ -299,17 +299,19 @@ export default {
       console.log(this.time, this.radio);
       this.axios
         .get(
-          `${this.baseUrl}/ivenus/data/api/stream/monitoring/export/exportByStream`,
-          { responseType: "blob" ,
+          `${
+            this.baseUrl
+          }/ivenus/data/api/stream/monitoring/export/exportByStream`,
+          {
+            responseType: "blob",
             params: {
               type: this.radio,
               date: this.time,
-              token: 'w'
+              token: "w"
             }
           }
         )
         .then(data => {
-          
           download(data.data, `${this.time}${this.radio}`);
           this.dialogVisible = false;
         });
@@ -936,68 +938,66 @@ $color: #6ebdcc;
   }
 }
 // 定制模态框样式
-.index {
-  .el-header {
-    .el-dialog__wrapper {
-      .el-dialog {
-        padding: 0;
-        background: transparent;
-        box-shadow: none;
-        background-image: url("../assets/model.png");
-        background-size: 478px 424px;
-        background-repeat: no-repeat;
-        .el-dialog__header {
-          box-sizing: border-box;
-          padding: 10px 0 10px 0;
-          > div {
-            padding: 0;
-            text-align: center;
-            line-height: 50px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-            text-shadow: 0 0 4px 4px #fff;
-          }
-        }
-        .el-dialog__body {
+.export {
+  .el-dialog__wrapper {
+    .el-dialog {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      background-image: url("../assets/model.png");
+      background-size: 478px 360px;
+      background-repeat: no-repeat;
+      .el-dialog__header {
+        box-sizing: border-box;
+        padding: 10px 0 10px 0;
+        > div {
           padding: 0;
-          .body {
-            padding: 0;
-            .tit {
-              padding: 0 20px;
-              display: flex;
-              span {
-                text-align: center;
-                line-height: 30px;
-                height: 30px;
-                color: #527696;
-                border: 1px solid #335e93;
-                cursor: pointer;
-                flex: 1;
-                &.active {
-                  background-color: #315c8f;
-                  color: #a1fcff;
-                }
-              }
-            }
-            .selected {
-              padding: 0;
-              display: flex;
-              flex-direction: column;
-              text-align: left;
-              label {
-                margin: 20px 0px 20px 80px;
+          text-align: center;
+          line-height: 50px;
+          font-size: 20px;
+          font-weight: 700;
+          color: #fff;
+          text-shadow: 0 0 4px 4px #fff;
+        }
+      }
+      .el-dialog__body {
+        padding: 0;
+        .body {
+          padding: 0;
+          .tit {
+            padding: 0 20px;
+            display: flex;
+            span {
+              text-align: center;
+              line-height: 30px;
+              height: 30px;
+              color: #527696;
+              border: 1px solid #335e93;
+              cursor: pointer;
+              flex: 1;
+              &.active {
+                background-color: #315c8f;
                 color: #a1fcff;
               }
             }
           }
-        }
-        .el-dialog__footer {
-          padding: 0;
-          > div {
-            padding: 20px 0;
-            text-align: center;
+          .selected {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            label {
+              margin: 20px 0px 20px 80px;
+              color: #a1fcff;
+            }
           }
+        }
+      }
+      .el-dialog__footer {
+        padding: 0;
+        > div {
+          padding: 20px 0;
+          text-align: center;
         }
       }
     }

@@ -78,7 +78,7 @@ export default {
           }
         },
         visualMap: {
-          max: 1000,
+          max: 0.2,
           calculable: true,
           realtime: false,
           right: "20",

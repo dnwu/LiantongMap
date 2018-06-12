@@ -1,5 +1,11 @@
 <template>
   <div class="form-now">
+    <el-dialog
+      :visible.sync="idPositionVisible"
+      :modal=false
+      :fullscreen = true>
+      <div class="id-position-map" ref="idPositionMap"></div>
+    </el-dialog>
     <div class="title">
       <div class="population-tab" @click="changeTab('population')" :class="tabControl == 'population'?'active':''">人口</div>
       <div class="od-tab" @click="changeTab('od')"  :class="tabControl == 'od'?'active':''">OD</div>
@@ -46,10 +52,10 @@
               </el-input> -->
               <el-select v-model="datumId" size="mini" filterable placeholder="请选择">
                 <el-option
-                  v-for="item in datumList"
-                  :key="item[1]"
-                  :label="item[1]"
-                  :value="item[1]">
+                  v-for="item in datumIdList"
+                  :key="item['id']"
+                  :label="item['id']"
+                  :value="item">
                 </el-option>
               </el-select>
               <el-button slot="append" size="mini" @click="getDatumInfo" icon="el-icon-search">搜索</el-button>
@@ -57,7 +63,8 @@
             <div class="title">
               <span class="el-icon-loading"></span>
               <span>基站</span>
-              <span>{{input5}}</span>
+              <span>{{datumId}}</span>
+              <span @click="showPosition">查看地理位置</span>
             </div>
             <div class="form1">
               <div class="tit"><span>OD起始</span></div>
@@ -203,31 +210,15 @@
             <div class="left">
               <div class="title">工作区全市百分比比例</div>
               <div class="content">
-                <el-progress type="circle" color="#8e71c7" :width='100' :percentage="66"></el-progress>
+                <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.workplace.value"></el-progress>
               </div>
             </div>
             <div class="right">
               <div class="title">工作区比例前五区域</div>
               <div class="content">
-                <div>
-                  <div class="key">福田区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="70"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">宝安区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="80"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">南山区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="40"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">罗湖区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="60"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">龙岗区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="50"></el-progress></div>
+                <div v-for="(item,index) in commuteInfo.total.workplace.detail" :key="index">
+                  <div class="key">{{item.name}}</div>
+                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="item.value"></el-progress></div>
                 </div>
               </div>
             </div>
@@ -236,166 +227,86 @@
             <div class="left">
               <div class="title">住宅区全市百分比比例</div>
               <div class="content">
-                <el-progress type="circle" :width='100' color="#8e71c7" :percentage="43"></el-progress>
+                <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.residence.value"></el-progress>
               </div>
             </div>
             <div class="right">
               <div class="title">住宅区比例前五区域</div>
               <div class="content">
-                <div>
-                  <div class="key">福田区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="70"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">宝安区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="80"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">南山区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="40"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">罗湖区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="60"></el-progress></div>
-                </div>
-                <div>
-                  <div class="key">龙岗区</div>
-                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="50"></el-progress></div>
+                <div v-for="(item,index) in commuteInfo.total.residence.detail" :key="index">
+                  <div class="key">{{item.name}}</div>
+                  <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="item.value"></el-progress></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="function-tab" v-show="tabControl == 'function'?true:false">
+      <div class="function-tab" v-if="'total' in commuteInfo" v-show="tabControl == 'function'?true:false">
         <div class="block">
           <div class="left">
             <div class="title">住宅区全市百分比比例</div>
             <div class="content">
-              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="25"></el-progress>
+              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.residence.value"></el-progress>
             </div>
           </div>
           <div class="right">
             <div class="title">住宅区比例前五区域</div>
             <div class="content">
-              <div>
-                <div class="key">福田区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="70"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">宝安区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="80"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">南山区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="40"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">罗湖区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="60"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">龙岗区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="50"></el-progress></div>
+              <div v-for="(item,index) in commuteInfo.total.residence.detail" :key="index">
+                <div class="key">{{item.name}}</div>
+                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="item.value"></el-progress></div>
               </div>
             </div>
           </div>
         </div>
         <div class="block">
           <div class="left">
-            <div class="title">住宅区全市百分比比例</div>
+            <div class="title">商业区全市百分比比例</div>
             <div class="content">
-              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="25"></el-progress>
+              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.businessArea.value"></el-progress>
             </div>
           </div>
           <div class="right">
-            <div class="title">住宅区比例前五区域</div>
+            <div class="title">商业区比例前五区域</div>
             <div class="content">
-              <div>
-                <div class="key">福田区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="70"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">宝安区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="80"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">南山区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="40"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">罗湖区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="60"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">龙岗区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="50"></el-progress></div>
+              <div v-for="(item,index) in commuteInfo.total.businessArea.detail" :key="index">
+                <div class="key">{{item.name}}</div>
+                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="item.value"></el-progress></div>
               </div>
             </div>
           </div>
         </div>
         <div class="block">
           <div class="left">
-            <div class="title">住宅区全市百分比比例</div>
+            <div class="title">工作区全市百分比比例</div>
             <div class="content">
-              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="25"></el-progress>
+              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.workplace.value"></el-progress>
             </div>
           </div>
           <div class="right">
-            <div class="title">住宅区比例前五区域</div>
+            <div class="title">工作区比例前五区域</div>
             <div class="content">
-              <div>
-                <div class="key">福田区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="70"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">宝安区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="80"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">南山区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="40"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">罗湖区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="60"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">龙岗区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="50"></el-progress></div>
+              <div v-for="(item,index) in commuteInfo.total.workplace.detail" :key="index">
+                <div class="key">{{item.name}}</div>
+                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="item.value"></el-progress></div>
               </div>
             </div>
           </div>
         </div>
         <div class="block">
           <div class="left">
-            <div class="title">住宅区全市百分比比例</div>
+            <div class="title">混合区全市百分比比例</div>
             <div class="content">
-              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="25"></el-progress>
+              <el-progress type="circle" :width='100' color="#8e71c7" :percentage="commuteInfo.total.mixedArea.value"></el-progress>
             </div>
           </div>
           <div class="right">
-            <div class="title">住宅区比例前五区域</div>
+            <div class="title">混合区比例前五区域</div>
             <div class="content">
-              <div>
-                <div class="key">福田区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="70"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">宝安区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="80"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">南山区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="40"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">罗湖区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="60"></el-progress></div>
-              </div>
-              <div>
-                <div class="key">龙岗区</div>
-                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="50"></el-progress></div>
+              <div v-for="(item,index) in commuteInfo.total.mixedArea.detail" :key="index">
+                <div class="key">{{item.name}}</div>
+                <div class="value"><el-progress :show-text="false" :stroke-width="8" :percentage="item.value"></el-progress></div>
               </div>
             </div>
           </div>
@@ -405,7 +316,7 @@
         <div class="city">深圳全市</div>
         <div class="select">
           <div class="area">
-            <el-select v-model="area" size="mini" placeholder="请选择">
+            <el-select @change="areaChange" v-model="area" size="mini" placeholder="请选择">
               <el-option
                 v-for="item in areas"
                 :key="item.value"
@@ -415,7 +326,7 @@
             </el-select>
           </div>
           <div class="street">
-            <el-select v-model="street" size="mini" placeholder="请选择">
+            <el-select @change="streetChange" v-model="street" size="mini" placeholder="请选择">
               <el-option
                 v-for="item in streets"
                 :key="item.value"
@@ -428,15 +339,15 @@
         <div class="result">
           <div>
             <div class="key">人口数量</div>
-            <div class="value">1151</div>
+            <div class="value">{{StatisticalData.den_count}}</div>
           </div>
           <div>
             <div class="key">人口出行量</div>
-            <div class="value">1151</div>
+            <div class="value">{{StatisticalData.original}}</div>
           </div>
           <div>
             <div class="key">人口进入量</div>
-            <div class="value">1151</div>
+            <div class="value">{{StatisticalData.destination}}</div>
           </div>
         </div>
       </div>
@@ -448,7 +359,8 @@ export default {
   name: "form_now",
   data() {
     return {
-      input5: "3922",
+      // input5: "3922",
+      idPositionVisible: false,
       odInfo: {},
       tabControl: "population",
       baseUrl: "http://132.102.126.71:6889",
@@ -460,6 +372,7 @@ export default {
       commuteInfo: {},
       datumList: [],
       datumId: "",
+      datumIdList: [],
       areas: [
         {
           value: "全部",
@@ -473,7 +386,8 @@ export default {
           label: "全部"
         }
       ],
-      street: "全部"
+      street: "全部",
+      StatisticalData:{}
     };
   },
   props: {
@@ -486,8 +400,77 @@ export default {
   },
   created() {
     this.totalRequest();
+    this.$nextTick(() => {
+      this.initDom();
+      this.getGeoJson();
+    });
   },
   methods: {
+    initDom() {
+      this.myChart = this.echarts.init(this.$refs.idPositionMap);
+      this.myChart.showLoading();
+      window.onresize = () => {
+        this.myChart.resize();
+      };
+    },
+    getGeoJson() {
+      this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
+        this.echarts.registerMap("shenzhen", geojson.data);
+        this.drawmap();
+      });
+    },
+    drawmap() {
+      var option = {
+        backgroundColor: "#fff",
+        geo: {
+          map: "shenzhen",
+          center: [114.167287, 22.651127],
+          zoom: 1.5,
+          roam: true,
+          aspectScale: 1,
+          // roam: true,
+          itemStyle: {
+            areaColor: "#1A427D",
+            color: "#1A427D",
+            borderWidth: "1", // 描边
+            borderColor: "#fff"
+          }
+        },
+        series: [
+          {
+            name: "pm2.5",
+            type: "effectScatter",
+            coordinateSystem: "geo",
+            data: [
+              {
+                name: "基站",
+                value: [...this.datumId.position, 100]
+              }
+            ],
+            symbolSize: function(val) {
+              return val[2] / 10;
+            },
+            label: {
+              normal: {
+                formatter: "{b}",
+                position: "right",
+                show: false
+              },
+              emphasis: {
+                show: true
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: "#ddb926"
+              }
+            }
+          }
+        ]
+      };
+      this.myChart.setOption(option);
+      this.myChart.hideLoading();
+    },
     totalRequest() {
       // 請求默認值
       // this.getOdInfo(3922);
@@ -496,10 +479,109 @@ export default {
       this.getPopulationList(1);
       this.getOdInNumList(1);
       this.getOdOutNumList(1);
+      this.getAllAreas();
     },
     getDatumInfo() {
-      this.getOdInfo(this.datumId);
-      this.getTrendFormData(this.datumId);
+      this.getOdInfo(this.datumId.id);
+      this.getTrendFormData(this.datumId.id);
+    },
+    getAllId() {
+      this.axios
+        .get(
+          `${
+            this.baseUrl
+          }/ivenus/data/api/stream/monitoring/station/list_station`,
+          {
+            params: {
+              token: "w"
+            }
+          }
+        )
+        .then(data => {
+          console.log("getAllid", data);
+          this.datumIdList = data.data.data;
+          var defaultId = this.datumList[0]["id"];
+          this.datumId = this.datumList[0];
+          this.getOdInfo(defaultId);
+          this.getTrendFormData(defaultId);
+        });
+    },
+    getAllAreas() {
+      this.axios
+        .get(
+          `${this.baseUrl}/ivenus/data/api/stream/monitoring/station/list_area`,
+          {
+            params: {
+              token: "w"
+            }
+          }
+        )
+        .then(data => {
+          console.log("getAllAreas", data);
+          data.data.data.forEach(ele => {
+            this.areas.push({
+              value: ele,
+              label: ele
+            });
+          });
+        });
+    },
+    getAllStreets(key) {
+      if (key == "全部") {
+        this.streets = [
+          {
+            value: "全部",
+            label: "全部"
+          }
+        ];
+        return;
+      }
+      this.axios
+        .get(
+          `${this.baseUrl}/ivenus/data/api/stream/monitoring/station/list_area`,
+          {
+            params: {
+              token: "w",
+              area_name: key
+            }
+          }
+        )
+        .then(data => {
+          console.log("getAllStreets", data);
+          data.data.data.forEach(ele => {
+            this.streets.push({
+              value: ele,
+              label: ele
+            });
+          });
+        });
+    },
+    async areaChange() {
+      await this.getAllStreets(this.area)
+      this.getStatisticalData()
+    },
+    streetChange() {
+      this.getStatisticalData()
+    },
+    getStatisticalData() {
+      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/station/countByCondition`,{
+        params: {
+          token: 'w',
+          area_name: this.area,
+          street_name: this.street,
+          date: this.time
+        }
+      }).then(data => {
+        console.log('getStatisticalData',data)
+        this.StatisticalData = data.data.data
+      })
+    },
+    showPosition() {
+      this.idPositionVisible = true;
+      this.$nextTick(() => {
+        this.initDom();
+        this.getGeoJson();
+      });
     },
     trendForm(inData, outData) {
       let dom = this.$refs.trendForm;
@@ -708,10 +790,6 @@ export default {
         .then(data => {
           console.log("PopulationList", data);
           this.PopulationList = data.data.data;
-          this.datumList = data.data.data.list;
-          var defaultId = this.datumList[0][1];
-          this.getOdInfo(defaultId);
-          this.getTrendFormData(defaultId);
         });
     },
     getOdInNumList(page) {
@@ -928,6 +1006,11 @@ $backgroundHover: #111d38;
             }
             span:nth-of-type(3) {
               margin-left: 20px;
+            }
+            span:nth-of-type(4) {
+              margin-left: 20px;
+              font-size: 14px;
+              cursor: pointer;
             }
           }
           .form1 {
@@ -1147,30 +1230,31 @@ $backgroundHover: #111d38;
         line-height: 30px;
         text-align: center;
       }
-      .select{
+      .select {
         display: flex;
         padding: 10px 16px;
         justify-content: space-between;
       }
-      .result{
+      .result {
         border: 1px solid #fff;
         margin: 16px;
-        color: #FFF;
-        >div{
+        color: #fff;
+        > div {
           display: flex;
           margin: 10px;
           height: 30px;
           line-height: 30px;
           text-align: center;
           font-size: 14px;
-          .key,.value{
+          .key,
+          .value {
             flex: 1;
           }
-          .key{
+          .key {
             background-color: #064474;
           }
-          .value{
-            background-color: #2D978B;
+          .value {
+            background-color: #2d978b;
           }
         }
       }
@@ -1201,6 +1285,21 @@ $color: #6ebdcc;
       color: $color;
       &.active {
         color: #fff;
+      }
+    }
+  }
+}
+// 定制模态框
+.form-now {
+  .el-dialog__wrapper {
+    .el-dialog {
+      display: flex;
+      flex-direction: column;
+      .el-dialog__body {
+        flex: 1;
+        .id-position-map {
+          height: 100%;
+        }
       }
     }
   }

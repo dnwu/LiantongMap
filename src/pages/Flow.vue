@@ -7,8 +7,9 @@ flow
 export default {
   data() {
     return {
-      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info?token=w&date=2017-12-19&hour=",
-      url: '/static/flow.json'
+      // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
+      url: "/static/flow.json"
     };
   },
   props: {
@@ -16,6 +17,9 @@ export default {
       type: Array,
       default: [0, 1],
       required: true
+    },
+    time: {
+      type: String
     }
   },
   created() {
@@ -43,7 +47,15 @@ export default {
       this.axios
         .get(
           //url + slider[0]
-         url
+          url,
+          {
+            params: {
+              token: 'w',
+              date: this.time,
+              hour: this.hour,
+              minute: this.minute
+            }
+          }
         )
         .then(data => {
           // console.log('213213',data.data); // [[[],[]],[[],[]]]
@@ -61,6 +73,7 @@ export default {
           map: "shenzhen",
           center: [114.167287, 22.651127],
           zoom: 1.5,
+          roam: true,
           aspectScale: 1,
           // roam: true,
           itemStyle: {
@@ -68,7 +81,7 @@ export default {
             color: "#1A427D",
             borderWidth: "1", // 描边
             borderColor: "#fff"
-          },
+          }
         },
         series: [
           {
@@ -83,7 +96,7 @@ export default {
             // gridHeight: windData.ny,
             itemStyle: {
               opacity: 1,
-              color: '#fff'
+              color: "#fff"
             }
           }
         ]
@@ -110,7 +123,7 @@ export default {
 .flow {
   width: 100%;
   height: 100%;
-  background-color: #111C38;
+  background-color: #111c38;
   background-clip: content-box;
   box-sizing: border-box;
   // padding: 26px;
