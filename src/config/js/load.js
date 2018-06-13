@@ -10,7 +10,7 @@ export function download(data, name) {
   var href = window.URL.createObjectURL(blob);
   downloadElement.href = href;
   // 下载后文件名
-  downloadElement.download = `${name}.xlsx`;
+  downloadElement.download = `${name}.xls`;
   document.body.appendChild(downloadElement);
   // 点击下载
   downloadElement.click();

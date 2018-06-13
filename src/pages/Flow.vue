@@ -20,8 +20,8 @@ export default {
   data() {
     return {
       // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
-      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
-      url: "/static/flow.json",
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
+      // url: "/static/flow.json",
       hour: 0,
       minute: 0
     };
@@ -50,12 +50,10 @@ export default {
       return v<10?`0${v}`:v
     },
     hourChange() {
-      this.hour = this.hour < 10?`0${this.hour}`:this.hour
-      console.log(this.hour);
+      this.getMapData(this.url, this.slider);
     },
     minuteChange() {
-      this.minute = this.minute < 10?`0${this.minute}`:this.minute
-      console.log(this.minute);
+      this.getMapData(this.url, this.slider);
     },
     initDom() {
       this.myChart = this.echarts.init(document.querySelector(".flow"));
@@ -71,6 +69,8 @@ export default {
       });
     },
     getMapData(url, slider) {
+      let hour = this.hour < 10?`0${this.hour}`:this.hour
+      let minute = this.minute < 10?`0${this.minute}`:this.minute
       this.myChart.showLoading();
       this.axios
         .get(
@@ -80,8 +80,8 @@ export default {
             params: {
               token: 'w',
               date: this.time,
-              hour: this.hour,
-              minute: this.minute
+              hour: hour,
+              minute: minute
             }
           }
         )
@@ -91,7 +91,7 @@ export default {
             this.drawmap(data.data.data);
           }
           // console.log('data',data);
-          this.drawmap(data.data);
+          // this.drawmap(data.data);
         });
     },
     drawmap(data) {

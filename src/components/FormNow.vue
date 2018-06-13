@@ -363,8 +363,8 @@ export default {
       idPositionVisible: false,
       odInfo: {},
       tabControl: "population",
-      baseUrl: "http://132.102.126.71:6889",
-      // baseUrl: "http://10.123.60.101:6889",
+      // baseUrl: "http://132.102.126.71:6889",
+      baseUrl: "http://10.123.60.101:6889",
       childtabControl: true,
       PopulationList: [],
       odOutNumList: [],
@@ -387,7 +387,7 @@ export default {
         }
       ],
       street: "全部",
-      StatisticalData:{}
+      StatisticalData: {}
     };
   },
   props: {
@@ -400,10 +400,6 @@ export default {
   },
   created() {
     this.totalRequest();
-    this.$nextTick(() => {
-      this.initDom();
-      this.getGeoJson();
-    });
   },
   methods: {
     initDom() {
@@ -527,54 +523,63 @@ export default {
         });
     },
     getAllStreets(key) {
-      if (key == "全部") {
-        this.streets = [
-          {
-            value: "全部",
-            label: "全部"
-          }
-        ];
-        return;
+      this.streets = [
+        {
+          value: "全部",
+          label: "全部"
+        }
+      ];
+      if (key !== "全部") {
+        this.axios
+          .get(
+            `${
+              this.baseUrl
+            }/ivenus/data/api/stream/monitoring/station/list_street`,
+            {
+              params: {
+                token: "w",
+                area_name: key
+              }
+            }
+          )
+          .then(data => {
+            console.log("getAllStreets", data);
+            data.data.data.forEach(ele => {
+              this.streets.push({
+                value: ele,
+                label: ele
+              });
+            });
+          });
       }
+    },
+    areaChange() {
+      console.log(this.area);
+      this.getAllStreets(this.area);
+      this.getStatisticalData();
+    },
+    streetChange() {
+      this.getStatisticalData();
+    },
+    getStatisticalData() {
       this.axios
         .get(
-          `${this.baseUrl}/ivenus/data/api/stream/monitoring/station/list_area`,
+          `${
+            this.baseUrl
+          }/ivenus/data/api/stream/monitoring/station/countByCondition`,
           {
             params: {
               token: "w",
-              area_name: key
+              area_name: this.area,
+              street_name: this.street,
+              date: this.time
             }
           }
         )
         .then(data => {
-          console.log("getAllStreets", data);
-          data.data.data.forEach(ele => {
-            this.streets.push({
-              value: ele,
-              label: ele
-            });
-          });
+          console.log("getStatisticalData", data);
+          this.StatisticalData = data.data.data;
         });
-    },
-    async areaChange() {
-      await this.getAllStreets(this.area)
-      this.getStatisticalData()
-    },
-    streetChange() {
-      this.getStatisticalData()
-    },
-    getStatisticalData() {
-      this.axios.get(`${this.baseUrl}/ivenus/data/api/stream/monitoring/station/countByCondition`,{
-        params: {
-          token: 'w',
-          area_name: this.area,
-          street_name: this.street,
-          date: this.time
-        }
-      }).then(data => {
-        console.log('getStatisticalData',data)
-        this.StatisticalData = data.data.data
-      })
     },
     showPosition() {
       this.idPositionVisible = true;
