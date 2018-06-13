@@ -1,6 +1,12 @@
 <template>
-<div class="function">
-  <div class="mark"></div>
+<div class="function-box">
+  <div class="function"></div>
+  <div class="explain">
+    <div><img src="../assets/blue.png" alt=""></div>
+    <div><img src="../assets/green.png" alt=""></div>
+    <div><img src="../assets/red.png" alt=""></div>
+    <div><img src="../assets/yellow.png" alt=""></div>
+  </div> 
 </div>
 </template>
 <script>
@@ -8,7 +14,8 @@ export default {
   data() {
     return {
       // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      url:
+        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
     };
   },
   props: {
@@ -81,6 +88,7 @@ export default {
           //   }
           // ]
         },
+        
         visualMap: {
           // show:false,
           type: "piecewise",
@@ -156,22 +164,32 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.function {
+.function-box{
   width: 100%;
   height: 100%;
-  // background-color: yellowgreen;
-  background-clip: content-box;
-  box-sizing: border-box;
-  // padding: 26px;
   position: relative;
-  .mark {
+  .function {
+    width: 100%;
+    height: 100%;
+    // background-color: yellowgreen;
+    background-clip: content-box;
+    box-sizing: border-box;
+    // padding: 26px;
+  }
+  .explain{
     position: absolute;
-    width: 200px;
-    height: 200px;
-    background-color: yellowgreen;
-    right: 0;
-    bottom: 0;
-    z-index: 99999;
+    width: 100%;
+    height: 150px;
+    top: 0;
+    left: 0;
+    display: flex;
+    div{
+      margin: 0 10px;
+      img{
+        width: 180px;
+        height: 180px;
+      }
+    }
   }
 }
 </style>

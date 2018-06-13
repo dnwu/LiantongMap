@@ -10,7 +10,8 @@ export default {
   data() {
     return {
       // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
+      url:
+        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
       // url: "/static/density.json?"
     };
   },
@@ -131,6 +132,14 @@ export default {
           },
 
           regionHeight: 2
+        },
+        title: {
+          text: "人口密度",
+          subtext: "柱状图高度代表人口密度，柱状图密集度表示基站分布情况",
+          textStyle: {
+            color: "#6ebdcc"
+          },
+          left: "center"
         },
         visualMap: {
           max: 0.2,

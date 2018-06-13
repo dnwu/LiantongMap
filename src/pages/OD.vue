@@ -10,7 +10,8 @@ export default {
   data() {
     return {
       // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
+      url:
+        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
       // url:"/static/test.json"
     };
   },
@@ -113,7 +114,15 @@ export default {
           // },
           regionHeight: 3
         },
-
+        title: {
+          text: "OD出行",
+          subtext:
+            "图中线条表示用户出发到达地连线，并不表示实际路径",
+          textStyle: {
+            color: "#6ebdcc"
+          },
+          left: "center"
+        },
         series: [
           {
             name: "深圳",

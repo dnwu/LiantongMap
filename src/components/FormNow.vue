@@ -63,7 +63,7 @@
             <div class="title">
               <span class="el-icon-loading"></span>
               <span>基站</span>
-              <span>{{datumId}}</span>
+              <span>{{datumId.id}}</span>
               <span @click="showPosition">查看地理位置</span>
             </div>
             <div class="form1">
@@ -475,7 +475,9 @@ export default {
       this.getPopulationList(1);
       this.getOdInNumList(1);
       this.getOdOutNumList(1);
+      this.getAllId()
       this.getAllAreas();
+      this.getAllStreets('全部')
     },
     getDatumInfo() {
       this.getOdInfo(this.datumId.id);
@@ -496,13 +498,14 @@ export default {
         .then(data => {
           console.log("getAllid", data);
           this.datumIdList = data.data.data;
-          var defaultId = this.datumList[0]["id"];
-          this.datumId = this.datumList[0];
+          var defaultId = this.datumIdList[0]["id"];
+          this.datumId = this.datumIdList[0];
           this.getOdInfo(defaultId);
           this.getTrendFormData(defaultId);
         });
     },
     getAllAreas() {
+      this.street = '全部'
       this.axios
         .get(
           `${this.baseUrl}/ivenus/data/api/stream/monitoring/station/list_area`,
@@ -1297,6 +1300,7 @@ $color: #6ebdcc;
 // 定制模态框
 .form-now {
   .el-dialog__wrapper {
+    z-index: 9999;
     .el-dialog {
       display: flex;
       flex-direction: column;

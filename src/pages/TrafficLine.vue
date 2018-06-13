@@ -8,7 +8,8 @@ export default {
   data() {
     return {
       // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&"
+      url:
+        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/corridor/corridor_info?token=w&"
       // url: "/static/trafficline.json?"
     };
   },
@@ -104,7 +105,14 @@ export default {
 
           regionHeight: 0.5
         },
-
+        title: {
+          text: "交通走廊",
+          subtext: "表示城市某个区域内吸引并运输多数交通负荷的空间走廊，并不代表实际路径",
+          textStyle: {
+            color: "#6ebdcc"
+          },
+          left: "center"
+        },
         series: [
           {
             type: "lines3D",
@@ -134,9 +142,9 @@ export default {
 
       this.myChart.setOption(option);
       this.myChart.hideLoading();
-      var _this= this
+      var _this = this;
       window.addEventListener("keydown", function() {
-       _this.myChart.dispatchAction({
+        _this.myChart.dispatchAction({
           type: "lines3DToggleEffect",
           seriesIndex: 0
         });

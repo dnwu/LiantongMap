@@ -20,7 +20,8 @@ export default {
   data() {
     return {
       // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
+      url:
+        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
       // url: "/static/flow.json",
       hour: 0,
       minute: 0
@@ -44,10 +45,10 @@ export default {
   },
   methods: {
     hourFormat(v) {
-      return v<10?`0${v}`:v
+      return v < 10 ? `0${v}` : v;
     },
     minuteFormat(v) {
-      return v<10?`0${v}`:v
+      return v < 10 ? `0${v}` : v;
     },
     hourChange() {
       this.getMapData(this.url, this.slider);
@@ -69,8 +70,8 @@ export default {
       });
     },
     getMapData(url, slider) {
-      let hour = this.hour < 10?`0${this.hour}`:this.hour
-      let minute = this.minute < 10?`0${this.minute}`:this.minute
+      let hour = this.hour < 10 ? `0${this.hour}` : this.hour;
+      let minute = this.minute < 10 ? `0${this.minute}` : this.minute;
       this.myChart.showLoading();
       this.axios
         .get(
@@ -78,7 +79,7 @@ export default {
           url,
           {
             params: {
-              token: 'w',
+              token: "w",
               date: this.time,
               hour: hour,
               minute: minute
@@ -110,6 +111,15 @@ export default {
             borderWidth: "1", // 描边
             borderColor: "#fff"
           }
+        },
+        title: {
+          text: "潮汐运动",
+          subtext:
+            "本图展现人口在不同区域之间的流动聚集趋势，呈现深圳市人口移动的完整网络",
+          textStyle: {
+            color: "#6ebdcc"
+          },
+          left: "center"
         },
         series: [
           {
@@ -148,7 +158,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.flow-box{
+.flow-box {
   width: 100%;
   height: 100%;
   position: relative;
@@ -160,25 +170,25 @@ export default {
     box-sizing: border-box;
     // padding: 26px;
   }
-  .time-checked{
+  .time-checked {
     position: absolute;
     width: 500px;
     // height: 90px;
-    background-color: rgba(16,48,97,0.4);
-    padding:0 20px;
+    background-color: rgba(16, 48, 97, 0.4);
+    padding: 0 20px;
     top: 20px;
     left: 20px;
     border-radius: 20px;
-    >div{
+    > div {
       height: 30px;
       line-height: 30px;
       display: flex;
       color: #fff;
-      span{
+      span {
         margin-right: 20px;
         width: 40px;
       }
-      .el-slider{
+      .el-slider {
         flex: 1;
       }
     }

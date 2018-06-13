@@ -857,7 +857,7 @@ $backgroundHover: #111d38;
           }
         }
         .form-slider {
-          z-index: 999;
+          z-index: 1002;
           position: absolute;
           right: -432px;
           width: 450px;
