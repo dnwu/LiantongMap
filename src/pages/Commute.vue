@@ -7,8 +7,8 @@
 export default {
   data() {
     return {
-      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
+      // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/commuter/commuter_info?token=w&"
       // url: "/static/commute.json?"
     };
   },
@@ -87,7 +87,7 @@ export default {
         },
         title: {
           text:'通勤指数',
-          subtext: "(0到1代表流出,值越大表示流出越大,0到-1表示流入,绝对值越大表示流入越大)",
+          subtext: "(通勤指数指数越大，表示工作属性越强，通勤指数越小，表示居住属性越强)",
           textStyle: {
             color: '#6ebdcc'
           },

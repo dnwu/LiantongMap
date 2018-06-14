@@ -19,9 +19,8 @@
 export default {
   data() {
     return {
-      // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
-      url:
-        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
+      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
+      // url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/ocean/ocean_info",
       // url: "/static/flow.json",
       hour: 0,
       minute: 0

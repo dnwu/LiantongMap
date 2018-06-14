@@ -25,7 +25,7 @@
               <li>排名</li>
               <li>区域ID</li>
               <li>人口密度</li>
-              <li>交通语义</li>
+              <li>人流总量</li>
             </ul>
             <div class="list-contain">
               <ul class="list" v-for="(item,index) in PopulationList.list" :key="index">
@@ -363,8 +363,8 @@ export default {
       idPositionVisible: false,
       odInfo: {},
       tabControl: "population",
-      // baseUrl: "http://132.102.126.71:6889",
-      baseUrl: "http://10.123.60.101:6889",
+      baseUrl: "http://132.102.126.71:6889",
+      // baseUrl: "http://10.123.60.101:6889",
       childtabControl: true,
       PopulationList: [],
       odOutNumList: [],
@@ -416,6 +416,7 @@ export default {
       });
     },
     drawmap() {
+      this.$refs.idPositionMap.style.height = "100%";
       var option = {
         backgroundColor: "#fff",
         geo: {
@@ -478,6 +479,7 @@ export default {
       this.getAllId()
       this.getAllAreas();
       this.getAllStreets('全部')
+      this.getStatisticalData()
     },
     getDatumInfo() {
       this.getOdInfo(this.datumId.id);
@@ -499,7 +501,7 @@ export default {
           console.log("getAllid", data);
           this.datumIdList = data.data.data;
           var defaultId = this.datumIdList[0]["id"];
-          this.datumId = this.datumIdList[0];
+          // this.datumId = this.datumIdList[0];
           this.getOdInfo(defaultId);
           this.getTrendFormData(defaultId);
         });

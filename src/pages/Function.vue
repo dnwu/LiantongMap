@@ -2,10 +2,10 @@
 <div class="function-box">
   <div class="function"></div>
   <div class="explain">
-    <div><img src="../assets/blue.png" alt=""></div>
-    <div><img src="../assets/green.png" alt=""></div>
-    <div><img src="../assets/red.png" alt=""></div>
-    <div><img src="../assets/yellow.png" alt=""></div>
+    <div><img src="../assets/business.png" alt=""></div>
+    <div><img src="../assets/work.png" alt=""></div>
+    <div><img src="../assets/live.png" alt=""></div>
+    <div><img src="../assets/mix.png" alt=""></div>
   </div> 
 </div>
 </template>
@@ -13,9 +13,8 @@
 export default {
   data() {
     return {
-      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
-      url:
-        "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      //url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
     };
   },
   props: {
@@ -93,11 +92,12 @@ export default {
           // show:false,
           type: "piecewise",
           // splitNumber: 4,
+          //    
           pieces: [
-            { value: 10, label: "商业区", color: "red" },
-            { value: 20, label: "工作区", color: "green" },
-            { value: 30, label: "住宅区", color: "blue" },
-            { value: 40, label: "混合区", color: "yellow" }
+            { value: 40, label: "混合区", color: "#FC8F00" },
+            { value: 30, label: "居住区", color: "#00AA65" },
+            { value: 20, label: "工作区", color: "#008AD4" },
+            { value: 10, label: "商业区", color: "#FF5571" }
           ],
           textStyle: {
             color: "#fff"
@@ -186,8 +186,8 @@ export default {
     div{
       margin: 0 10px;
       img{
-        width: 180px;
-        height: 180px;
+        width: 100px;
+        height: 100px;
       }
     }
   }
