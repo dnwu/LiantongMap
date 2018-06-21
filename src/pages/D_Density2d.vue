@@ -1,5 +1,5 @@
 <template>
-<div class="density2d">
+<div class="d_density">
   Density
 </div>
 </template>
@@ -9,7 +9,8 @@ export default {
   name: "Density",
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
+      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/count_by_cell"
+      // url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
       // url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
       // url: "/static/density.json?"
     };
@@ -32,7 +33,7 @@ export default {
   },
   methods: {
     initDom() {
-      this.myChart = this.echarts.init(document.querySelector(".density2d"));
+      this.myChart = this.echarts.init(document.querySelector(".d_density"));
       this.myChart.showLoading();
       window.onresize = () => {
         this.myChart.resize();
@@ -49,7 +50,16 @@ export default {
       this.axios
         .get(
           // url + slider[0]
-          url + `date=${time}&hour=${slider[0]}`
+          // url + `date=${time}&hour=${slider[0]}`
+          url, 
+          {
+            params: {
+              token: "w",
+              date: time,
+              type: 'in',
+              hour: slider[0]
+            }
+          }
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
@@ -78,7 +88,7 @@ export default {
           }
         },
         visualMap: {
-          max: 500,
+          max: 0.2,
           calculable: true,
           realtime: false,
           right: "20",
@@ -123,7 +133,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.density2d {
+.d_density   {
   width: 100%;
   height: 100%;
   background-color: yellowgreen;

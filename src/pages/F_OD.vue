@@ -1,5 +1,5 @@
 <template>
-<div class="od">
+<div class="f-od">
 </div>
 </template>
 <script>
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     initDom() {
-      this.myChart = this.echarts.init(document.querySelector(".od"));
+      this.myChart = this.echarts.init(document.querySelector(".f-od"));
       this.myChart.showLoading();
       window.onresize = () => {
         this.myChart.resize();
@@ -143,6 +143,15 @@ export default {
               opacity: 0.05
               // color:'red'  //线条颜色
             },
+
+            // 113.884583,22.584793
+            // 114.264602,22.626966
+            // 114.082353,22.818978
+            // 114.085803,22.542074
+            // data: [
+            //   [[113.884583, 22.584793], [114.264602, 22.626966]],
+            //   [[114.082353, 22.818978], [114.085803, 22.542074]]
+            // ],
             data: data
           }
         ]
@@ -172,7 +181,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.od {
+.f-od {
   width: 100%;
   height: 100%;
   // background-color: yellowgreen;

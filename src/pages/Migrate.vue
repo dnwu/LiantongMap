@@ -1,15 +1,23 @@
 <template>
-<div class="od">
+<div class="migrate-box">
+  <div class="migrate">
+  </div>
+  <div class="tab">
+    <div class="morning" @click="changeType('early')">早高峰</div>
+    <div class="night" @click="changeType('late')">晚高峰</div>
+  </div>
 </div>
 </template>
 <script>
 // require("../map/js/world.js");
 // import flightData from "../json/test.json";
 export default {
-  name: "OD",
+  name: "migrate",
   data() {
     return {
-      url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
+      type: 'early',
+      url: 'http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/migrate'
+      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
       //url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
       // url:"/static/test.json"
     };
@@ -31,8 +39,12 @@ export default {
     });
   },
   methods: {
+    changeType(type) {
+      this.type = type
+      this.getMapData(this.url, this.time, this.type)
+    },
     initDom() {
-      this.myChart = this.echarts.init(document.querySelector(".od"));
+      this.myChart = this.echarts.init(document.querySelector(".migrate"));
       this.myChart.showLoading();
       window.onresize = () => {
         this.myChart.resize();
@@ -41,15 +53,23 @@ export default {
     getGeoJson() {
       this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
         this.echarts.registerMap("shenzhen", geojson.data);
-        this.getMapData(this.url, this.time, this.slider);
+        this.getMapData(this.url, this.time, this.type);
       });
     },
-    getMapData(url, time, slider) {
+    getMapData(url, time, type) {
       this.myChart.showLoading();
       this.axios
         .get(
           // url + slider[0] * 2
-          url + `date=${time}&hour=${slider[0] * 2}`
+          // url + `date=${time}&hour=${slider[0] * 2}`
+          url,
+          {
+            params: {
+              token: "w",
+              date: time,
+              timeSlot: type
+            }
+          }
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
@@ -58,6 +78,8 @@ export default {
           }
           // console.log('data',data);
           // this.drawmap(data.data)
+        }).catch(data => {
+          this.drawmap([])
         });
     },
     drawmap(data) {
@@ -172,12 +194,43 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.od {
+.migrate-box{
   width: 100%;
   height: 100%;
-  // background-color: yellowgreen;
-  background-clip: content-box;
-  box-sizing: border-box;
-  // padding: 26px;
+  position: relative;
+  .migrate {
+    width: 100%;
+    height: 100%;
+    // background-color: yellowgreen;
+    background-clip: content-box;
+    box-sizing: border-box;
+    // padding: 26px;
+  }
+  .tab{
+    position: absolute;
+    width: 120px;
+    height: 60px;
+    top: 20px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    color:#fff;
+    .morning,.night{
+      z-index: 99999;
+      width: 50px;
+      height: 20px;
+      background-color: red;
+      border-radius: 10px;
+      cursor: pointer; 
+    }
+    .morning{
+      background-color: yellowgreen;
+    }
+    .night{
+      background-color: skyblue;
+    } 
+  }
 }
 </style>

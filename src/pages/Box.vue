@@ -54,9 +54,7 @@
               <transition name="slider">
                 <ul v-show="slider1">
                   <li class="level2"><router-link to="/density">区域人口密度</router-link></li>
-                  <li class="level2"><router-link to="/od">人口迁徙分布</router-link></li>
-                  <li class="level2"><router-link to="/function">地理功能区演化</router-link></li>
-                  <li class="level2"><router-link to="/density2d">街道人口分布</router-link></li>
+                  <li class="level2"><router-link to="/density_jd">街道人口分布</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -65,8 +63,7 @@
               <transition name="slider">
                 <ul v-show="slider2">
                   <li class="level2"><router-link to="/od">OD出行图</router-link></li>
-                  <li class="level2"><router-link to="/od">OD出行链</router-link></li>
-                  <li class="level2"><router-link to="/trafficLine">OD聚类分布</router-link></li>
+                  <li class="level2"><router-link to="/migrate">人口迁徙分布</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -74,8 +71,8 @@
               <div class="title" @click="toggle('slider3')"><span class="info">职网分布</span><span :class="slider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider3">
-                  <li class="level2"><router-link to="/commute">职网分布</router-link></li>
-                  <li class="level2"><router-link to="/od">职住出行分布</router-link></li>
+                  <li class="level2"><router-link to="/commute">职住区域分布</router-link></li>
+                  <li class="level2"><router-link to="/od_ZW">职住出行分布</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -83,9 +80,9 @@
               <div class="title" @click="toggle('slider4')"><span class="info">通勤特征</span><span :class="slider4?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider4">
-                  <li class="level2"><router-link to="/od">OD出行链</router-link></li>
+                  <li class="level2"><router-link to="/O_Density2d">O特征分部</router-link></li>
+                  <li class="level2"><router-link to="/D_Density2d">D特征分部</router-link></li>
                   <li class="level2"><router-link to="/trafficLine">交通走廊</router-link></li>
-                  <li class="level2"><router-link to="/flow">迁徙分布</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -93,8 +90,7 @@
               <div class="title" @click="toggle('slider5')"><span class="info">城市特征</span><span :class="slider5?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider5">
-                  <li class="level2"><router-link to="/commute">职住区域分析</router-link></li>
-                  <li class="level2"><router-link to="/density">街道人口分布</router-link></li>
+                  <li class="level2"><router-link to="/density2d">街道人口分布</router-link></li>
                   <li class="level2"><router-link to="/function">地理功能区域</router-link></li>
                   <li class="level2"><router-link to="/flow">潮汐运动</router-link></li>
                 </ul>
@@ -106,7 +102,7 @@
               <div class="title" @click="toggle('forecastSlider1')"><span class="info">人口流动预测</span><span :class="forecastSlider1?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider1">
-                  <li class="level2"><router-link to="/density">人口流动预测</router-link></li>
+                  <li class="level2"><router-link to="/F_OD">人口流动预测</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -114,7 +110,7 @@
               <div class="title" @click="toggle('forecastSlider2')"><span class="info">城市人口演化预测</span><span :class="forecastSlider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider2">
-                  <li class="level2"><router-link to="/od">城市人口演化</router-link></li>
+                  <li class="level2"><router-link to="/F_Density">城市人口演化</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -122,7 +118,7 @@
               <div class="title" @click="toggle('forecastSlider3')"><span class="info">城市特征演化分析</span><span :class="forecastSlider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider3">
-                  <li class="level2"><router-link to="/commute">城市特征演化</router-link></li>
+                  <li class="level2"><router-link to="/F_Function">城市特征演化</router-link></li>
                 </ul>
               </transition>
             </li>
