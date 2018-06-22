@@ -9,17 +9,13 @@
 </div>
 </template>
 <script>
-// require("../map/js/world.js");
-// import flightData from "../json/test.json";
+import { host } from '../config/base.js'
 export default {
   name: "OD",
   data() {
     return {
       type: 'early',
-      url: "http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_peak"
-      // url:"http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
-      // url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/line/line_info?token=w&"
-      // url:"/static/test.json"
+      url: "/ivenus/data/api/stream/monitoring/line/line_peak"
     };
   },
   props: {
@@ -60,9 +56,7 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + slider[0] * 2
-          // url + `date=${time}&hour=${slider[0] * 2}`,
-          url,
+          `${host}${url}`,
           {
             params: {
               token: "w",

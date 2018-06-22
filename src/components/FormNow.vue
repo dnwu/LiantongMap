@@ -355,6 +355,7 @@
   </div>
 </template>
 <script>
+import { host } from '../config/base.js'
 export default {
   name: "form_now",
   data() {
@@ -363,8 +364,6 @@ export default {
       idPositionVisible: false,
       odInfo: {},
       tabControl: "population",
-      baseUrl: "http://132.102.126.71:6889",
-      // baseUrl: "http://10.123.60.101:6889",
       childtabControl: true,
       PopulationList: [],
       odOutNumList: [],
@@ -489,7 +488,7 @@ export default {
       this.axios
         .get(
           `${
-            this.baseUrl
+            host
           }/ivenus/data/api/stream/monitoring/station/list_station`,
           {
             params: {
@@ -510,7 +509,7 @@ export default {
       this.street = '全部'
       this.axios
         .get(
-          `${this.baseUrl}/ivenus/data/api/stream/monitoring/station/list_area`,
+          `${host}/ivenus/data/api/stream/monitoring/station/list_area`,
           {
             params: {
               token: "w"
@@ -538,7 +537,7 @@ export default {
         this.axios
           .get(
             `${
-              this.baseUrl
+              host
             }/ivenus/data/api/stream/monitoring/station/list_street`,
             {
               params: {
@@ -570,7 +569,7 @@ export default {
       this.axios
         .get(
           `${
-            this.baseUrl
+            host
           }/ivenus/data/api/stream/monitoring/station/countByCondition`,
           {
             params: {
@@ -727,7 +726,7 @@ export default {
       this.axios
         .get(
           `${
-            this.baseUrl
+            host
           }/ivenus/data/api/stream/monitoring/station/station_info`,
           {
             params: {
@@ -745,7 +744,7 @@ export default {
     getTrendFormData(id) {
       this.axios
         .get(
-          `${this.baseUrl}/ivenus/data/api/stream/monitoring/line/flow_trend`,
+          `${host}/ivenus/data/api/stream/monitoring/line/flow_trend`,
           {
             params: {
               token: "w",
@@ -764,7 +763,7 @@ export default {
       this.axios
         .get(
           `${
-            this.baseUrl
+            host
           }/ivenus/data/api/stream/monitoring/commuter/region_all`,
           {
             // 商业区： businessArea
@@ -786,7 +785,7 @@ export default {
       this.axios
         .get(
           `${
-            this.baseUrl
+            host
           }/ivenus/data/api/stream/monitoring/density/density_sort`,
           {
             params: {
@@ -805,7 +804,7 @@ export default {
     getOdInNumList(page) {
       this.axios
         .get(
-          `${this.baseUrl}/ivenus/data/api/stream/monitoring/line/volume_sort`,
+          `${host}/ivenus/data/api/stream/monitoring/line/volume_sort`,
           {
             params: {
               token: "w",
@@ -824,7 +823,7 @@ export default {
     getOdOutNumList(page) {
       this.axios
         .get(
-          `${this.baseUrl}/ivenus/data/api/stream/monitoring/line/volume_sort`,
+          `${host}/ivenus/data/api/stream/monitoring/line/volume_sort`,
           {
             params: {
               token: "w",

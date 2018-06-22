@@ -5,13 +5,12 @@
 </template>
 <script>
 // import flightData from "../json/test3.json";
+import { host } from '../config/base.js'
 export default {
   name: "Density",
   data() {
     return {
-      url: "http://132.102.126.71:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
-      //url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/density/density_info?token=w&"
-      // url: "/static/density.json?"
+      url: "/ivenus/data/api/stream/monitoring/density/density_info"
     };
   },
   props: {
@@ -49,8 +48,14 @@ export default {
       this.myChart.showLoading();
       this.axios
         .get(
-          // url + slider[0]
-          url + `date=${time}&hour=${slider[0]}`
+          `${host}${url}`,
+          {
+            params: {
+              token: 'w',
+              date: time,
+              hour: slider[0]
+            }
+          }
         )
         .then(data => {
           // console.log(data.data.data); // [[[],[]],[[],[]]]
