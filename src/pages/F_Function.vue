@@ -62,8 +62,6 @@ export default {
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          // this.drawmap(data.data);
         })
         .catch(e => {
           this.drawmap([]);

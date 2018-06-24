@@ -55,7 +55,7 @@
                   v-for="item in datumIdList"
                   :key="item['id']"
                   :label="item['id']"
-                  :value="item">
+                  :value="item['id']">
                 </el-option>
               </el-select>
               <el-button slot="append" size="mini" @click="getDatumInfo" icon="el-icon-search">搜索</el-button>
@@ -339,15 +339,11 @@
         <div class="result">
           <div>
             <div class="key">人口数量</div>
-            <div class="value">{{StatisticalData.den_count}}</div>
-          </div>
-          <div>
-            <div class="key">人口出行量</div>
-            <div class="value">{{StatisticalData.original}}</div>
-          </div>
-          <div>
-            <div class="key">人口进入量</div>
-            <div class="value">{{StatisticalData.destination}}</div>
+            <!--{{StatisticalData.den_count}}-->
+            <div class="value">
+              <span title="实际样本数据量" class="before">{{StatisticalData.den_count}}</span>
+              <span title="扩样后数据量" class="after">{{StatisticalData.den_count * 25}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -408,13 +404,13 @@ export default {
         this.myChart.resize();
       };
     },
-    getGeoJson() {
+    getGeoJson(position) {
       this.axios.get("/static/geojson/sz_jiedao_6.json").then(geojson => {
         this.echarts.registerMap("shenzhen", geojson.data);
-        this.drawmap();
+        this.drawmap(position);
       });
     },
-    drawmap() {
+    drawmap(position) {
       this.$refs.idPositionMap.style.height = "100%";
       var option = {
         backgroundColor: "#fff",
@@ -440,7 +436,7 @@ export default {
             data: [
               {
                 name: "基站",
-                value: [...this.datumId.position, 100]
+                value: [...position, 100]
               }
             ],
             symbolSize: function(val) {
@@ -481,8 +477,8 @@ export default {
       this.getStatisticalData()
     },
     getDatumInfo() {
-      this.getOdInfo(this.datumId.id);
-      this.getTrendFormData(this.datumId.id);
+      this.getOdInfo(this.datumId);
+      this.getTrendFormData(this.datumId);
     },
     getAllId() {
       this.axios
@@ -500,7 +496,7 @@ export default {
           console.log("getAllid", data);
           this.datumIdList = data.data.data;
           var defaultId = this.datumIdList[0]["id"];
-          // this.datumId = this.datumIdList[0];
+          this.datumId = defaultId;
           this.getOdInfo(defaultId);
           this.getTrendFormData(defaultId);
         });
@@ -586,11 +582,18 @@ export default {
         });
     },
     showPosition() {
-      this.idPositionVisible = true;
-      this.$nextTick(() => {
-        this.initDom();
-        this.getGeoJson();
-      });
+      this.axios.get(`${host}/ivenus/data/api/stream/monitoring/station/position_by_id`,{
+        params: {
+          token: 'w',
+          cell_name: this.datumId
+        }
+      }).then(data => {
+        this.idPositionVisible = true;
+        this.$nextTick(() => {
+          this.initDom();
+          this.getGeoJson(data.data.data);
+        });
+      })
     },
     trendForm(inData, outData) {
       let dom = this.$refs.trendForm;
@@ -1264,6 +1267,15 @@ $backgroundHover: #111d38;
           }
           .value {
             background-color: #2d978b;
+            display: flex;
+            text-align: center;
+            .before{
+              flex: 1;
+              border-right: 1px solid #064474;
+            }
+            .after{
+              flex: 1;
+            }
           }
         }
       }

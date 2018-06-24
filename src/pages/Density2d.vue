@@ -10,7 +10,7 @@ export default {
   name: "Density",
   data() {
     return {
-      url: "/ivenus/data/api/stream/monitoring/density/density_info"
+      url: "/ivenus/data/api/stream/monitoring/density/list_by_street"
     };
   },
   props: {
@@ -57,12 +57,10 @@ export default {
           }
         )
         .then(data => {
-          // console.log(data.data.data); // [[[],[]],[[],[]]]
+          console.log("density2d",data);
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          this.drawmap(data.data);
         })
         .catch(e => {
           this.drawmap([]);
@@ -83,7 +81,7 @@ export default {
           }
         },
         visualMap: {
-          max: 500,
+          max: 1000,
           calculable: true,
           realtime: false,
           right: "20",
@@ -94,6 +92,17 @@ export default {
           textStyle: {
             color: "#fff"
           }
+        },
+        title: {
+          text: "城市人口分布",
+          subtext: "本图通过热力图反映了深圳市各街道人口分布情况。",
+          textStyle: {
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
+          },
+          left: "center"
         },
         series: [
           {

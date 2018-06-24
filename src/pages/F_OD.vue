@@ -60,8 +60,6 @@ export default {
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          // this.drawmap(data.data)
         });
     },
     drawmap(data) {
@@ -122,7 +120,10 @@ export default {
           subtext:
             "图中线条表示用户出发到达地连线，并不表示实际路径",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },

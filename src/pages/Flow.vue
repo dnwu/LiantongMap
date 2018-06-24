@@ -90,7 +90,9 @@ export default {
           }
           // console.log('data',data);
           // this.drawmap(data.data);
-        });
+        }).catch(e => {
+          this.drawmap([])
+        })
     },
     drawmap(data) {
       var option = {
@@ -110,11 +112,14 @@ export default {
           }
         },
         title: {
-          text: "潮汐运动",
+          text: "潮汐运动分析",
           subtext:
-            "本图展现人口在不同区域之间的流动聚集趋势，呈现深圳市人口移动的完整网络",
+            "本图通过洋流图反映了深圳市十分钟内的人口流动趋势。",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },
@@ -173,7 +178,7 @@ export default {
     // height: 90px;
     background-color: rgba(16, 48, 97, 0.4);
     padding: 0 20px;
-    top: 20px;
+    bottom: 20px;
     left: 20px;
     border-radius: 20px;
     > div {

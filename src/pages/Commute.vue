@@ -91,10 +91,13 @@ export default {
           // ]
         },
         title: {
-          text:'通勤指数',
-          subtext: "(通勤指数指数越大，表示工作属性越强，通勤指数越小，表示居住属性越强)",
+          text:'通勤指数分布',
+          subtext: "(本图反映了深圳市当天各区域工作与居住属性的通勤指数，通勤指数指数越大，表示工作属性越强，通勤指数越小，表示居住属性越强)",
           textStyle: {
-            color: '#6ebdcc'
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left:'center'
         },

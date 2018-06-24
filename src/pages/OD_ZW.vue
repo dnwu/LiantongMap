@@ -130,11 +130,14 @@ export default {
           regionHeight: 3
         },
         title: {
-          text: "OD出行",
+          text: "职住出行分布",
           subtext:
-            "图中线条表示用户出发到达地连线，并不表示实际路径",
+            "本图反映了深圳市早晚高峰时期职住出行情况。其中早高峰为居住地到工作地的连线，晚高峰为工作地到居住地的连线。图中的红线不代表实际路径。",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },
@@ -182,7 +185,7 @@ export default {
       }, 2000);
     },
     time(a, b) {
-      this.getMapData(this.url, a, this.slider);
+      this.getMapData(this.url, a, this.type);
     }
   }
 };
@@ -205,6 +208,7 @@ export default {
     width: 120px;
     height: 60px;
     top: 20px;
+    left:40px;
     display: flex;
     justify-content: space-around;
     font-size: 12px;

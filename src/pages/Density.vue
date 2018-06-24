@@ -62,8 +62,6 @@ export default {
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          // this.drawmap(data.data);
         })
         .catch(e => {
           this.drawmap([]);
@@ -138,15 +136,18 @@ export default {
           regionHeight: 2
         },
         title: {
-          text: "人口密度",
-          subtext: "柱状图高度代表人口密度，柱状图密集度表示基站分布情况",
+          text: "区域人口密度",
+          subtext: "本图反映了各基站覆盖范围内人口密度情况。柱状图密度代表基站分布情况，柱状图高度代表人口密度。人口密度越大，柱状图越高，颜色越接近红色。",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },
         visualMap: {
-          max: 0.2,
+          max: 500,
           calculable: true,
           realtime: false,
           right: "20",

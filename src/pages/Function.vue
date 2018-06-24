@@ -92,17 +92,30 @@ export default {
           //   }
           // ]
         },
-        
+        title: {
+          text: "地理功能属性分析",
+          subtext: "本图反映了深圳市各地理区域功能属性情况。根据区域当天的人口变化趋势，判别当天区域功能区属性。",
+          // padding:[0, 0,0,200],
+          textStyle: {
+            color: "#cc9966",
+            //align: "center"
+          },
+          subtextStyle: {
+            color: "#cc9966",
+            //align:"center"
+          },
+          left: 600
+        },
         visualMap: {
           // show:false,
           type: "piecewise",
           // splitNumber: 4,
           //    
           pieces: [
-            { value: 40, label: "混合区", color: "#FC8F00" },
-            { value: 30, label: "居住区", color: "#00AA65" },
-            { value: 20, label: "工作区", color: "#008AD4" },
-            { value: 10, label: "商业区", color: "#FF5571" }
+            { value: 40, label: "混合属性", color: "#FC8F00" },
+            { value: 30, label: "居住属性", color: "#00AA65" },
+            { value: 20, label: "工作属性", color: "#008AD4" },
+            { value: 10, label: "商业属性", color: "#FF5571" }
           ],
           textStyle: {
             color: "#fff"

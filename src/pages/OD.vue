@@ -117,11 +117,14 @@ export default {
           regionHeight: 3
         },
         title: {
-          text: "OD出行",
+          text: "OD出行分布",
           subtext:
-            "图中线条表示用户出发到达地连线，并不表示实际路径",
+            "本图反映了深圳市各时段OD出行分布情况，展示了某一时段中各个区域内出发和到达。图中的红线为出发地与到达地连线，不代表实际路径。",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },

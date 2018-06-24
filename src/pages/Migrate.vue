@@ -70,8 +70,6 @@ export default {
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          // this.drawmap(data.data)
         }).catch(data => {
           this.drawmap([])
         });
@@ -130,11 +128,14 @@ export default {
           regionHeight: 3
         },
         title: {
-          text: "OD出行",
+          text: "人口迁徙分布",
           subtext:
-            "图中线条表示用户出发到达地连线，并不表示实际路径",
+            "本图反映了深圳市早晚高峰时间各区之间的人口出行分布情况。图中箭头代表人群流动方向，线条粗细表示人口数量。",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },
@@ -147,17 +148,17 @@ export default {
             effect: {
               show: true,
               trailWidth: 1,
-              trailOpacity: 0.5,
-              trailLength: 0.2,
+              trailOpacity: 1,
+              trailLength: 1,
               constantSpeed: 5
             },
             // polyline: true,
             blendMode: "lighter",
 
             lineStyle: {
-              width: 0.2,
-              opacity: 0.05
-              // color:'red'  //线条颜色
+              // width: 4,
+              color: "red",
+              opacity: 0.1
             },
             data: data
           }
@@ -205,6 +206,7 @@ export default {
     width: 120px;
     height: 60px;
     top: 20px;
+    left:40px;
     display: flex;
     justify-content: space-around;
     font-size: 12px;

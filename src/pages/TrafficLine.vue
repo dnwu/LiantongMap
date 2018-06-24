@@ -110,10 +110,13 @@ export default {
           regionHeight: 0.5
         },
         title: {
-          text: "交通走廊",
-          subtext: "表示城市某个区域内吸引并运输多数交通负荷的空间走廊，并不代表实际路径",
+          text: "交通走廊分析",
+          subtext: "本图反映了深圳市交通走廊情况，是对深圳市某一时段内出行规律的总结。图中线条并不代表实际路径。",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },

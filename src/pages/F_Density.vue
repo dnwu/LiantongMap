@@ -62,8 +62,6 @@ export default {
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          // this.drawmap(data.data);
         })
         .catch(e => {
           this.drawmap([]);
@@ -141,7 +139,10 @@ export default {
           text: "人口密度",
           subtext: "柱状图高度代表人口密度，柱状图密集度表示基站分布情况",
           textStyle: {
-            color: "#6ebdcc"
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
           },
           left: "center"
         },

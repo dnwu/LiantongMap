@@ -59,40 +59,40 @@
               </transition>
             </li>
             <li class="level1">
-              <div class="title" @click="toggle('slider2')"><span class="info">OD状况</span><span :class="slider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <div class="title" @click="toggle('slider2')"><span class="info">OD状况分析</span><span :class="slider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider2">
-                  <li class="level2"><router-link to="/od">OD出行图</router-link></li>
+                  <li class="level2"><router-link to="/od">OD出行分布</router-link></li>
                   <li class="level2"><router-link to="/migrate">人口迁徙分布</router-link></li>
                 </ul>
               </transition>
             </li>
             <li class="level1">
-              <div class="title" @click="toggle('slider3')"><span class="info">职网分布</span><span :class="slider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <div class="title" @click="toggle('slider3')"><span class="info">职网分布状况</span><span :class="slider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider3">
-                  <li class="level2"><router-link to="/commute">职住区域分布</router-link></li>
+                  <li class="level2"><router-link to="/commute">通勤指数分布</router-link></li>
                   <li class="level2"><router-link to="/od_ZW">职住出行分布</router-link></li>
                 </ul>
               </transition>
             </li>
             <li class="level1">
-              <div class="title" @click="toggle('slider4')"><span class="info">通勤特征</span><span :class="slider4?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <div class="title" @click="toggle('slider4')"><span class="info">通勤特征分析</span><span :class="slider4?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider4">
-                  <li class="level2"><router-link to="/O_Density2d">O特征分部</router-link></li>
-                  <li class="level2"><router-link to="/D_Density2d">D特征分部</router-link></li>
-                  <li class="level2"><router-link to="/trafficLine">交通走廊</router-link></li>
+                  <li class="level2"><router-link to="/O_Density2d">出发特征分布</router-link></li>
+                  <li class="level2"><router-link to="/D_Density2d">到达特征分布</router-link></li>
+                  <li class="level2"><router-link to="/trafficLine">交通走廊分析</router-link></li>
                 </ul>
               </transition>
             </li>
             <li class="level1">
-              <div class="title" @click="toggle('slider5')"><span class="info">城市特征</span><span :class="slider5?'active':''" class="tip el-icon-d-arrow-right"></span></div>
+              <div class="title" @click="toggle('slider5')"><span class="info">城市特征分析</span><span :class="slider5?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider5">
-                  <li class="level2"><router-link to="/density2d">街道人口分布</router-link></li>
-                  <li class="level2"><router-link to="/function">地理功能区域</router-link></li>
-                  <li class="level2"><router-link to="/flow">潮汐运动</router-link></li>
+                  <li class="level2"><router-link to="/density2d">城市人口分布</router-link></li>
+                  <li class="level2"><router-link to="/function">地理功能属性分析</router-link></li>
+                  <li class="level2"><router-link to="/flow">潮汐运动分析</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -272,13 +272,15 @@ export default {
     if (
       this.fullPath == "/function" ||
       this.fullPath == "/commute" ||
-      this.fullPath == "/flow"
+      this.fullPath == "/flow" || 
+      this.fullPath == "/migrate" ||
+      this.fullPath == "/od_ZW"
     ) {
       this.sliderControl = false;
     } else {
       this.sliderControl = true;
     }
-    if (this.fullPath == "/density" || this.fullPath == "/flow") {
+    if (this.fullPath == "/density" || this.fullPath == "/flow" || this.fullPath == "/density_jd") {
       this.sliderNum = 24;
       // console.log(this.sliderNum)
     } else {
@@ -473,7 +475,7 @@ export default {
   computed: {
     initTime() {
       // console.log(this.fullPath)
-      if (this.fullPath == "/density" || this.fullPath == "/flow") {
+      if (this.fullPath == "/density" || this.fullPath == "/flow" || this.fullPath == "/density_jd" || this.fullPath == "/density2d") {
         return `${this.slider[0]}:00-${this.slider[1]}:00`;
       } else {
         return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
@@ -486,13 +488,15 @@ export default {
       if (
         a.fullPath == "/function" ||
         a.fullPath == "/commute" ||
-        a.fullPath == "/flow"
+        a.fullPath == "/flow" ||
+        a.fullPath == "/migrate" ||
+        a.fullPath == "/od_ZW"
       ) {
         this.sliderControl = false;
       } else {
         this.sliderControl = true;
       }
-      if (a.fullPath == "/density" || this.fullPath == "/flow") {
+      if (a.fullPath == "/density" || a.fullPath == "/flow" || a.fullPath == "/density_jd" || a.fullPath == "/density2d") {
         this.sliderNum = 24;
       } else {
         this.sliderNum = 12;

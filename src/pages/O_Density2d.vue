@@ -52,7 +52,7 @@ export default {
               token: "w",
               date: time,
               type: 'out',
-              hour: slider[0]
+              hour: slider[0]*2
             }
           }
         )
@@ -61,8 +61,6 @@ export default {
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-          // console.log('data',data);
-          this.drawmap(data.data);
         })
         .catch(e => {
           this.drawmap([]);
@@ -82,8 +80,20 @@ export default {
             borderColor: "#fff"
           }
         },
+        title: {
+          text: "出发特征分布",
+          subtext:
+            "本图通过热力图反映深圳市整体出发分布情况。",
+          textStyle: {
+            color: "#cc9966"
+          },
+          subtextStyle: {
+            color: "#cc9966"
+          },
+          left: "center"
+        },
         visualMap: {
-          max: 0.2,
+          max: 100,
           calculable: true,
           realtime: false,
           right: "20",
