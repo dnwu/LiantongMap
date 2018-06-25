@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       url: "/ivenus/data/api/stream/monitoring/ocean/ocean_info",
-      hour: 0,
+      hour: 9,
       minute: 0
     };
   },

@@ -269,18 +269,26 @@ export default {
 
   created() {
     this.fullPath = this.$route.fullPath;
+    this.defaultTime()
+    console.log(this.fullPath);
     if (
       this.fullPath == "/function" ||
       this.fullPath == "/commute" ||
-      this.fullPath == "/flow" || 
+      this.fullPath == "/flow" ||
       this.fullPath == "/migrate" ||
-      this.fullPath == "/od_ZW"
+      this.fullPath == "/od_ZW" ||
+      this.fullPath == "/F_Function"
     ) {
       this.sliderControl = false;
     } else {
       this.sliderControl = true;
     }
-    if (this.fullPath == "/density" || this.fullPath == "/flow" || this.fullPath == "/density_jd") {
+    if (
+      this.fullPath == "/density" ||
+      this.fullPath == "/flow" ||
+      this.fullPath == "/density_jd" ||
+      this.fullPath == "/F_Density"
+    ) {
       this.sliderNum = 24;
       // console.log(this.sliderNum)
     } else {
@@ -293,6 +301,40 @@ export default {
     this.forecastListDOM = this.$refs.forecastList;
   },
   methods: {
+    //联通要求每个页面对应一个default - time
+    defaultTime() {
+      if (this.fullPath == "/density") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/density_jd") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/od") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/migrate") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/commute") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/od_ZW") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/O_Density2d") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/D_Density2d") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/trafficLine") {
+        this.time = "2018-06-04";
+      } else if (this.fullPath == "/density2d") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/function") {
+        this.time = "2018-06-04";
+      } else if (this.fullPath == "/flow") {
+        this.time = "2017-12-19";
+      } else if (this.fullPath == "/F_OD") {
+        //this.time = "";
+      } else if (this.fullPath == "/F_Density") {
+        //this.time = "";
+      } else if (this.fullPath == "/F_Function") {
+        //this.time = "";
+      }
+    },
     exportFile() {
       console.log(this.time, this.radio);
       this.axios
@@ -310,7 +352,7 @@ export default {
           }
         )
         .then(data => {
-          console.log('download',data)
+          console.log("download", data);
           download(data.data, `${this.time}${this.radio}`);
           this.dialogVisible = false;
         });
@@ -475,7 +517,13 @@ export default {
   computed: {
     initTime() {
       // console.log(this.fullPath)
-      if (this.fullPath == "/density" || this.fullPath == "/flow" || this.fullPath == "/density_jd" || this.fullPath == "/density2d") {
+      if (
+        this.fullPath == "/density" ||
+        this.fullPath == "/flow" ||
+        this.fullPath == "/density_jd" ||
+        this.fullPath == "/density2d" ||
+        this.fullPath == "/F_Density"
+      ) {
         return `${this.slider[0]}:00-${this.slider[1]}:00`;
       } else {
         return `${this.slider[0] * 2}:00-${this.slider[1] * 2}:00`;
@@ -485,18 +533,26 @@ export default {
   watch: {
     $route(a, b) {
       this.fullPath = a.fullPath;
+      this.defaultTime()
       if (
         a.fullPath == "/function" ||
         a.fullPath == "/commute" ||
         a.fullPath == "/flow" ||
         a.fullPath == "/migrate" ||
-        a.fullPath == "/od_ZW"
+        a.fullPath == "/od_ZW" ||
+        a.fullPath == "/F_Function"
       ) {
         this.sliderControl = false;
       } else {
         this.sliderControl = true;
       }
-      if (a.fullPath == "/density" || a.fullPath == "/flow" || a.fullPath == "/density_jd" || a.fullPath == "/density2d") {
+      if (
+        a.fullPath == "/density" ||
+        a.fullPath == "/flow" ||
+        a.fullPath == "/density_jd" ||
+        a.fullPath == "/density2d" ||
+        a.fullPath == "/F_Density"
+      ) {
         this.sliderNum = 24;
       } else {
         this.sliderNum = 12;
