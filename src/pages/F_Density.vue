@@ -10,7 +10,7 @@ export default {
   name: "Density",
   data() {
     return {
-      url: "/ivenus/data/api/stream/monitoring/density/density_info"
+      url: "/ivenus/data/api/stream/monitoring/predict/density_info"
     };
   },
   props: {
@@ -52,7 +52,6 @@ export default {
           {
             params: {
               token: 'w',
-              date: time,
               hour: slider[0]
             }
           }
@@ -147,7 +146,7 @@ export default {
           left: "center"
         },
         visualMap: {
-          max: 0.2,
+          max: 120,
           calculable: true,
           realtime: false,
           right: "20",

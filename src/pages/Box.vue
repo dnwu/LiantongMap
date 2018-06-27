@@ -98,14 +98,14 @@
             </li>
           </ul>
           <ul class="forecast-listbox" ref="forecastList">
-            <li class="level1">
+            <!--<li class="level1">
               <div class="title" @click="toggle('forecastSlider1')"><span class="info">人口流动预测</span><span :class="forecastSlider1?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider1">
                   <li class="level2"><router-link to="/F_OD">人口流动预测</router-link></li>
                 </ul>
               </transition>
-            </li>
+            </li>-->
             <li class="level1">
               <div class="title" @click="toggle('forecastSlider2')"><span class="info">城市人口演化预测</span><span :class="forecastSlider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
@@ -144,6 +144,7 @@
             <div class="time-select">
               <div class="time">
                 <el-date-picker
+                  :disabled="disable"
                   v-model="time"
                   type="date"
                   value-format ='yyyy-MM-dd'
@@ -234,6 +235,7 @@ export default {
       baseUrl: "http://132.102.126.71:6889",
       // baseUrl: "http://10.123.60.101:6889",
       radio: "travel",
+      disable: false,
       exportType: 1,
       dialogVisible: false,
       system: "now",
@@ -269,31 +271,10 @@ export default {
 
   created() {
     this.fullPath = this.$route.fullPath;
-    this.defaultTime()
+    this.defaultTime();
+    this.initDatePicker();
     console.log(this.fullPath);
-    if (
-      this.fullPath == "/function" ||
-      this.fullPath == "/commute" ||
-      this.fullPath == "/flow" ||
-      this.fullPath == "/migrate" ||
-      this.fullPath == "/od_ZW" ||
-      this.fullPath == "/F_Function"
-    ) {
-      this.sliderControl = false;
-    } else {
-      this.sliderControl = true;
-    }
-    if (
-      this.fullPath == "/density" ||
-      this.fullPath == "/flow" ||
-      this.fullPath == "/density_jd" ||
-      this.fullPath == "/F_Density"
-    ) {
-      this.sliderNum = 24;
-      // console.log(this.sliderNum)
-    } else {
-      this.sliderNum = 12;
-    }
+    this.initTimeSlider()
     this.initDate();
   },
   mounted() {
@@ -333,6 +314,40 @@ export default {
         //this.time = "";
       } else if (this.fullPath == "/F_Function") {
         //this.time = "";
+      }
+    },
+    initDatePicker() {
+      if (
+        this.fullPath == "/F_OD" ||
+        this.fullPath == "/F_Density" ||
+        this.fullPath == "/F_Function"
+      ) {
+        this.disable = true;
+      }
+    },
+    initTimeSlider() {
+      if (
+        this.fullPath == "/function" ||
+        this.fullPath == "/commute" ||
+        this.fullPath == "/flow" ||
+        this.fullPath == "/migrate" ||
+        this.fullPath == "/od_ZW" ||
+        this.fullPath == "/F_Function"
+      ) {
+        this.sliderControl = false;
+      } else {
+        this.sliderControl = true;
+      }
+      if (
+        this.fullPath == "/density" ||
+        this.fullPath == "/flow" ||
+        this.fullPath == "/density_jd" ||
+        this.fullPath == "/F_Density"
+      ) {
+        this.sliderNum = 24;
+        // console.log(this.sliderNum)
+      } else {
+        this.sliderNum = 12;
       }
     },
     exportFile() {
@@ -533,30 +548,9 @@ export default {
   watch: {
     $route(a, b) {
       this.fullPath = a.fullPath;
-      this.defaultTime()
-      if (
-        a.fullPath == "/function" ||
-        a.fullPath == "/commute" ||
-        a.fullPath == "/flow" ||
-        a.fullPath == "/migrate" ||
-        a.fullPath == "/od_ZW" ||
-        a.fullPath == "/F_Function"
-      ) {
-        this.sliderControl = false;
-      } else {
-        this.sliderControl = true;
-      }
-      if (
-        a.fullPath == "/density" ||
-        a.fullPath == "/flow" ||
-        a.fullPath == "/density_jd" ||
-        a.fullPath == "/density2d" ||
-        a.fullPath == "/F_Density"
-      ) {
-        this.sliderNum = 24;
-      } else {
-        this.sliderNum = 12;
-      }
+      this.defaultTime();
+      this.initDatePicker();
+      this.initTimeSlider()
     }
   }
 };
