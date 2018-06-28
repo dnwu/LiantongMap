@@ -1,18 +1,18 @@
 <template>
 <div class="form-after">
-  <div class="header">全市</div>
+  <div class="header" @click="getForecastList(1,'全部')">全市</div>
   <div class="nav" @click="searchRegion">
-    <span v-for="(item,index) in navList" :key="index">{{item}}</span>
+    <span :class="areaName==item?'active':''" v-for="(item,index) in navList" :key="index">{{item}}</span>
   </div>
   <div class="h3">全市城市人口演化</div>
   <div class="title">
     <ul>
-      <li><span>排名</span><span>区域ID</span><span>人口数量(人)</span><span>人口密度</span></li>
+      <li><span>排名</span><span>区域ID</span><span>人口密度</span><span>人口数量(人)</span></li>
     </ul>
   </div>
   <div class="content">
     <ul @click.stop="searchRegionId">
-      <li v-for='(item,index) in new Array(60)' :key="index"><span>{{index+1}}</span><span>福田区66</span><span>1654654</span><span>63.64</span></li>
+      <li v-for='(item,index) in forecastList' :data-name="item[1]" :key="index"><span>{{item[0]}}</span><span>{{item[1]}}</span><span>{{item[2]}}</span><span>{{item[3]}}</span></li>
     </ul>
   </div>
   <div class="page">
@@ -21,10 +21,10 @@
       layout="prev, pager, next"
       @current-change="pageChange"
       :page-size = "60"
-      :total="6000">
+      :total="totalNum">
     </el-pagination>
   </div>
-  <div class="tit">福田区166人口预测趋势图</div>
+  <div class="tit">{{regionId}}人口预测趋势图</div>
   <div class="charts" ref="charts">
   </div>
 </div>
@@ -36,7 +36,11 @@ export default {
   data() {
     return {
       url: "/ivenus/data/api/stream/monitoring/predict/density_sort",
+      detialUrl: '/ivenus/data/api/stream/monitoring/predict/flow_trend',
       forecastList:[],
+      totalNum:60,
+      areaName: '全部',
+      regionId: '基站',
       navList: [
         "福田",
         "罗湖",
@@ -54,12 +58,13 @@ export default {
   },
   mounted() {
     this.initTrendForm();
-    this.trendForm();
+    this.getForecastList(1,this.areaName)
   },
   methods: {
-    getForecastList(page, row, name) {
+    getForecastList(page, name) {
+      this.areaName = name
       this.axios
-        .get(`${host}${url}`, {
+        .get(`${host}${this.url}`, {
           params: {
             token: "w",
             page: page,
@@ -68,18 +73,35 @@ export default {
           }
         })
         .then(data => {
-          
+          this.forecastList = data.data.data.list
+          this.totalNum =  data.data.data.totalNum
         });
+    },
+    getDetial(cellId) {
+      this.axios.get(`${host}${this.detialUrl}`,{
+        params: {
+          token: "w",
+          cell_id: cellId
+        }
+      }).then(data => {
+        this.trendForm(data.data.data)
+      })
     },
     searchRegion(e) {
       console.log(e.target.innerText);
+      this.areaName = e.target.innerText
+      this.getForecastList(1,this.areaName)
     },
     searchRegionId(e) {
       console.log(e.target.parentNode);
+      this.regionId = e.target.parentNode.getAttribute('data-name')
+      this.getDetial(this.regionId)
     },
-    pageChange(e) {
-      console.log(e);
+    pageChange(page) {
+      console.log(page);
+      this.getForecastList(page,this.areaName)
     },
+
     initTrendForm() {
       let dom = this.$refs.charts;
       dom.style.width = "432px";
@@ -98,7 +120,7 @@ export default {
           }
         },
         legend: {
-          data: ["邮件营销", "联盟广告"],
+          data: ["预测人口数量"],
           textStyle: {
             color: "#fff"
           }
@@ -118,7 +140,7 @@ export default {
           {
             type: "category",
             boundaryGap: false,
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            data: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
             axisLabel: {
               color: "#929CA5",
               fontSize: "8"
@@ -136,7 +158,7 @@ export default {
         ],
         series: [
           {
-            name: "邮件营销",
+            name: "预测人口数量",
             type: "line",
             stack: "总量",
             areaStyle: { normal: {} },
@@ -144,31 +166,17 @@ export default {
             itemStyle: {
               color: "#D06E6B"
             }
-          },
-          {
-            name: "联盟广告",
-            type: "line",
-            stack: "总量",
-            areaStyle: { normal: {} },
-            data: [],
-            itemStyle: {
-              color: "#18A1BE"
-            }
           }
         ]
       };
       this.myChart.setOption(option);
     },
-    trendForm() {
+    trendForm(data) {
       this.myChart.setOption({
         series: [
           {
-            name: "邮件营销",
-            data: [120, 132, 101, 134, 90, 230, 210]
-          },
-          {
-            name: "联盟广告",
-            data: [220, 182, 191, 234, 290, 330, 310]
+            name: "预测人口数量",
+            data: data
           }
         ]
       });
@@ -184,6 +192,7 @@ export default {
   overflow: auto;
   .header {
     height: 30px;
+    cursor: pointer;
     text-align: center;
     line-height: 30px;
     color: #fff;
@@ -204,6 +213,9 @@ export default {
       border: 1px solid #278cc0;
       cursor: pointer;
       text-align: center;
+      &.active{
+        background: linear-gradient(to right, #17a1be, #24418f);
+      }
     }
   }
   .h3 {

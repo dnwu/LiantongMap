@@ -529,6 +529,7 @@ export default {
           label: "全部"
         }
       ];
+      this.street = '全部'
       if (key !== "全部") {
         this.axios
           .get(
@@ -554,7 +555,7 @@ export default {
       }
     },
     areaChange() {
-      console.log(this.area);
+      console.log(this.area)
       this.getAllStreets(this.area);
       this.getStatisticalData();
     },

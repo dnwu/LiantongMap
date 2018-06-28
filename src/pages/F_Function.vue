@@ -14,8 +14,7 @@ import { host } from '../config/base.js'
 export default {
   data() {
     return {
-      url:"/ivenus/data/api/stream/monitoring/function/function_info"
-      //url:"http://10.123.60.101:6889/ivenus/data/api/stream/monitoring/function/function_info?token=w&"
+      url:"/ivenus/data/api/stream/monitoring/predict/function_info"
     };
   },
   props: {
@@ -52,8 +51,7 @@ export default {
           `${host}${url}`,
           {
             params: {
-              token: 'w',
-              date: time
+              token: 'w'
             }
           }
         )

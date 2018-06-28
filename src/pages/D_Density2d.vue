@@ -75,7 +75,7 @@ export default {
           zoom: 2,
           roam: true,
           itemStyle: {
-            areaColor: "#65A7CD",
+            areaColor: "#2a3a5c",
             color: "#1A427D",
             borderWidth: "1", // 描边
             borderColor: "#fff"

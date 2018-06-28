@@ -53,8 +53,8 @@
               <div class="title" @click="toggle('slider1')"><span class="info">人口时空分布</span><span :class="slider1?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider1">
-                  <li class="level2"><router-link to="/density">区域人口密度</router-link></li>
-                  <li class="level2"><router-link to="/density_jd">街道人口分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/density'?'active':''"><router-link to="/density">区域人口密度</router-link></li>
+                  <li class="level2" :class="fullPath=='/density_jd'?'active':''"><router-link to="/density_jd">街道人口分布</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -62,8 +62,8 @@
               <div class="title" @click="toggle('slider2')"><span class="info">OD状况分析</span><span :class="slider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider2">
-                  <li class="level2"><router-link to="/od">OD出行分布</router-link></li>
-                  <li class="level2"><router-link to="/migrate">人口迁徙分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/od'?'active':''"><router-link to="/od">OD出行分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/migrate'?'active':''"><router-link to="/migrate">人口迁徙分布</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -71,8 +71,8 @@
               <div class="title" @click="toggle('slider3')"><span class="info">职网分布状况</span><span :class="slider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider3">
-                  <li class="level2"><router-link to="/commute">通勤指数分布</router-link></li>
-                  <li class="level2"><router-link to="/od_ZW">职住出行分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/commute'?'active':''"><router-link to="/commute">通勤指数分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/od_ZW'?'active':''"><router-link to="/od_ZW">职住出行分布</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -80,9 +80,9 @@
               <div class="title" @click="toggle('slider4')"><span class="info">通勤特征分析</span><span :class="slider4?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider4">
-                  <li class="level2"><router-link to="/O_Density2d">出发特征分布</router-link></li>
-                  <li class="level2"><router-link to="/D_Density2d">到达特征分布</router-link></li>
-                  <li class="level2"><router-link to="/trafficLine">交通走廊分析</router-link></li>
+                  <li class="level2" :class="fullPath=='/O_Density2d'?'active':''"><router-link to="/O_Density2d">出发特征分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/D_Density2d'?'active':''"><router-link to="/D_Density2d">到达特征分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/trafficLine'?'active':''"><router-link to="/trafficLine">交通走廊分析</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -90,9 +90,9 @@
               <div class="title" @click="toggle('slider5')"><span class="info">城市特征分析</span><span :class="slider5?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="slider5">
-                  <li class="level2"><router-link to="/density2d">城市人口分布</router-link></li>
-                  <li class="level2"><router-link to="/function">地理功能属性分析</router-link></li>
-                  <li class="level2"><router-link to="/flow">潮汐运动分析</router-link></li>
+                  <li class="level2" :class="fullPath=='/density2d'?'active':''"><router-link to="/density2d">城市人口分布</router-link></li>
+                  <li class="level2" :class="fullPath=='/function'?'active':''"><router-link to="/function">地理功能属性分析</router-link></li>
+                  <li class="level2" :class="fullPath=='/flow'?'active':''"><router-link to="/flow">潮汐运动分析</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -102,7 +102,7 @@
               <div class="title" @click="toggle('forecastSlider1')"><span class="info">人口流动预测</span><span :class="forecastSlider1?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider1">
-                  <li class="level2"><router-link to="/F_OD">人口流动预测</router-link></li>
+                  <li class="level2" :class="fullPath=='/F_OD'?'active':''"><router-link to="/F_OD">人口流动预测</router-link></li>
                 </ul>
               </transition>
             </li>-->
@@ -110,7 +110,7 @@
               <div class="title" @click="toggle('forecastSlider2')"><span class="info">城市人口演化预测</span><span :class="forecastSlider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider2">
-                  <li class="level2"><router-link to="/F_Density">城市人口演化</router-link></li>
+                  <li class="level2" :class="fullPath=='/F_Density'?'active':''"><router-link to="/F_Density">城市人口演化</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -118,7 +118,7 @@
               <div class="title" @click="toggle('forecastSlider3')"><span class="info">城市特征演化分析</span><span :class="forecastSlider3?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider3">
-                  <li class="level2"><router-link to="/F_Function">城市特征演化</router-link></li>
+                  <li class="level2" :class="fullPath=='/F_Function'?'active':''"><router-link to="/F_Function">城市特征演化</router-link></li>
                 </ul>
               </transition>
             </li>
@@ -227,12 +227,13 @@
 import FormNow from "@/components/FormNow";
 import FormAfter from "@/components/FormAfter";
 import { download } from "@/config/js/load.js";
+import { host } from "../config/base.js";
 export default {
   name: "HelloWorld",
   components: { FormNow, FormAfter },
   data() {
     return {
-      baseUrl: "http://132.102.126.71:6889",
+      baseUrl: "/ivenus/data/api/stream/monitoring/export/exportByStream",
       // baseUrl: "http://10.123.60.101:6889",
       radio: "travel",
       disable: false,
@@ -274,7 +275,7 @@ export default {
     this.defaultTime();
     this.initDatePicker();
     console.log(this.fullPath);
-    this.initTimeSlider()
+    this.initTimeSlider();
     this.initDate();
   },
   mounted() {
@@ -353,19 +354,14 @@ export default {
     exportFile() {
       console.log(this.time, this.radio);
       this.axios
-        .get(
-          `${
-            this.baseUrl
-          }/ivenus/data/api/stream/monitoring/export/exportByStream`,
-          {
-            responseType: "blob",
-            params: {
-              type: this.radio,
-              date: this.time,
-              token: "w"
-            }
+        .get(`${host}${this.baseUrl}`, {
+          responseType: "blob",
+          params: {
+            type: this.radio,
+            date: this.time,
+            token: "w"
           }
-        )
+        })
         .then(data => {
           console.log("download", data);
           download(data.data, `${this.time}${this.radio}`);
@@ -550,7 +546,7 @@ export default {
       this.fullPath = a.fullPath;
       this.defaultTime();
       this.initDatePicker();
-      this.initTimeSlider()
+      this.initTimeSlider();
     }
   }
 };
@@ -721,6 +717,11 @@ $backgroundHover: #111d38;
               box-sizing: border-box;
               color: $color;
             }
+            &.active {
+              a{
+                color: #fff;
+              }
+            }
           }
           .level2 {
             position: relative;
@@ -730,6 +731,7 @@ $backgroundHover: #111d38;
             line-height: 58px;
             font-size: 14px;
             color: #ecefe8;
+            color: #fff;
             cursor: pointer;
           }
         }
