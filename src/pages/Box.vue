@@ -98,14 +98,14 @@
             </li>
           </ul>
           <ul class="forecast-listbox" ref="forecastList">
-            <!--<li class="level1">
+            <li class="level1">
               <div class="title" @click="toggle('forecastSlider1')"><span class="info">人口流动预测</span><span :class="forecastSlider1?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
                 <ul v-show="forecastSlider1">
-                  <li class="level2" :class="fullPath=='/F_OD'?'active':''"><router-link to="/F_OD">人口流动预测</router-link></li>
+                  <li class="level2" :class="fullPath=='/F_Density2d'?'active':''"><router-link to="/F_Density2d">人口流动预测</router-link></li>
                 </ul>
               </transition>
-            </li>-->
+            </li>
             <li class="level1">
               <div class="title" @click="toggle('forecastSlider2')"><span class="info">城市人口演化预测</span><span :class="forecastSlider2?'active':''" class="tip el-icon-d-arrow-right"></span></div>
               <transition name="slider">
@@ -309,7 +309,7 @@ export default {
         this.time = "2018-06-04";
       } else if (this.fullPath == "/flow") {
         this.time = "2017-12-19";
-      } else if (this.fullPath == "/F_OD") {
+      } else if (this.fullPath == "/F_Density2d") {
         //this.time = "";
       } else if (this.fullPath == "/F_Density") {
         //this.time = "";
@@ -319,7 +319,7 @@ export default {
     },
     initDatePicker() {
       if (
-        this.fullPath == "/F_OD" ||
+        this.fullPath == "/F_Density2d" ||
         this.fullPath == "/F_Density" ||
         this.fullPath == "/F_Function"
       ) {
@@ -343,7 +343,9 @@ export default {
         this.fullPath == "/density" ||
         this.fullPath == "/flow" ||
         this.fullPath == "/density_jd" ||
-        this.fullPath == "/F_Density"
+        this.fullPath == "/density2d" ||
+        this.fullPath == "/F_Density" ||
+        this.fullPath == "/F_Density2d"
       ) {
         this.sliderNum = 24;
         // console.log(this.sliderNum)
@@ -533,7 +535,8 @@ export default {
         this.fullPath == "/flow" ||
         this.fullPath == "/density_jd" ||
         this.fullPath == "/density2d" ||
-        this.fullPath == "/F_Density"
+        this.fullPath == "/F_Density" ||
+        this.fullPath == "/F_Density2d"
       ) {
         return `${this.slider[0]}:00-${this.slider[1]}:00`;
       } else {

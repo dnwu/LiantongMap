@@ -50,8 +50,7 @@ export default {
           {
             params: {
               token: 'w',
-              date: time,
-              hour: slider[0]*2
+              hour: slider[0]
             }
           }
         )
@@ -60,65 +59,41 @@ export default {
           if (data.data.status == 200) {
             this.drawmap(data.data.data);
           }
-        });
+        }).catch(err => {
+          this.drawmap([])
+        })
     },
     drawmap(data) {
       var option = {
-        geo3D: {
+        backgroundColor: "#00142D",
+        geo: {
           map: "shenzhen",
-          shading: "realistic",
-          silent: true,
-          environment: "#111C38",
-          realisticMaterial: {
-            roughness: 0.8,
-            metalness: 0
-          },
-          postEffect: {
-            enable: true
-          },
-          groundPlane: {
-            show: false
-          },
-          light: {
-            main: {
-              intensity: 1,
-              alpha: 30
-            },
-            ambient: {
-              intensity: 0
-            }
-          },
-          viewControl: {
-            distance: 70,
-            alpha: 89,
-            //minDistance: 10,
-            //maxDistance: 100,
-            panMouseButton: "left",
-            rotateMouseButton: "right"
-          },
-          // polyline:true,
+          zoom: 2,
+          roam: true,
           itemStyle: {
-            areaColor: "#000",
+            areaColor: "#2a3a5c",
             color: "#1A427D",
             borderWidth: "1", // 描边
             borderColor: "#fff"
+          }
+        },
+        visualMap: {
+          max: 1000,
+          calculable: true,
+          realtime: false,
+          right: "20",
+          top: "10",
+          inRange: {
+            color: ["green", "#fee090", "#a50026"]
           },
-          // blendMode: "lighter",
-          // emphasis: {
-          //  label: {
-          //    show: true,
-          //    formatter: "{b}: {c}"
-          //  }
-          //},
-          // effect:{
-          //   show:true,
-          // },
-          regionHeight: 3
+          textStyle: {
+            color: "#fff"
+          }
         },
         title: {
-          text: "OD出行",
+          text: "人口数量预测",
           subtext:
-            "图中线条表示用户出发到达地连线，并不表示实际路径",
+            "本图通过热力图反映了深圳市人口分布变化情况。",
           textStyle: {
             color: "#cc9966"
           },
@@ -129,34 +104,9 @@ export default {
         },
         series: [
           {
-            name: "深圳",
-            type: "lines3D",
-            coordinateSystem: "geo3D",
-
-            effect: {
-              show: true,
-              trailWidth: 1,
-              trailOpacity: 0.5,
-              trailLength: 0.2,
-              constantSpeed: 5
-            },
-            // polyline: true,
-            blendMode: "lighter",
-
-            lineStyle: {
-              width: 0.2,
-              opacity: 0.05
-              // color:'red'  //线条颜色
-            },
-
-            // 113.884583,22.584793
-            // 114.264602,22.626966
-            // 114.082353,22.818978
-            // 114.085803,22.542074
-            // data: [
-            //   [[113.884583, 22.584793], [114.264602, 22.626966]],
-            //   [[114.082353, 22.818978], [114.085803, 22.542074]]
-            // ],
+            name: "AQI",
+            type: "heatmap",
+            coordinateSystem: "geo",
             data: data
           }
         ]

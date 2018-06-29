@@ -17,7 +17,7 @@ const TranfficLine = () => import ('@/pages/TrafficLine')
 const Density2d = () => import ('@/pages/Density2d')
 const Function = () => import ('@/pages/Function')
 const Flow = () => import ('@/pages/Flow')
-const F_OD = () => import ('@/pages/F_OD')
+const F_Density2d = () => import ('@/pages/F_Density2d')
 const F_Density = () => import ('@/pages/F_Density')
 const F_Function = () => import ('@/pages/F_Function')
 Vue.use(Router)
@@ -76,8 +76,8 @@ export default new Router({
       path: '/flow',
       component: Flow
     }, {
-      path: '/F_OD',
-      component: F_OD
+      path: '/F_Density2d',
+      component: F_Density2d
     }, {
       path: '/F_Density',
       component: F_Density

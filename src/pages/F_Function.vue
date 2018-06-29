@@ -68,28 +68,22 @@ export default {
     drawmap(data) {
       var option = {
         geo: {
-          // show: true,
-          // map: "gongneng",
-          // roam: true,
-          // itemStyle: {
-          //   areaColor: "skyblue"
-          // },
-          // emphasis: {
-          //   itemStyle: {
-          //     areaColor: "#fff"
-          //   }
-          // },
-          // regions: [
-          //   {
-          //     name: "6169",
-          //     itemStyle: {
-          //       areaColor: "red",
-          //       color: "red"
-          //     }
-          //   }
-          // ]
+          
         },
-        
+        title: {
+          text: "地理功能属性预测",
+          subtext: "本图反映了深圳市各地理区域未来功能属性情况。根据区域当天的人口变化趋势，判别当天区域功能区属性。",
+          // padding:[0, 0,0,200],
+          textStyle: {
+            color: "#cc9966",
+            //align: "center"
+          },
+          subtextStyle: {
+            color: "#cc9966",
+            //align:"center"
+          },
+          left: 600
+        },
         visualMap: {
           // show:false,
           type: "piecewise",
