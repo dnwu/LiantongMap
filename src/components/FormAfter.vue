@@ -1,6 +1,6 @@
 <template>
 <div class="form-after">
-  <div class="header" @click="getForecastList(1,'全部')">全市</div>
+  <div class="header" @click="getForecastListByName(1,'全部')">全市</div>
   <div class="nav" @click="searchRegion">
     <span :class="areaName==item?'active':''" v-for="(item,index) in navList" :key="index">{{item}}</span>
   </div>
@@ -77,6 +77,22 @@ export default {
         .then(data => {
           this.forecastList = data.data.data.list
           this.totalNum =  data.data.data.totalNum
+        });
+    },
+    getForecastListByName(page, name) {
+      this.areaName = name
+      this.axios
+        .get(`${host}${this.url}`, {
+          params: {
+            token: "w",
+            page: page,
+            rows: 60,
+            area_name: name
+          }
+        })
+        .then(data => {
+          this.forecastList = data.data.data.list
+          this.totalNum =  data.data.data.totalNum
           this.currentPage = 1
         });
     },
@@ -93,7 +109,7 @@ export default {
     searchRegion(e) {
       console.log(e.target.innerText);
       this.areaName = e.target.innerText
-      this.getForecastList(1,this.areaName)
+      this.getForecastListByName(1,this.areaName)
     },
     searchRegionId(e) {
       console.log(e.target.parentNode);
