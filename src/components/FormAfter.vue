@@ -20,6 +20,7 @@
       small
       layout="prev, pager, next"
       @current-change="pageChange"
+      :current-page = 'currentPage'
       :page-size = "60"
       :total="totalNum">
     </el-pagination>
@@ -39,6 +40,7 @@ export default {
       detialUrl: '/ivenus/data/api/stream/monitoring/predict/flow_trend',
       forecastList:[],
       totalNum:60,
+      currentPage:1,
       areaName: '全部',
       regionId: '基站',
       navList: [
@@ -75,6 +77,7 @@ export default {
         .then(data => {
           this.forecastList = data.data.data.list
           this.totalNum =  data.data.data.totalNum
+          this.currentPage = 1
         });
     },
     getDetial(cellId) {
@@ -98,7 +101,6 @@ export default {
       this.getDetial(this.regionId)
     },
     pageChange(page) {
-      console.log(page);
       this.getForecastList(page,this.areaName)
     },
 
