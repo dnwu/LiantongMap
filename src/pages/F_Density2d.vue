@@ -9,7 +9,7 @@ export default {
   name: "OD",
   data() {
     return {
-      url:"/ivenus/data/api/stream/monitoring/line/line_info"
+      url:"/ivenus/data/api/stream/monitoring/predict/num_info"
     };
   },
   props: {
