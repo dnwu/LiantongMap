@@ -20,7 +20,7 @@
       small
       layout="prev, pager, next"
       @current-change="pageChange"
-      :current-page = 'currentPage'
+      :current-page.sync = 'currentPage'
       :page-size = "60"
       :total="totalNum">
     </el-pagination>
